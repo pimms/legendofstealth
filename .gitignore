@@ -21,6 +21,7 @@
 *.app
 
 # Various stuff
+game
 .*.swp
 .*.swo
 build/
