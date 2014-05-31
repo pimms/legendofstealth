@@ -58,15 +58,25 @@ void GameController::LoadContent()
 	scene->AddLayer(shadow);
 
 	// Create a couple of lights
-	for (int i=0; i<3; i++) {
+	for (int i=0; i<4; i++) {
 		LightSource *light = new LightSource;
 		light->SetLightDistance(150.f);
 		light->LoadTexture("res/light.png");
 		light->Position() = Vec2(100.f + 120*i, 200.f);
+		light->Pivot() = Vec2(0.5f, 0.5f);
 		layer->AddChild(light);
 		shadow->AddLightSource(light);
-		if (!i)
+		if (!i) {
 			AddComponent<MoveComponent>(light);
+		} else {
+			if (rand() % 2 == 0) {
+				Color c(1.f, 0.f, 0.f, 1.f);
+				light->SetColor(c);
+			} else {
+				Color c(0.f, 0.f, 1.f, 1.f);
+				light->SetColor(c);
+			}
+		}
 	}
 
 	// Create a couple of boxes
