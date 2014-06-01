@@ -22,6 +22,7 @@
 
 # Various stuff
 game
+server
 .*.swp
 .*.swo
 build/
