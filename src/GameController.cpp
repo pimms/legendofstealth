@@ -31,17 +31,20 @@ GameController public methods
 */
 GameController::GameController()
 {
-
+	
 }
 
 GameController::~GameController()
 {
-
+	if (_netcon)
+		delete _netcon;
 }
 
 void GameController::LoadContent()
 {
 	Controller::LoadContent();
+
+	_netcon = new NetworkController("localhost");
 
 	Scene *scene = new Scene;
 	SetScene(scene);
