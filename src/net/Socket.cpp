@@ -1,6 +1,7 @@
 #include "Socket.h"
 #include <cstdlib>
 #include <stdlib.h>
+#include <sstream>
 
 
 /*
@@ -27,21 +28,41 @@ Socket::Socket(Protocol protocol, string hostname, int port, unsigned udpListenP
 	if (_protocol == TCP) {
 		ConnectTCP();
 		if (SDLNet_TCP_AddSocket(_set, _tcp) == -1) {
-			string msg = "Failed to add socket to set";
+			string msg = "Failed to add TCP socket to set";
 			Log::Error(msg);
 			throw std::runtime_error(msg);
 		}
 	} else if (_protocol == UDP) {
 		CreateUDP();
 		if (SDLNet_UDP_AddSocket(_set, _udp) == -1) {
-			string msg = "Failed to add socket to set";
+			string msg = "Failed to add UDP socket to set";
 			Log::Error(msg);
 			throw std::runtime_error(msg);
 		}
 	}
-	
-
 }	
+
+Socket::Socket(TCPsocket tcpsocket)
+	:	_set(NULL),
+		_udp(0),
+		_tcp(tcpsocket),
+		_protocol(TCP),
+		_hostname(""),
+		_udpListenPort(0)
+{
+	IPaddress *ip = SDLNet_TCP_GetPeerAddress(_tcp);
+	memcpy(&_ip, ip, sizeof(IPaddress));
+
+	_hostname = GetOctalIP(_ip.host);
+	Log::Debug("Socket created with existing connection from " + _hostname);
+
+	CreateSocketSet();
+	if (SDLNet_TCP_AddSocket(_set, _tcp) == -1) {
+		string msg = "Failed to add TCP socket to set";
+		Log::Error(msg);
+		throw std::runtime_error(msg);
+	}
+}
 
 Socket::~Socket()
 {
@@ -140,6 +161,32 @@ bool Socket::SendPacket(Packet *packet)
 	return true;
 }
 
+
+string Socket::GetOctalIP(Uint32 ip)
+{
+	std::stringstream ss;
+	ss << ((ip >> 24) & 0xFF) << ".";
+	ss << ((ip >> 16) & 0xFF) << ".";
+	ss << ((ip >> 8 ) & 0xFF) << ".";
+	ss << ((ip      ) & 0xFF);
+	return ss.str();
+}
+
+
+string Socket::GetRemoteHostname() const 
+{
+	return _hostname;
+}
+
+unsigned Socket::GetListenPortUDP() const
+{
+	return _udpListenPort;
+}
+
+Protocol Socket::GetProtocol() const
+{
+	return _protocol;
+}
 
 
 /*

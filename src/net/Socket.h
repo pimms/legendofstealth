@@ -17,13 +17,26 @@
  */
 class Socket {
 public:
+	/* Connect to the remote host
+	 */
 	Socket(Protocol protocol, string hostname, int port, unsigned udpListenPort=0);
+
+	/* Connection has already been set up
+	 */
+	Socket(TCPsocket tcpsocket);
+
 	~Socket();
 
 	bool HasActivity();
 	Packet* GetPacket();
 
 	bool SendPacket(Packet *packet);
+
+	string GetRemoteHostname() const;
+	unsigned GetListenPortUDP() const;
+	Protocol GetProtocol() const;
+
+	static string GetOctalIP(Uint32 ip);
 
 private:
 	SDLNet_SocketSet _set;	

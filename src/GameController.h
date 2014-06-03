@@ -1,7 +1,6 @@
 #pragma once
 
 #include <trutle/Trutle.h>
-#include "net/NetworkController.h"
 #include "net/Socket.h"
 
 
