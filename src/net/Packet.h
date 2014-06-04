@@ -12,6 +12,11 @@ enum Protocol {
 	TCP,
 };
 
+enum Team {
+	TEAM_SPY,
+	TEAM_MERC,
+};
+
 typedef unsigned char byte;
 
 

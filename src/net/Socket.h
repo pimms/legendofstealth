@@ -35,8 +35,12 @@ public:
 
 	// Returns an empty string on UDP Sockets
 	string GetRemoteHostname() const;
+
 	unsigned GetListenPortUDP() const;
 	Protocol GetProtocol() const;
+
+	// May not return a valid value under UDP
+	IPaddress GetIPaddress();
 
 	static string GetOctalIP(Uint32 ip);
 

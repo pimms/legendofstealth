@@ -18,6 +18,12 @@ enum RemotePlayerState {
 /* Remote Player
  *
  * Partly a FSM.
+ *
+ * The UDP socket is not used to retrieve data. All data is retrieved on the
+ * server's incoming UDP socket. The UDP socket is only used to send data to
+ * the client.
+ *
+ * TCP data is sent and retrieved on the TCP socket.
  */
 class RemotePlayer {
 public:
@@ -28,9 +34,20 @@ public:
 
 	bool IsConnected();
 
+	void Update();
+
+	void Disconnect();
+
 private:
 	unsigned _playerID;
 	Socket *_tcp;
 	Socket *_udp;
+	RemotePlayerState _state;
+
+	void SendJoinRequest();
+
+	// Negotiation Update
+	void HandleJoinRequest();
+	void SendJoinResponse(bool response, Team team);
 };
 
