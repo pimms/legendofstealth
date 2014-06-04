@@ -10,7 +10,9 @@ RemotePlayer::RemotePlayer(unsigned playerID, Socket *tcpSocket)
 	:	_tcp(tcpSocket),
 		_udp(NULL),
 		_playerID(playerID),
-		_state(STATE_NEGOTIATE)
+		_state(STATE_NEGOTIATE),
+		_rotation(0.f),
+		_counter(0) 
 {
 
 }
@@ -47,6 +49,7 @@ void RemotePlayer::Update()
 			break;
 
 		case STATE_PLAYING:
+			HandleIncomingPackets();
 			break;
 
 		default:
@@ -119,3 +122,39 @@ void RemotePlayer::SendJoinResponse(bool response, Team team)
 	delete pjr;
 }
 
+
+void RemotePlayer::HandleIncomingPackets()
+{
+	while (_udp->HasActivity()) {
+		Packet *pkt = _udp->GetPacket();
+		if (pkt) {
+			switch (pkt->type) {
+				case PACKET_PLAYER_UPDATE:
+					HandlePlayerUpdate((PacketPlayerUpdate*)pkt);
+					break;
+
+				default:
+					Log::Warning("Unhandled packet type on UDP");
+					break;
+			}
+		} else break; 
+	}
+
+	while (_tcp->HasActivity()) {
+		Packet *pkt = _tcp->GetPacket();
+		if (pkt) {
+			switch (pkt->type) {
+				default:
+					Log::Warning("Unhandled packet type on TCP");
+					break;
+			}
+		}
+	}
+}
+
+void RemotePlayer::HandlePlayerUpdate(PacketPlayerUpdate *pkt)
+{
+	_position = Vec2(pkt->posX, pkt->posY);
+	_rotation = pkt->rotation;
+	_counter = pkt->counter;
+}
