@@ -7,9 +7,11 @@
 	#include <trutle/Trutle.h>
 #endif
 
-class Player : public GameObject{
+#include "Entity.h"
+
+class Player : public Entity {
 public:
-	Player();
+	Player(b2World *world);
 private:
 
 	

@@ -53,6 +53,7 @@ void Entity::CreateSquareBody(b2BodyType type)
 	fd.isSensor = false;
 	fd.density = 3.5f;
 	fd.userData = this;
+	fd.shape = &shape;
 
 	_body = _world->CreateBody(&bd);
 	_body->CreateFixture(&fd);
