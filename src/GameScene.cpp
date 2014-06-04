@@ -29,13 +29,19 @@ GameScene Public
 ================
  */
 GameScene::GameScene()
+	:	_localPlayer(NULL),
+		_gameLayer(NULL),
+		_shadowLayer(NULL),
+		_world(NULL)
 {
 
 }
 
 GameScene::~GameScene()
 {
-
+	if (_world) {
+		delete _world;
+	}
 }
 
 
@@ -43,17 +49,51 @@ void GameScene::LoadContent()
 {
 	Scene::LoadContent();
 
-	Layer *layer = new Layer;
-	AddLayer(layer);
+	LoadInfrastructure();
+	CreateB2World();
+	LoadPlayer();
+	LoadMap();
 
+}
+
+void GameScene::Update(const DeltaTime &dt)
+{
+	Scene::Update(dt);
+}
+
+
+/*
+================
+GameScene private
+================
+*/
+void GameScene::LoadInfrastructure()
+{
+	_gameLayer = new Layer();
+	AddLayer(_gameLayer);
+
+	_shadowLayer = new ShadowLayer();
+	AddLayer(_shadowLayer);
+}
+
+void GameScene::CreateB2World()
+{
+	_world = new b2World(b2Vec2(0.f, 0.f));	
+}
+
+void GameScene::LoadPlayer()
+{
+	_localPlayer = new Player(_world);
+	_gameLayer->AddChild(_localPlayer);
+}
+
+void GameScene::LoadMap()
+{
 	GameObject *background = new GameObject;
 	background->LoadTexture("res/bg.png");
 	background->Position() = Vec2(320.f, 240.f);
-	layer->AddChild(background);
-
-	ShadowLayer *shadow = new ShadowLayer;
-	AddLayer(shadow);
-
+	_gameLayer->AddChild(background);
+	
 	// Create a couple of lights
 	for (int i=0; i<4; i++) {
 		LightSource *light = new LightSource;
@@ -61,18 +101,15 @@ void GameScene::LoadContent()
 		light->LoadTexture("res/light.png");
 		light->Position() = Vec2(100.f + 120*i, 200.f);
 		light->Pivot() = Vec2(0.5f, 0.5f);
-		layer->AddChild(light);
-		shadow->AddLightSource(light);
-		if (!i) {
-			//AddComponent<MoveComponent>(light);
+		_gameLayer->AddChild(light);
+		_shadowLayer->AddLightSource(light);
+		
+		if (rand() % 2 == 0) {
+			Color c(1.f, 0.f, 0.f, 1.f);
+			light->SetColor(c);
 		} else {
-			if (rand() % 2 == 0) {
-				Color c(1.f, 0.f, 0.f, 1.f);
-				light->SetColor(c);
-			} else {
-				Color c(0.f, 0.f, 1.f, 1.f);
-				light->SetColor(c);
-			}
+			Color c(0.f, 0.f, 1.f, 1.f);
+			light->SetColor(c);
 		}
 	}
 
@@ -81,14 +118,8 @@ void GameScene::LoadContent()
 		ShadowCaster *box = new ShadowCaster;
 		box->LoadTexture("res/box.png");
 		box->Position() = Vec2(100.f + 70*i, 240.f);
-		layer->AddChild(box);
-		shadow->AddShadowCaster(box);
+		_gameLayer->AddChild(box);
+		_shadowLayer->AddShadowCaster(box);
 	}
-	Player* player = new Player();
-	layer->AddChild(player);
 }
 
-void GameScene::Update(const DeltaTime &dt)
-{
-	Scene::Update(dt);
-}
