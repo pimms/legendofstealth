@@ -33,6 +33,14 @@ Entity::~Entity()
 }
 
 
+void Entity::Update(const DeltaTime &dt)
+{
+	GameObject::Update(dt);
+
+	_body->SetTransform(Tob2Vec2(Position()), 0.f);
+}
+
+
 /*
 ================
 Entity Protected

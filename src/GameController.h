@@ -9,6 +9,7 @@
 
 #include "net/Socket.h"
 
+class GameScene;
 
 class GameController : public Controller {
 public:
@@ -22,6 +23,9 @@ private:
 	Socket *_tcpSocket;
 	Socket *_udpSocket;
 	string address;
+
+	GameScene *_gameScene;
+
 
 	void HandleIncoming();
 	void HandlePacket(Packet *pkt);

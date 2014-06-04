@@ -59,6 +59,21 @@ void GameScene::LoadContent()
 void GameScene::Update(const DeltaTime &dt)
 {
 	Scene::Update(dt);
+
+	_world->Step(dt.dt, 10, 10);
+}
+
+
+bool GameScene::HandlePacket(const Packet *packet)
+{
+	switch (packet->type) {
+		case PACKET_PLAYER_UPDATE:
+			HandlePacketPlayerUpdate((PacketPlayerUpdate*)packet);
+			return true;
+
+		default:
+			return false;
+	}
 }
 
 
@@ -83,7 +98,7 @@ void GameScene::CreateB2World()
 
 void GameScene::LoadPlayer()
 {
-	_localPlayer = new Player(_world);
+	_localPlayer = new Player(_world, true);
 	_gameLayer->AddChild(_localPlayer);
 }
 
@@ -123,3 +138,13 @@ void GameScene::LoadMap()
 	}
 }
 
+
+void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
+{
+	for (int i=0; i<_remotePlayers.size(); i++) {
+		Player *player = _remotePlayers[i];
+		if (player->GetPlayerID() == packet->playerID) {
+			
+		}
+	}
+}

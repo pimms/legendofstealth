@@ -7,6 +7,7 @@
 #endif
 
 #include <Box2D/Box2D.h>
+#include "net/Packet.h"
 
 
 class ShadowLayer;
@@ -19,6 +20,9 @@ public:
 
 	void LoadContent();
 	void Update(const DeltaTime &dt);
+
+	// Returns true if the packet could be handled
+	bool HandlePacket(const Packet *packet);
 
 private:
 	b2World *_world;
@@ -35,4 +39,6 @@ private:
 	void CreateB2World();
 	void LoadPlayer();
 	void LoadMap();
+
+	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
 };

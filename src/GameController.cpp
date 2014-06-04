@@ -76,6 +76,9 @@ void GameController::HandleIncoming()
 
 void GameController::HandlePacket(Packet *pkt)
 {
-	// Great stuff
+	if (!_gameScene->HandlePacket(pkt)) {
+		Log::Debug("Unhandled packet");
+	}
+
 	delete pkt;
 }
