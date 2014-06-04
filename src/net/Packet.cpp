@@ -16,6 +16,36 @@
 #include <assert.h>
 
 
+string PacketTypeStr(PacketType type)
+{
+	switch (type) {
+		case PACKET_JOIN_REQUEST:
+			return "PACKET_JOIN_REQUEST";
+			break;
+		case PACKET_JOIN_RESPONSE:
+			return "PACKET_JOIN_RESPONSE";
+			break;
+		case PACKET_PLAYER_DID_JOIN:
+			return "PACKET_PLAYER_DID_JOIN";
+			break;
+		case PACKET_PLAYER_DID_LEAVE:
+			return "PACKET_PLAYER_DID_LEAVE";
+			break;
+		case PACKET_PLAYER_UPDATE:
+			return "PACKET_PLAYER_UPDATE";
+			break;
+		case PACKET_PLAYER_FIRE:
+			return "PACKET_PLAYER_FIRE";
+			break;
+		case PACKET_PLAYER_HIT:
+			return "PACKET_PLAYER_HIT";
+			break;
+		case PACKET_PLAYER_HACK:
+			return "PACKET_PLAYER_HACK";
+			break;
+	}
+}
+
 
 Packet* Packet::ReadPacket(byte *buffer, int bufferlen, int &packetlen)
 {
@@ -110,13 +140,6 @@ Packet::~Packet()
  * macros because this is a game jam. yolo, etc. See existing usages 
  * for usage info.
  */
-#define FILL_METHOD_BEGIN(STRUCT)		\
-	int STRUCT::FillPacketFromBuffer(byte *buffer, int len) { \
-		int read = 0;
-
-#define FILL_METHOD_END					\
-		return read;					\
-	}
 
 #define READ_FLOAT(FIELD)				\
 	FIELD = ReadFloat(buffer + read); 	\
@@ -134,23 +157,32 @@ Packet::~Packet()
 	FIELD = buffer[read];				\
 	read++;
 
+#define FILL_METHOD_BEGIN(STRUCT)		\
+	int STRUCT::FillPacketFromBuffer(byte *buffer, int len) { \
+		type = (PacketType)buffer[0];	\
+		int read = 1;					
+
+#define FILL_METHOD_END					\
+		return read;					\
+	}
+
 
 #define WRITE_LONG(FIELD) 				\
 	{  	unsigned u = 0;					\
 		memcpy(&u, &FIELD, 4);			\
 		u = htonl(u);					\
 		memcpy(buf + packetlen, &u, 4);	\
-		packetlen += 4;		}			\
+		packetlen += 4;		}			
 
 #define WRITE_BYTE(FIELD)				\
-	buf[packetlen] = FIELD;				\
-	packetlen++;
+		buf[packetlen] = FIELD;			\
+		packetlen++;
 
 #define WRITE_METHOD_BEGIN(STRUCT) 		\
 	byte* STRUCT::GetSendablePacket(int &packetlen) { \
-		packetlen = 0;					\
+		packetlen = 1;					\
 		byte buf[128]; 					\
-		WRITE_LONG(type);				
+		buf[0] = (byte)type; 			
 
 #define WRITE_METHOD_END				\
 		byte *pkg = new byte[packetlen];\

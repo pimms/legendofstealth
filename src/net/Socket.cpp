@@ -109,23 +109,35 @@ Packet* Socket::GetPacket()
 	buf = GetData(len, udpPacket);
 	if (!buf || !len) {
 		_tcpDisconnect = (_protocol == TCP);
+		Log::Verbose("TCP socket disconnected");
 		return NULL;
 	}
 
+	int numRecv = 0;
+	int read = 0;
+
 	while (len > 0) {
 		int plen = 0;
-		Packet *packet = Packet::ReadPacket(buf, len, plen);
+		Packet *packet = Packet::ReadPacket(buf+read, len, plen);
 		
 		if (packet) {
 			packet->udpPacket = udpPacket;
 			len -= plen;
+			read += plen;
 			_pqueue.push_back(packet);
+
+			numRecv++;
 		} else {
 			// Unable to parse packet - none of the retrieved data can be trusted
 			if (udpPacket) 
 				SDLNet_FreePacket(udpPacket);
+			Log::Verbose("Received non-trustworthy data");
 			break;
 		}
+	}
+
+	for (int i=0; i<numRecv; i++) {
+		Log::Verbose("Received packet: " + PacketTypeStr(_pqueue[_pqueue.size()-1-i]->type));
 	}
 
 	if (_pqueue.size())
@@ -165,6 +177,8 @@ bool Socket::SendPacket(Packet *packet)
 		msg += (string)" packet. Error: " + SDLNet_GetError();
 		Log::Error(msg);
 		return false;
+	} else {
+		Log::Verbose("Sent packet: " + PacketTypeStr(packet->type));
 	}
 
 	return true;

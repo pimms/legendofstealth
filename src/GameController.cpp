@@ -30,11 +30,10 @@ void GameController::LoadContent()
 	_tcpSocket = new Socket(TCP, address, TCP_SERVER_PORT);
 	_udpSocket = new Socket(UDP, address, UDP_SERVER_PORT, 0);
 
-	PacketJoinRequest *jreq = new PacketJoinRequest;
-	jreq->type = PACKET_JOIN_REQUEST;
-	jreq->port = _udpSocket->GetListenPortUDP();
-	_tcpSocket->SendPacket(jreq);
-	delete jreq;
+	PacketJoinRequest jreq;
+	jreq.type = PACKET_JOIN_REQUEST;
+	jreq.port = _udpSocket->GetListenPortUDP();
+	_tcpSocket->SendPacket(&jreq);
 }
 
 void GameController::Update(DeltaTime &dt)
@@ -77,7 +76,7 @@ void GameController::HandleIncoming()
 void GameController::HandlePacket(Packet *pkt)
 {
 	if (!_gameScene->HandlePacket(pkt)) {
-		Log::Debug("Unhandled packet");
+		Log::Debug("Unhandled packet :" + PacketTypeStr(pkt->type));
 	}
 
 	delete pkt;

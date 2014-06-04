@@ -60,6 +60,8 @@ enum PacketType {
 	PACKET_PLAYER_HACK,
 };
 
+string PacketTypeStr(PacketType type);
+
 
 /* The "type" member indicates which sub-struct the object can be casted to.
  */

@@ -34,7 +34,7 @@ unsigned RemotePlayer::GetPlayerID()
 
 bool RemotePlayer::IsConnected()
 {
-	return !_tcp->IsConnectionOpen();
+	return _tcp->IsConnectionOpen();
 }
 
 
@@ -114,6 +114,7 @@ void RemotePlayer::HandleJoinRequest()
 void RemotePlayer::SendJoinResponse(bool response, Team team)
 {
 	PacketJoinResponse *pjr = new PacketJoinResponse();
+	pjr->type = PACKET_JOIN_RESPONSE;
 	pjr->response = true;
 	pjr->playerID = _playerID;
 	pjr->team = (unsigned)team;
@@ -134,10 +135,12 @@ void RemotePlayer::HandleIncomingPackets()
 					break;
 
 				default:
-					Log::Warning("Unhandled packet type on UDP");
+					Log::Warning("Unhandled UDP packet: " + PacketTypeStr(pkt->type));
 					break;
 			}
-		} else break; 
+		} else {
+			break;
+		}
 	}
 
 	while (_tcp->HasActivity()) {
@@ -145,9 +148,11 @@ void RemotePlayer::HandleIncomingPackets()
 		if (pkt) {
 			switch (pkt->type) {
 				default:
-					Log::Warning("Unhandled packet type on TCP");
+					Log::Warning("Unhandled TCP packet: " + PacketTypeStr(pkt->type));
 					break;
 			}
+		} else {
+			break;
 		}
 	}
 }
