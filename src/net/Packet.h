@@ -1,7 +1,12 @@
 #pragma once
 
-#include <trutle/Trutle.h>
-#include <SDL2/SDL_net.h>
+#ifdef _WIN32
+	#include <Trutle.h>
+	#include <SDL_net.h>
+#else
+	#include <trutle/Trutle.h>
+	#include <SDL2/SDL_net.h>
+#endif
 
 #define TCP_SERVER_PORT			43720
 #define UDP_SERVER_PORT			43720
@@ -10,11 +15,6 @@
 enum Protocol {
 	UDP,
 	TCP,
-};
-
-enum Team {
-	TEAM_SPY,
-	TEAM_MERC,
 };
 
 typedef unsigned char byte;

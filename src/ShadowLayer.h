@@ -1,6 +1,10 @@
 #pragma once
 
-#include <trutle/Trutle.h>
+#ifdef _WIN32
+	#include <Trutle.h>
+#else
+	#include <trutle/Trutle.h>
+#endif
 
 #include "LightSource.h"
 #include "ShadowCaster.h"

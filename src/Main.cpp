@@ -1,4 +1,9 @@
-#include <trutle/Trutle.h>
+#ifdef _WIN32
+	#include <Trutle.h>
+#else
+	#include <trutle/Trutle.h>
+#endif
+
 #include "ShadowLayer.h"
 #include "LightSource.h"
 #include "ShadowCaster.h"

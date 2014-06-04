@@ -2,8 +2,9 @@
 #include "ShadowLayer.h"
 #include "LightSource.h"
 #include "ShadowCaster.h"
+#include "Player.h"
 
-// Temporary component to just move an object around
+/* Temporary component to just move an object around
 class MoveComponent : public Component {
 public:
 	void Update(const DeltaTime &dt)
@@ -20,7 +21,7 @@ public:
 	}
 
 };
-
+*/
 
 /*
 ================
@@ -63,7 +64,7 @@ void GameScene::LoadContent()
 		layer->AddChild(light);
 		shadow->AddLightSource(light);
 		if (!i) {
-			AddComponent<MoveComponent>(light);
+			//AddComponent<MoveComponent>(light);
 		} else {
 			if (rand() % 2 == 0) {
 				Color c(1.f, 0.f, 0.f, 1.f);
@@ -83,6 +84,8 @@ void GameScene::LoadContent()
 		layer->AddChild(box);
 		shadow->AddShadowCaster(box);
 	}
+	Player* player = new Player();
+	layer->AddChild(player);
 }
 
 void GameScene::Update(const DeltaTime &dt)

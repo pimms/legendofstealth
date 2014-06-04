@@ -1,7 +1,20 @@
+
+
+#ifdef _WIN32
+	#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include "Packet.h"
 #include <stdlib.h>
-#include <netinet/in.h>
+
+#ifdef _WIN32
+	#include <winsock2.h>
+#else
+	#include <netinet/in.h>
+#endif
+
 #include <assert.h>
+
 
 
 Packet* Packet::ReadPacket(byte *buffer, int bufferlen, int &packetlen)
