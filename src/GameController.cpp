@@ -25,10 +25,12 @@ GameController::~GameController()
 void GameController::LoadContent()
 {
 	Controller::LoadContent();
-	SetScene(new GameScene);
 
 	_tcpSocket = new Socket(TCP, address, TCP_SERVER_PORT);
 	_udpSocket = new Socket(UDP, address, UDP_SERVER_PORT, 0);
+
+	_gameScene = new GameScene(_tcpSocket, _udpSocket);
+	SetScene(_gameScene);
 
 	PacketJoinRequest jreq;
 	jreq.type = PACKET_JOIN_REQUEST;

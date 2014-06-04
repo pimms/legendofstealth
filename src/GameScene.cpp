@@ -9,11 +9,13 @@
 GameScene Public
 ================
  */
-GameScene::GameScene()
+GameScene::GameScene(Socket *tcp, Socket *udp)
 	:	_localPlayer(NULL),
 		_gameLayer(NULL),
 		_shadowLayer(NULL),
-		_world(NULL)
+		_world(NULL),
+		_tcpSocket(tcp),
+		_udpSocket(udp)
 {
 
 }
@@ -33,8 +35,6 @@ void GameScene::LoadContent()
 	LoadInfrastructure();
 	CreateB2World();
 	LoadMap();
-	LoadPlayer();
-
 }
 
 void GameScene::Update(const DeltaTime &dt)
@@ -50,6 +50,14 @@ bool GameScene::HandlePacket(const Packet *packet)
 	switch (packet->type) {
 		case PACKET_PLAYER_UPDATE:
 			HandlePacketPlayerUpdate((PacketPlayerUpdate*)packet);
+			return true;
+
+		case PACKET_JOIN_RESPONSE:
+			CreatePlayer((PacketJoinResponse*)packet, true);
+			return true;
+
+		case PACKET_PLAYER_DID_JOIN:
+			CreatePlayer((PacketJoinResponse*)packet, false);
 			return true;
 
 		default:
@@ -75,13 +83,6 @@ void GameScene::LoadInfrastructure()
 void GameScene::CreateB2World()
 {
 	_world = new b2World(b2Vec2(0.f, 0.f));	
-}
-
-void GameScene::LoadPlayer()
-{
-	_localPlayer = new Player(_world, true);
-	_gameLayer->AddChild(_localPlayer);
-	
 }
 
 void GameScene::LoadMap()
@@ -125,9 +126,27 @@ void GameScene::LoadMap()
 void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
 {
 	for (int i=0; i<_remotePlayers.size(); i++) {
-		Player *player = _remotePlayers[i];
+		RemotePlayer *player = _remotePlayers[i];
 		if (player->GetPlayerID() == packet->playerID) {
 			
 		}
+	}
+}
+
+
+void GameScene::CreatePlayer(const PacketJoinResponse *packet, bool localPlayer)
+{
+	if (!packet->response) {
+		Log::Error("Unable to join game session - quitting");
+		GetApp()->Quit();
+		return;
+	}
+
+	if (localPlayer) {
+		_localPlayer = new LocalPlayer(_world, (Team)packet->team, packet->playerID, _udpSocket);
+		_gameLayer->AddChild(_localPlayer);
+	} else {
+		RemotePlayer *rp = new RemotePlayer(_world, (Team)packet->team, packet->playerID);
+		_remotePlayers.push_back(rp);
 	}
 }

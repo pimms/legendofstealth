@@ -1,27 +1,28 @@
 #include "Player.h"
 #include "PlayerUpdateComponent.h"
 #include "MovePlayer.h"
+#include "net/Socket.h"
 
 
-Player::Player(b2World *world, bool isLocal)  
+/*
+================
+Player Public
+================
+*/
+Player::Player(b2World *world, Team team, unsigned playerID, string texture)  
 	:	Entity(world),
-		_local(isLocal)
+		_team(team),
+		_playerID(playerID)
 {
-	LoadTexture("res/box.png");
+	LoadTexture(texture);
 	Position() = Vec2(100.0f, 100.0f);
 
 	CreateSquareBody();
 
-	AddComponent<MovePlayer>(this);
 	AddComponent<PlayerUpdateComponent>(this);
 	_updateComponent = GetComponent<PlayerUpdateComponent>(this);
 }
 
-
-void Player::SetPlayerID(unsigned id)
-{
-	_playerID = id;
-}
 
 unsigned Player::GetPlayerID() const
 {
@@ -29,11 +30,44 @@ unsigned Player::GetPlayerID() const
 }
 
 
-void Player::Update(const DeltaTime &dt)
+Team Player::GetTeam() const
 {
-	Entity::Update(dt);
+	return _team;
+}
 
-	if (_local) {
-		_updateComponent->SendUpdatePacket();
-	}
+
+/*
+================
+LocalPlayer Public
+================
+*/
+LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *udpSocket)
+	:	Player(world, team, playerID),
+		_udpSocket(udpSocket)
+{
+	AddComponent<MovePlayer>(this);
+	_updateComponent->SetUDPSocket(_udpSocket);
+}
+
+
+void LocalPlayer::Update(const DeltaTime &dt)
+{
+	_updateComponent->SendUpdatePacket();
+}
+
+
+/*
+================
+RemotePlayer Public
+================
+*/
+RemotePlayer::RemotePlayer(b2World *world, Team team, unsigned playerID)
+	:	Player(world, team, playerID)
+{
+	
+}
+
+void RemotePlayer::HandleUpdatePacket(const PacketPlayerUpdate *packet)
+{
+	_updateComponent->HandleUpdatePacket(packet);
 }

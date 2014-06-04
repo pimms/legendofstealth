@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
 
 	ConnectionListener listener;
 
+	Socket *udpSocket = new Socket(UDP, IPaddress{0, UDP_SERVER_PORT}, UDP_SERVER_PORT);
+
 	/* Main Server Loop */
 	unsigned npid = 1;
 	vector<RemotePlayer*> players;
@@ -41,11 +43,20 @@ int main(int argc, char *argv[])
 				players.erase(players.begin() + i--);
 			}
 		}
+
+		if (udpSocket->HasActivity()) {
+			Packet *pkt = udpSocket->GetPacket();
+			if (pkt) {
+				Log::Debug("Received UDP packet: " + PacketTypeStr(pkt->type));
+			}
+		}
 	}
 
 	for (int i=0; i<players.size(); i++) {
 		delete players[i];
 	}
+
+	delete udpSocket;
 
 	SDLNet_Quit();
 	return 0;

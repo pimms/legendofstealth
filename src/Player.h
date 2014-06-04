@@ -10,18 +10,38 @@
 #include "Entity.h"
 #include "PlayerUpdateComponent.h"
 
+class Socket;
+
 class Player : public Entity {
 public:
-	Player(b2World *world, bool isLocal);
+	Player(b2World *world, Team team, unsigned playerID, string texture="res/box.png");
 
-	void SetPlayerID(unsigned id);
 	unsigned GetPlayerID() const;
+	Team GetTeam() const;
+
+protected:
+	PlayerUpdateComponent *_updateComponent;
+
+private:
+	unsigned _playerID;
+	Team _team;
+};
+
+
+class LocalPlayer : public Player {
+public:
+	LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *udpSocket);
 
 	void Update(const DeltaTime &dt);
 
 private:
-	unsigned _playerID;
-	bool _local;
-	PlayerUpdateComponent *_updateComponent;
+	Socket *_udpSocket;
 };
 
+
+class RemotePlayer : public Player {
+public:
+	RemotePlayer(b2World *world, Team team, unsigned playerID);
+
+	void HandleUpdatePacket(const PacketPlayerUpdate *packet);
+};
