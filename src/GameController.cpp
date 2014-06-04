@@ -28,7 +28,7 @@ void GameController::LoadContent()
 	SetScene(new GameScene);
 
 	_tcpSocket = new Socket(TCP, "localhost", TCP_SERVER_PORT);
-	_udpSocket = new Socket(UDP, "localhost", UDP_SERVER_PORT);
+	_udpSocket = new Socket(UDP, "localhost", UDP_SERVER_PORT, 0);
 
 	PacketJoinRequest *jreq = new PacketJoinRequest;
 	jreq->type = PACKET_JOIN_REQUEST;
@@ -39,6 +39,43 @@ void GameController::LoadContent()
 
 void GameController::Update(DeltaTime &dt)
 {
+	if (!_tcpSocket->IsConnectionOpen()) {
+		Log::Warning("Server disconnected");
+		GetApp()->Quit();
+		return;
+	}
+
 	Controller::Update(dt);
+
+	HandleIncoming();
 }
 
+
+
+/*
+================
+GameController Private
+================
+*/
+void GameController::HandleIncoming()
+{
+	while (_tcpSocket->HasActivity()) {
+		Packet *pkt = _tcpSocket->GetPacket();
+		if (pkt) 
+			HandlePacket(pkt);
+		else break;
+	}
+
+	while (_udpSocket->HasActivity()) {
+		Packet *pkt = _udpSocket->GetPacket();
+		if (pkt)
+			HandlePacket(pkt);
+		else break;
+	}
+}
+
+void GameController::HandlePacket(Packet *pkt)
+{
+	// Great stuff
+	delete pkt;
+}

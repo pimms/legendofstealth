@@ -122,17 +122,6 @@ Packet::~Packet()
 	read++;
 
 
-#define WRITE_METHOD_BEGIN(STRUCT) 		\
-	byte* STRUCT::GetSendablePacket(int &packetlen) { \
-		packetlen = 0;					\
-		byte buf[128]; 
-
-#define WRITE_METHOD_END				\
-		byte *pkg = new byte[packetlen];\
-		memcpy(pkg, buf, packetlen);	\
-		return pkg;						\
-	}
-
 #define WRITE_LONG(FIELD) 				\
 	{  	unsigned u = 0;					\
 		memcpy(&u, &FIELD, 4);			\
@@ -144,6 +133,17 @@ Packet::~Packet()
 	buf[packetlen] = FIELD;				\
 	packetlen++;
 
+#define WRITE_METHOD_BEGIN(STRUCT) 		\
+	byte* STRUCT::GetSendablePacket(int &packetlen) { \
+		packetlen = 0;					\
+		byte buf[128]; 					\
+		WRITE_LONG(type);				
+
+#define WRITE_METHOD_END				\
+		byte *pkg = new byte[packetlen];\
+		memcpy(pkg, buf, packetlen);	\
+		return pkg;						\
+	}
 
 // PacketJoinRequest
 FILL_METHOD_BEGIN(PacketJoinRequest)

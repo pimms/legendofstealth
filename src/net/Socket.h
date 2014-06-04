@@ -20,6 +20,7 @@ public:
 	/* Connect to the remote host
 	 */
 	Socket(Protocol protocol, string hostname, int port, unsigned udpListenPort=0);
+	Socket(Protocol protocol, IPaddress ipaddress, unsigned udpListenPort=0);
 
 	/* Connection has already been set up
 	 */
@@ -32,11 +33,15 @@ public:
 
 	bool SendPacket(Packet *packet);
 
+	// Returns an empty string on UDP Sockets
 	string GetRemoteHostname() const;
 	unsigned GetListenPortUDP() const;
 	Protocol GetProtocol() const;
 
 	static string GetOctalIP(Uint32 ip);
+
+	// Only valid for use with TCP sockets
+	bool IsConnectionOpen();
 
 private:
 	SDLNet_SocketSet _set;	
@@ -48,11 +53,30 @@ private:
 	TCPsocket _tcp;
 	UDPsocket _udp;
 	IPaddress _ip;
-
 	
 	void CreateSocketSet();
 	byte* GetData(int &len, UDPpacket *&udpPacket);
 
 	void ConnectTCP();
 	void CreateUDP();
+
+	void Init();
+
+	bool _tcpDisconnect;
+};
+
+class UDPSocket : public Socket {
+public:
+
+private:
+
+};
+
+class SocketTCP: public Socket {
+public:
+	SocketTCP(string hostname, unsigned port);
+	SocketTCP(IPaddress *ipaddr);
+
+private:
+	string _hostname;
 };

@@ -15,4 +15,7 @@ public:
 private:
 	Socket *_tcpSocket;
 	Socket *_udpSocket;
+
+	void HandleIncoming();
+	void HandlePacket(Packet *pkt);
 };

@@ -1,3 +1,4 @@
+
 #include "Socket.h"
 #include <cstdlib>
 #include <stdlib.h>
@@ -15,7 +16,8 @@ Socket::Socket(Protocol protocol, string hostname, int port, unsigned udpListenP
 		_tcp(0),
 		_protocol(protocol),
 		_hostname(hostname),
-		_udpListenPort(udpListenPort)
+		_udpListenPort(udpListenPort),
+		_tcpDisconnect(false)
 {
 	if (SDLNet_ResolveHost(&_ip, _hostname.c_str(), port) == -1) {
 		string msg = (string)"Failed to resolve host " + _hostname;
@@ -23,24 +25,23 @@ Socket::Socket(Protocol protocol, string hostname, int port, unsigned udpListenP
 		throw std::runtime_error(msg);
 	}
 
-	CreateSocketSet();
-
-	if (_protocol == TCP) {
-		ConnectTCP();
-		if (SDLNet_TCP_AddSocket(_set, _tcp) == -1) {
-			string msg = "Failed to add TCP socket to set";
-			Log::Error(msg);
-			throw std::runtime_error(msg);
-		}
-	} else if (_protocol == UDP) {
-		CreateUDP();
-		if (SDLNet_UDP_AddSocket(_set, _udp) == -1) {
-			string msg = "Failed to add UDP socket to set";
-			Log::Error(msg);
-			throw std::runtime_error(msg);
-		}
-	}
+	Init();
 }	
+
+Socket::Socket(Protocol protocol, IPaddress ipaddr, unsigned udpListenPort)
+	:	_set(0),
+		_udp(0),
+		_tcp(0),
+		_protocol(protocol),
+		_hostname(GetOctalIP(ipaddr.host)),
+		_udpListenPort(udpListenPort),
+		_tcpDisconnect(false),
+		_ip(ipaddr)
+{
+	Init();
+}
+
+
 
 Socket::Socket(TCPsocket tcpsocket)
 	:	_set(NULL),
@@ -48,7 +49,8 @@ Socket::Socket(TCPsocket tcpsocket)
 		_tcp(tcpsocket),
 		_protocol(TCP),
 		_hostname(""),
-		_udpListenPort(0)
+		_udpListenPort(0),
+		_tcpDisconnect(false)
 {
 	IPaddress *ip = SDLNet_TCP_GetPeerAddress(_tcp);
 	memcpy(&_ip, ip, sizeof(IPaddress));
@@ -105,8 +107,10 @@ Packet* Socket::GetPacket()
 	UDPpacket *udpPacket = NULL;
 
 	buf = GetData(len, udpPacket);
-	if (!buf) 
+	if (!buf || !len) {
+		_tcpDisconnect = (_protocol == TCP);
 		return NULL;
+	}
 
 	while (len > 0) {
 		int plen = 0;
@@ -138,6 +142,8 @@ bool Socket::SendPacket(Packet *packet)
 	byte *buf = NULL;
 
 	buf = packet->GetSendablePacket(len);
+	if (!buf)
+		return false;
 	
 	if (_protocol == TCP) {
 		sent = SDLNet_TCP_Send(_tcp, buf, len);
@@ -146,9 +152,12 @@ bool Socket::SendPacket(Packet *packet)
 		pkt.data = buf;
 		pkt.len = len;
 		pkt.address = _ip;
+		pkt.channel = 0;
 
-		sent = SDLNet_UDP_Send(_udp, -1, &pkt);
+		sent = SDLNet_UDP_Send(_udp, pkt.channel, &pkt);
 	}
+
+	delete[] buf;
 
 	if (sent == 0) {
 		string msg = "Failed to send ";
@@ -160,6 +169,7 @@ bool Socket::SendPacket(Packet *packet)
 
 	return true;
 }
+
 
 
 string Socket::GetOctalIP(Uint32 ip)
@@ -175,6 +185,11 @@ string Socket::GetOctalIP(Uint32 ip)
 
 string Socket::GetRemoteHostname() const 
 {
+	if (_protocol == UDP) {
+		Log::Debug("Hostname not available for UDP connections");
+		return "";
+	}
+
 	return _hostname;
 }
 
@@ -186,6 +201,15 @@ unsigned Socket::GetListenPortUDP() const
 Protocol Socket::GetProtocol() const
 {
 	return _protocol;
+}
+
+
+bool Socket::IsConnectionOpen()
+{
+	if (_tcpDisconnect)
+		return false;
+
+	return (bool)_tcp;
 }
 
 
@@ -265,16 +289,47 @@ void Socket::CreateUDP()
 {
 	_udp = SDLNet_UDP_Open(_udpListenPort);
 	if (!_udp) {
-		char buf[64];
-		sprintf(buf, "Failed to bind UDP port %i", _udpListenPort);
-		Log::Error(buf);
+		std::stringstream ss;
+		ss << "Failed to bind UDP port " << _udpListenPort;
+		Log::Error(ss.str());
 	}
 
 	// In case _udpListenPort is 0, retrieve the port used by the socket
 	IPaddress *sockip = SDLNet_UDP_GetPeerAddress(_udp, -1);
 	_udpListenPort = sockip->port;
 	
-	char buf[64];
-	sprintf(buf, "Bound UDP on port %i", _udpListenPort);
-	Log::Debug(buf);
+	std::stringstream ss;
+	ss << "Bound UDP socket on port " << _udpListenPort;
+	Log::Debug(ss.str());
+}
+
+
+void Socket::Init()
+{
+	CreateSocketSet();
+
+	if (_protocol == TCP) {
+		ConnectTCP();
+		if (SDLNet_TCP_AddSocket(_set, _tcp) == -1) {
+			string msg = "Failed to add TCP socket to set";
+			Log::Error(msg);
+			throw std::runtime_error(msg);
+		}
+	} else if (_protocol == UDP) {
+		CreateUDP();
+		if (SDLNet_UDP_AddSocket(_set, _udp) == -1) {
+			string msg = "Failed to add UDP socket to set";
+			Log::Error(msg);
+			throw std::runtime_error(msg);
+		}
+
+		int chan = SDLNet_UDP_Bind(_udp, 0, &_ip);
+		if (chan == -1) {
+			string msg = (string)"Failed to bind address " + _hostname;
+			Log::Error(msg);
+			throw std::runtime_error(msg);
+		} else {
+			Log::Debug("Successfully bound address " + _hostname + " to channel 0");
+		}
+	}
 }
