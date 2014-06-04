@@ -4,25 +4,6 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 
-/* Temporary component to just move an object around
-class MoveComponent : public Component {
-public:
-	void Update(const DeltaTime &dt)
-	{
-		const InputState *in = GetGameObject()->GetInputState();
-		if (in->IsKeyDown(SDLK_h))
-			Position().x -= 150 * dt.dt;
-		if (in->IsKeyDown(SDLK_j))
-			Position().y -= 150 * dt.dt;
-		if (in->IsKeyDown(SDLK_k))
-			Position().y += 150 * dt.dt;
-		if (in->IsKeyDown(SDLK_l))
-			Position().x += 150 * dt.dt;
-	}
-
-};
-*/
-
 /*
 ================
 GameScene Public
@@ -51,8 +32,8 @@ void GameScene::LoadContent()
 
 	LoadInfrastructure();
 	CreateB2World();
-	LoadPlayer();
 	LoadMap();
+	LoadPlayer();
 
 }
 
@@ -85,6 +66,7 @@ void GameScene::LoadPlayer()
 {
 	_localPlayer = new Player(_world);
 	_gameLayer->AddChild(_localPlayer);
+	
 }
 
 void GameScene::LoadMap()
@@ -121,5 +103,6 @@ void GameScene::LoadMap()
 		_gameLayer->AddChild(box);
 		_shadowLayer->AddShadowCaster(box);
 	}
+
 }
 

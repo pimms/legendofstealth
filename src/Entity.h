@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef _WIN32
+#include <Trutle.h>
+#else
 #include <trutle/Trutle.h>
+#endif
 #include <Box2D/Box2D.h>
 
 

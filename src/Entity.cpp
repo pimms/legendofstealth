@@ -1,6 +1,10 @@
 #include "Entity.h"
-#include <trutle/res/Texture.h>
 
+#ifdef _WIN32
+#include <res/Texture.h>
+#else
+#include <trutle/res/Texture.h>
+#endif
 
 Vec2 ToVec2(b2Vec2 bvec)
 {
