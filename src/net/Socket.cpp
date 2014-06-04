@@ -213,12 +213,6 @@ bool Socket::IsConnectionOpen()
 }
 
 
-IPaddress Socket::GetIPaddress()
-{
-	return _ip;
-}
-
-
 /*
 ================
 Socket Private

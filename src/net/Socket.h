@@ -1,7 +1,13 @@
 #pragma once
 
-#include <trutle/Trutle.h>
-#include <SDL2/SDL_net.h>
+#ifdef _WIN32
+	#include <Trutle.h>
+	#include <SDL_net.h>
+#else
+	#include <trutle/Trutle.h>
+	#include <SDL2/SDL_net.h>
+#endif
+
 #include "Packet.h"
 
 
@@ -35,12 +41,8 @@ public:
 
 	// Returns an empty string on UDP Sockets
 	string GetRemoteHostname() const;
-
 	unsigned GetListenPortUDP() const;
 	Protocol GetProtocol() const;
-
-	// May not return a valid value under UDP
-	IPaddress GetIPaddress();
 
 	static string GetOctalIP(Uint32 ip);
 
