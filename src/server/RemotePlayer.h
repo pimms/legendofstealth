@@ -44,10 +44,24 @@ private:
 	Socket *_udp;
 	RemotePlayerState _state;
 
+	// Always keeps the data from the last PacketPlayerUpdate
+	unsigned _counter;
+	Vec2 _position;
+	float _rotation;
+
+	// Store retrieved packets containing "one-time" events, basically
+	// all packets bar PacketPlayerUpdate
+	vector<Packet*> _recvPackets;
+
+
 	void SendJoinRequest();
 
 	// Negotiation Update
 	void HandleJoinRequest();
 	void SendJoinResponse(bool response, Team team);
+
+	// Playing Update
+	void HandleIncomingPackets();
+	void HandlePlayerUpdate(PacketPlayerUpdate *pkt);
 };
 

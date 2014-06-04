@@ -12,7 +12,7 @@
 
 class GameController : public Controller {
 public:
-	GameController();
+	GameController(string adrs);
 	~GameController();
 
 	void LoadContent();
@@ -21,6 +21,7 @@ public:
 private:
 	Socket *_tcpSocket;
 	Socket *_udpSocket;
+	string address;
 
 	void HandleIncoming();
 	void HandlePacket(Packet *pkt);

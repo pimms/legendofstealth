@@ -1,5 +1,7 @@
 #include "ConnectionListener.h"
 #include <assert.h>
+#include <chrono>
+
 
 
 /*
@@ -37,6 +39,10 @@ static void TcpLoop(bool *abort, ConnectionListener *listener,
 			if (new_socket)
 				Log::Debug("New TCP connection!");
 		}
+
+		
+		// Sleep for 100 milliseconds
+		std::this_thread::sleep_for(std::chrono::microseconds(100000));
 	}
 }
 
