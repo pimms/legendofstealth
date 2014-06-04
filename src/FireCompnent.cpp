@@ -6,6 +6,7 @@ FireComponent::FireComponent() {}
 
 void FireComponent::update(){}
 
+/* SOMETHING LIKE THIS?
 bool lineOfSight(Vec2 PlayerPosition, Vec2 EnemyPosition)
 {
 	Vec2 pointA = EnemyPosition;
@@ -20,6 +21,5 @@ bool lineOfSight(Vec2 PlayerPosition, Vec2 EnemyPosition)
 	}
 	
 	return (PointB == PlayerPosition) ? 1 : 0;
-
-
 }
+*/
