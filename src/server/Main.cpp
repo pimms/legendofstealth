@@ -1,5 +1,9 @@
-#include <SDL2/SDL_net.h>
-#include <pthread.h>
+
+#ifdef _WIN32
+	#include <SDL_net.h>
+#else
+	#include <SDL2/SDL_net.h>
+#endif
 
 #include "ConnectionListener.h"
 #include "../net/Socket.h"
