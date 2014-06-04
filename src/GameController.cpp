@@ -9,9 +9,9 @@
 GameController public methods
 ================
 */
-GameController::GameController()
+GameController::GameController(string adrs)
 {
-	
+	address = adrs;
 }
 
 GameController::~GameController()
@@ -27,8 +27,8 @@ void GameController::LoadContent()
 	Controller::LoadContent();
 	SetScene(new GameScene);
 
-	_tcpSocket = new Socket(TCP, "localhost", TCP_SERVER_PORT);
-	_udpSocket = new Socket(UDP, "localhost", UDP_SERVER_PORT, 0);
+	_tcpSocket = new Socket(TCP, address, TCP_SERVER_PORT);
+	_udpSocket = new Socket(UDP, address, UDP_SERVER_PORT, 0);
 
 	PacketJoinRequest *jreq = new PacketJoinRequest;
 	jreq->type = PACKET_JOIN_REQUEST;
