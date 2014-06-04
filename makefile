@@ -2,7 +2,7 @@ CXX=g++
 LIBS=-ltrutle -lSDL2 -lSDL2_image -lSDL2_net -lGL -lGLU -lGLEW
 FLG=-std=gnu++0x -g
 GAME_OUT=game
-SERV_OUT=server
+SERV_OUT=serv
 
 SRCDIR = src/
 
