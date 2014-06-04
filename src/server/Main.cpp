@@ -15,8 +15,6 @@ int main(int argc, char *argv[])
 
 	ConnectionListener listener;
 
-
-
 	/* Main Server Loop */
 	unsigned npid = 1;
 	vector<RemotePlayer*> players;

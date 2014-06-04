@@ -43,6 +43,7 @@ public:
 	string GetRemoteHostname() const;
 	unsigned GetListenPortUDP() const;
 	Protocol GetProtocol() const;
+	IPaddress GetIPaddress();
 
 	static string GetOctalIP(Uint32 ip);
 

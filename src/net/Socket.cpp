@@ -203,6 +203,11 @@ Protocol Socket::GetProtocol() const
 	return _protocol;
 }
 
+IPaddress Socket::GetIPaddress()
+{
+	return _ip;
+}
+
 
 bool Socket::IsConnectionOpen()
 {
