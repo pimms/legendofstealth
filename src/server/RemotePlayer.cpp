@@ -6,13 +6,14 @@
 RemotePlayer Public
 ================
 */
-RemotePlayer::RemotePlayer(unsigned playerID, Socket *tcpSocket)
+RemotePlayer::RemotePlayer(unsigned playerID, Team team, Socket *tcpSocket)
 	:	_tcp(tcpSocket),
 		_udp(NULL),
 		_playerID(playerID),
 		_state(STATE_NEGOTIATE),
 		_rotation(0.f),
-		_counter(0) 
+		_counter(0),
+		_team(team)
 {
 
 }
@@ -23,18 +24,6 @@ RemotePlayer::~RemotePlayer()
 		delete _tcp;
 	if (_udp)
 		delete _udp;
-}
-
-
-unsigned RemotePlayer::GetPlayerID()
-{
-	return _playerID;
-}
-
-
-bool RemotePlayer::IsConnected()
-{
-	return _tcp->IsConnectionOpen();
 }
 
 
@@ -58,7 +47,6 @@ void RemotePlayer::Update()
 	}
 }
 
-
 void RemotePlayer::Disconnect()
 {
 	if (_tcp)
@@ -71,6 +59,57 @@ void RemotePlayer::Disconnect()
 
 	_state = STATE_DC;
 }
+
+
+void RemotePlayer::SendPacket(Protocol protocol, Packet *packet)
+{
+	if (protocol == TCP && _tcp) {
+		_tcp->SendPacket(packet);
+	} else if (protocol == UDP && _udp) {
+		_udp->SendPacket(packet);
+	}
+}
+
+PacketPlayerUpdate RemotePlayer::CreateUpdatePacket()
+{
+	PacketPlayerUpdate pkt;
+	pkt.type = PACKET_PLAYER_UPDATE;
+	pkt.posX = _position.x;
+	pkt.posY = _position.y;
+	pkt.rotation = _rotation;
+	pkt.playerID = _playerID;
+	pkt.counter = 0;
+
+	return pkt;
+}
+
+void RemotePlayer::HandleUpdatePacket(PacketPlayerUpdate *packet)
+{
+	_position.x = packet->posX;
+	_position.y = packet->posY;
+	_rotation = packet->rotation;
+	_counter = packet->counter;
+}
+
+
+unsigned RemotePlayer::GetPlayerID()
+{
+	return _playerID;
+}
+
+Team RemotePlayer::GetTeam()
+{
+	return _team;
+}
+
+
+bool RemotePlayer::IsConnected()
+{
+	return _tcp->IsConnectionOpen();
+}
+
+
+
 
 
 /*
@@ -103,7 +142,7 @@ void RemotePlayer::HandleJoinRequest()
 
 			// TODO
 			// Assign teams
-			SendJoinResponse(true, TEAM_MERC);
+			SendJoinResponse(true);
 			delete p;
 
 			_state = STATE_PLAYING;
@@ -111,13 +150,13 @@ void RemotePlayer::HandleJoinRequest()
 	}
 }
 
-void RemotePlayer::SendJoinResponse(bool response, Team team)
+void RemotePlayer::SendJoinResponse(bool response)
 {
 	PacketJoinResponse *pjr = new PacketJoinResponse();
 	pjr->type = PACKET_JOIN_RESPONSE;
 	pjr->response = true;
 	pjr->playerID = _playerID;
-	pjr->team = (unsigned)team;
+	pjr->team = (unsigned)_team;
 	_tcp->SendPacket(pjr);
 	
 	delete pjr;

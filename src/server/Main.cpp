@@ -30,7 +30,22 @@ int main(int argc, char *argv[])
 	while (true) {
 		if (listener.HasNewConnection()) {
 			Socket *tcp = listener.GetSocket();
-			RemotePlayer *rplayer = new RemotePlayer(npid++, tcp);
+			RemotePlayer *rplayer = new RemotePlayer(npid++, TEAM_MERC, tcp);
+
+			for (int i=0; i<players.size(); i++) {
+				// Notify the other players of the new dude
+				PacketPlayerDidJoin pkt;
+				pkt.type = PACKET_PLAYER_DID_JOIN;
+				pkt.team = (unsigned)rplayer->GetTeam();
+				pkt.playerID = rplayer->GetPlayerID();
+				players[i]->SendPacket(TCP, &pkt);
+
+				// Notify the new player of all the existing guys
+				pkt.team = players[i]->GetTeam();
+				pkt.playerID = players[i]->GetPlayerID();
+				rplayer->SendPacket(TCP, &pkt);
+			}
+
 			players.push_back(rplayer);
 
 			std::stringstream ss;
@@ -52,8 +67,26 @@ int main(int argc, char *argv[])
 
 		if (udpSocket->HasActivity()) {
 			Packet *pkt = udpSocket->GetPacket();
-			if (pkt) {
+			if (pkt && pkt->type != PACKET_PLAYER_UPDATE) {
 				Log::Debug("Received UDP packet: " + PacketTypeStr(pkt->type));
+			}
+
+			if (pkt && pkt->type == PACKET_PLAYER_UPDATE) {
+				PacketPlayerUpdate *ppu = (PacketPlayerUpdate*)pkt;
+				for (int i=0; i<players.size(); i++) {
+					if (players[i]->GetPlayerID() == ppu->playerID) {
+						players[i]->HandleUpdatePacket(ppu);
+					}
+				}
+			}
+		}
+
+		for (int i=0; i<players.size(); i++) {
+			for (int j=0; j<players.size(); j++) {
+				if (j == i) continue;
+				
+				PacketPlayerUpdate pkt = players[i]->CreateUpdatePacket();
+				players[j]->SendPacket(UDP, &pkt);			
 			}
 		}
 	}

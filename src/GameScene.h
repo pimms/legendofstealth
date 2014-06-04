@@ -50,5 +50,6 @@ private:
 
 	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
 
-	void CreatePlayer(const PacketJoinResponse *packet, bool local);
+	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
+
 };

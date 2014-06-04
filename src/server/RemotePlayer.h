@@ -32,22 +32,26 @@ enum RemotePlayerState {
  */
 class RemotePlayer {
 public:
-	RemotePlayer(unsigned playerID, Socket *tcpSocket);
+	RemotePlayer(unsigned playerID, Team team, Socket *tcpSocket);
 	~RemotePlayer();
 
-	unsigned GetPlayerID();
-
-	bool IsConnected();
-
 	void Update();
-
 	void Disconnect();
+
+	void SendPacket(Protocol protocol, Packet *packet);
+	PacketPlayerUpdate CreateUpdatePacket();
+	void HandleUpdatePacket(PacketPlayerUpdate *packet);
+
+	unsigned GetPlayerID();
+	Team GetTeam();
+	bool IsConnected();
 
 private:
 	unsigned _playerID;
 	Socket *_tcp;
 	Socket *_udp;
 	RemotePlayerState _state;
+	Team _team;
 
 	// Always keeps the data from the last PacketPlayerUpdate
 	unsigned _counter;
@@ -63,7 +67,7 @@ private:
 
 	// Negotiation Update
 	void HandleJoinRequest();
-	void SendJoinResponse(bool response, Team team);
+	void SendJoinResponse(bool response);
 
 	// Playing Update
 	void HandleIncomingPackets();

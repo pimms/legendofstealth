@@ -52,6 +52,7 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 
 void LocalPlayer::Update(const DeltaTime &dt)
 {
+	Player::Update(dt);
 	_updateComponent->SendUpdatePacket();
 }
 

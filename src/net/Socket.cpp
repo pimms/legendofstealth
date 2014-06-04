@@ -137,7 +137,9 @@ Packet* Socket::GetPacket()
 	}
 
 	for (int i=0; i<numRecv; i++) {
-		Log::Verbose("Received packet: " + PacketTypeStr(_pqueue[_pqueue.size()-1-i]->type));
+		PacketType t = _pqueue[_pqueue.size()-1-i]->type;
+		if (t != PACKET_PLAYER_UPDATE)
+			Log::Verbose("Received packet: " + PacketTypeStr(t));
 	}
 
 	if (_pqueue.size())
@@ -178,7 +180,9 @@ bool Socket::SendPacket(Packet *packet)
 		Log::Error(msg);
 		return false;
 	} else {
-		Log::Verbose("Sent packet: " + PacketTypeStr(packet->type));
+		PacketType t = packet->type;
+		if (t != PACKET_PLAYER_UPDATE)
+			Log::Verbose("Received packet: " + PacketTypeStr(t));
 	}
 
 	return true;

@@ -47,18 +47,38 @@ void GameScene::Update(const DeltaTime &dt)
 
 bool GameScene::HandlePacket(const Packet *packet)
 {
+	Team team;
+	unsigned playerID;
+
 	switch (packet->type) {
 		case PACKET_PLAYER_UPDATE:
 			HandlePacketPlayerUpdate((PacketPlayerUpdate*)packet);
 			return true;
 
 		case PACKET_JOIN_RESPONSE:
-			CreatePlayer((PacketJoinResponse*)packet, true);
+		{
+			PacketJoinResponse *pjr = (PacketJoinResponse*)packet;
+			if (!pjr->response) {
+				Log::Error("unable to join game session - quitting");
+				GetApp()->Quit();
+				return true;
+			}
+
+
+			team = (Team)pjr->team;
+			playerID = pjr->playerID;
+			CreatePlayer(team, playerID, true);
 			return true;
+		}
 
 		case PACKET_PLAYER_DID_JOIN:
-			CreatePlayer((PacketJoinResponse*)packet, false);
+		{
+			PacketPlayerDidJoin *p = (PacketPlayerDidJoin*)packet;
+			team = (Team)p->team;
+			playerID = p->playerID;
+			CreatePlayer(team, playerID, false);
 			return true;
+		}
 
 		default:
 			return false;
@@ -128,25 +148,20 @@ void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
 	for (int i=0; i<_remotePlayers.size(); i++) {
 		RemotePlayer *player = _remotePlayers[i];
 		if (player->GetPlayerID() == packet->playerID) {
-			
+			player->HandleUpdatePacket(packet);
 		}
 	}
 }
 
 
-void GameScene::CreatePlayer(const PacketJoinResponse *packet, bool localPlayer)
+void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 {
-	if (!packet->response) {
-		Log::Error("Unable to join game session - quitting");
-		GetApp()->Quit();
-		return;
-	}
-
 	if (localPlayer) {
-		_localPlayer = new LocalPlayer(_world, (Team)packet->team, packet->playerID, _udpSocket);
+		_localPlayer = new LocalPlayer(_world, team, playerID, _udpSocket);
 		_gameLayer->AddChild(_localPlayer);
 	} else {
-		RemotePlayer *rp = new RemotePlayer(_world, (Team)packet->team, packet->playerID);
+		RemotePlayer *rp = new RemotePlayer(_world, team, playerID);
 		_remotePlayers.push_back(rp);
+		_gameLayer->AddChild(rp);
 	}
 }
