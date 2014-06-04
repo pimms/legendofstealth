@@ -31,11 +31,6 @@ void MovePlayer::Update(const DeltaTime &dt){
 
 	// update position
 	Position().x += temp.x;
-	Position().y += temp.y;
-
-	printf("%f, %f\n", Position().x, Position().y);
-	
-	
-	
+	Position().y += temp.y;	
 }
 
