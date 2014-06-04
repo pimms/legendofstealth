@@ -31,4 +31,6 @@ public:
 private:
 	Socket *_udpSocket;
 
+	float _timer;
+
 };

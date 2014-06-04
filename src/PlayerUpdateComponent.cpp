@@ -16,7 +16,7 @@ PlayerUpdateComponent::~PlayerUpdateComponent()
 
 void PlayerUpdateComponent::Update(const DeltaTime &dt)
 {
-
+	_timer += dt.dt;
 }
 
 
@@ -28,6 +28,10 @@ void PlayerUpdateComponent::SetUDPSocket(Socket *udp)
 
 void PlayerUpdateComponent::SendUpdatePacket()
 {
+	if (_timer < 0.1f)
+		return;
+	_timer = 0.f;
+
 	PacketPlayerUpdate packet;
 
 	packet.type = PACKET_PLAYER_UPDATE;

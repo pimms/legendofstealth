@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
 	/* Main Server Loop */
 	unsigned npid = 1;
 	vector<RemotePlayer*> players;
+	unsigned loops = 0;
 	while (true) {
 		if (listener.HasNewConnection()) {
 			Socket *tcp = listener.GetSocket();
@@ -81,14 +82,18 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		for (int i=0; i<players.size(); i++) {
-			for (int j=0; j<players.size(); j++) {
-				if (j == i) continue;
-				
-				PacketPlayerUpdate pkt = players[i]->CreateUpdatePacket();
-				players[j]->SendPacket(UDP, &pkt);			
+		if (loops % 100 == 0) {
+			for (int i=0; i<players.size(); i++) {
+				for (int j=0; j<players.size(); j++) {
+					if (j == i) continue;
+					
+					PacketPlayerUpdate pkt = players[i]->CreateUpdatePacket();
+					players[j]->SendPacket(UDP, &pkt);			
+				}
 			}
 		}
+
+		loops++;
 	}
 
 	for (int i=0; i<players.size(); i++) {
