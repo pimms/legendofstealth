@@ -1,7 +1,12 @@
 #pragma once
 
+#ifdef _WIN32
+#include <Trutle.h>
+#include <SDL_net.h>
+#else
 #include <trutle/Trutle.h>
 #include <SDL2/SDL_net.h>
+#endif
 #include "../net/Socket.h"
 
 enum RemotePlayerState {

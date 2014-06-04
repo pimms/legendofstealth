@@ -1,8 +1,15 @@
 #pragma once
 
-#include <trutle/Trutle.h>
+#ifdef _WIN32
+	#include <Trutle.h>
+#else
+	#include <trutle/Trutle.h>
+#endif
+
 #include "net/Packet.h"
 
+
+// forward declaration
 class Socket;
 
 
