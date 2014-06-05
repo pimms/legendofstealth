@@ -42,6 +42,10 @@ public:
 	PacketPlayerUpdate CreateUpdatePacket();
 	void HandleUpdatePacket(PacketPlayerUpdate *packet);
 
+	void AddPacketToQueue(Packet *packet);
+	vector<Packet*> GetPacketQueue();
+	void ClearPacketQueue();
+
 	unsigned GetPlayerID();
 	Team GetTeam();
 	bool IsConnected();
@@ -71,6 +75,5 @@ private:
 
 	// Playing Update
 	void HandleIncomingPackets();
-	void HandlePlayerUpdate(PacketPlayerUpdate *pkt);
 };
 
