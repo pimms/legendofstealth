@@ -52,7 +52,7 @@ void Walls::Render(Renderer *renderer)
 	Vec2 lp = layer->Position();
 	Rect s(-lp.x, -lp.y, 1280.f, 720.f);
 
-	if (r.Overlaps(s)) {
+	if (!r.Overlaps(s)) {
 		Entity::Render(renderer);
 	}
 }
