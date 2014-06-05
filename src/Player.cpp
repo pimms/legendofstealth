@@ -14,7 +14,8 @@ Player Public
 Player::Player(b2World *world, Team team, unsigned playerID, string texture)  
 	:	Entity(world),
 		_team(team),
-		_playerID(playerID)
+		_playerID(playerID),
+		_lightSource(NULL)
 {
 	LoadTexture(texture);
 	Position() = Vec2(100.0f, 100.0f);
@@ -42,6 +43,16 @@ unsigned Player::GetPlayerID() const
 Team Player::GetTeam() const
 {
 	return _team;
+}
+
+
+void Player::Update(const DeltaTime &dt)
+{
+	Entity::Update(dt);
+
+	if (_lightSource) {
+		_lightSource->Rotation() = Rotation();
+	}
 }
 
 
