@@ -22,6 +22,8 @@ public:
 	~Entity();
 
 	void Update(const DeltaTime &dt);
+
+	Vec2 GetScreenPosition();
 	
 protected:
 	b2World *_world;

@@ -55,6 +55,16 @@ void Entity::Update(const DeltaTime &dt)
 	_body->SetTransform(Tob2Vec2(Position()), 0.f);
 }
 
+Vec2 Entity::GetScreenPosition()
+{
+	Vec2 layerPos = GetParentLayer()->Position();
+	Vec2 pos = Position();
+
+	pos.x -= layerPos.x;
+	pos.y -= layerPos.y;
+	return pos;
+}
+
 
 /*
 ================

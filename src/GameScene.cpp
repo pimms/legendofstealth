@@ -2,6 +2,7 @@
 #include "LightSource.h"
 #include "ShadowCaster.h"
 #include "Player.h"
+#include "FollowMouseComponent.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -180,6 +181,7 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 {
 	if (localPlayer) {
 		_localPlayer = new LocalPlayer(_world, team, playerID, _udpSocket);
+		AddComponent<FollowMouseComponent>(_localPlayer);
 		_gameLayer->AddChild(_localPlayer);
 	} else {
 		RemotePlayer *rp = new RemotePlayer(_world, team, playerID);
