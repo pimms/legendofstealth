@@ -22,8 +22,6 @@ void FollowMouseComponent::Update(const DeltaTime &dt)
 	float rad = atan2f(diff.y, diff.x);
 	float deg  = Rad2Deg(rad);
 
-	//if (diff.x < 0)
-		//deg += 180.f;
 	if (diff.y < 0)
 		deg += 360.f;
 
