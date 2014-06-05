@@ -113,9 +113,9 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return false;
 	}
 
-<<<<<<< HEAD
 	return false;
-=======
+}
+
 LocalPlayer* GameScene::GetLocalPlayer() {
 	if (_localPlayer)
 	{
@@ -125,7 +125,7 @@ LocalPlayer* GameScene::GetLocalPlayer() {
 	{
 		return NULL;
 	}
->>>>>>> sup
+	return _localPlayer;
 }
 
 
@@ -137,10 +137,6 @@ ShadowLayer* GameScene::GetShadowLayer()
 Layer* GameScene::GetGameLayer()
 {
 	return _gameLayer;
-}
-
-LocalPlayer GameScene::GetLocalPlayer() {
-	return _localPlayer;
 }
 
 vector<RemotePlayer*> GameScene::GetRemotePlayers() {

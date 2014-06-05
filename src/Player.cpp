@@ -6,6 +6,7 @@
 #include "GameScene.h"
 #include "FireComponent.h"
 #include "MovePlayer.h"
+#include "Hack.h"
 
 
 /*
@@ -73,6 +74,8 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 	if (team == TEAM_MERC) {
 		AddComponent<FireComponent>(this);
 		GetComponent<FireComponent>(this)->SetUDPSocket(udpSocket);
+	} else if (team == TEAM_SPY) {
+		AddComponent<Hacker>(this);
 	}
 }
 
