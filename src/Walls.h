@@ -9,3 +9,4 @@ public:
 	Rect Walls::GetShadowRect();
 };
 
+//

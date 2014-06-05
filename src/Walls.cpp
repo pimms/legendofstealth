@@ -41,3 +41,4 @@ Rect Walls::GetShadowRect()
 
 	return Rect(pos.x, pos.y, dim.x, dim.y);
 }
+//
