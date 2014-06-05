@@ -6,7 +6,7 @@
 	#include <trutle/Trutle.h>
 #endif
 
-#define SPEED 100;
+#define SPEED 30;
 
 class MovePlayer :public Component {
 

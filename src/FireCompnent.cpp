@@ -1,25 +1,50 @@
 #include "FireCompnent.h"
+#include "Entity.h"
+
+FireComponent::FireComponent(){	}
 
 
-FireComponent::FireComponent() {}
-
-
-void FireComponent::update(){}
-
-/* SOMETHING LIKE THIS?
-bool lineOfSight(Vec2 PlayerPosition, Vec2 EnemyPosition)
-{
-	Vec2 pointA = EnemyPosition;
-	Vec2 pointB = PlayerPosition;
-	for (int i = 0; i<NbrObstacles; i++){
-		// Check linexObstacle(if your using rectangle's look up linexRectangle, 
-		// for all simple shapes, their's simple formula, for complex shapes, 
-		// you simple loop though all the edges, and check linexPlane(in 2D, it's basically linexline collision).)
+void FireComponent::Update(const DeltaTime &dt){
+	const InputState *in = GetGameObject()->GetInputState();
+	if (in->IsKeyDown(SDLK_e)){
+		// Get position from player
+		Entity* entity = (Entity*)GetGameObject();
+		RayCastUtility callback;
+		Vec2 pos1 (Position().x, Position().y);
 		
-		if (IntersectionWithObstacleI) 
-			PointB = Intesect location; //(if we just care if the other tank can't see the player, you could return false for a line of sight function here.
+		b2Vec2 p1 = Tob2Vec2(pos1);
+		b2Vec2 p2 = calculateDirection();
+		
+		entity->getWorld()->RayCast(&callback, p1, p2);
+		printf("fixture %d\n", callback.m_fixture);
+		
+		if (callback.m_fixture != 0){
+			GameObject *go = (Entity*)callback.m_fixture->GetUserData();
+			
+			if (dynamic_cast<Player*>(go)) {
+				printf("You hit something\n");
+			}
+
+			printf("fixture %d\n", callback.m_fixture);
+
+		}
+		if (callback.m_fixture == 0){
+			printf("\nDidn't hit anything");
+		}
+		
+		
 	}
-	
-	return (PointB == PlayerPosition) ? 1 : 0;
+
 }
-*/
+
+
+b2Vec2 FireComponent::calculateDirection()
+{
+	float radFireComp = atan2f(Position().y, Position().x);
+	float degFireComp = Rad2Deg(radFireComp);
+
+	Vec2 dir(cosf(degFireComp), sinf(degFireComp));
+	dir.x *= FIRE_LENGTH;
+	dir.y *= FIRE_LENGTH;
+	return b2Vec2(Tob2Vec2(dir));
+}

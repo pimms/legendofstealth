@@ -47,6 +47,10 @@ Entity::~Entity()
 	}
 }
 
+b2World* Entity::getWorld() const {
+	return  _world;
+}
+
 
 void Entity::Update(const DeltaTime &dt)
 {

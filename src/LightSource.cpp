@@ -192,7 +192,7 @@ void ConeLightSource::CreateLightTexture()
 	Vec2 p = Vec2(_distance, _distance);
 
 	// Create the vertex buffer
-	float v[2 * triangles];
+	std::vector<float> v(2 * triangles);
 	v[0] = p.x;
 	v[1] = p.y;
 	for (int i=1; i<triangles; i++) {
@@ -209,7 +209,7 @@ void ConeLightSource::CreateLightTexture()
 
 	// Create the color buffer
 	Color oc = GetColor();
-	unsigned char c[4 * triangles];
+	std::vector<unsigned char> c(4 * triangles);
 	// Inner color, white
 	c[0] = (unsigned char)(oc.r * 255.f);
 	c[1] = (unsigned char)(oc.g * 255.f);
@@ -227,8 +227,8 @@ void ConeLightSource::CreateLightTexture()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, v);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, c);
+	glVertexPointer(2, GL_FLOAT, 0, &v[0]);
+	glColorPointer(4, GL_UNSIGNED_BYTE, 0, &c[0]);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, triangles);
 
 	glDisableClientState(GL_VERTEX_ARRAY);

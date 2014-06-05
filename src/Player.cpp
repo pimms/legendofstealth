@@ -4,6 +4,7 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
+#include "FireCompnent.h"
 
 
 /*
@@ -66,6 +67,7 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 		_udpSocket(udpSocket)
 {
 	AddComponent<MovePlayer>(this);
+	AddComponent<FireComponent>(this);
 	_updateComponent->SetUDPSocket(_udpSocket);
 }
 

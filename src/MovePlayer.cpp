@@ -6,7 +6,6 @@ MovePlayer::MovePlayer() {}
 void MovePlayer::Update(const DeltaTime &dt){
 	const InputState *in = GetGameObject()->GetInputState();
 	Vec2 temp(0,0);
-	
 	if (in->IsKeyDown(SDLK_a))
 		temp.x -= SPEED;
 

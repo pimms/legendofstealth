@@ -6,18 +6,19 @@
 	#include <trutle/Trutle.h>
 #endif
 
+#include <Box2D\Box2D.h>
+#include "RayCastUtility.h"
+#include "Player.h"
 
+#define FIRE_LENGTH 10;
 
 
 class FireComponent : public Component {
 public:
 	FireComponent();
-	void update();
+	void Update(const DeltaTime &dt);
+	b2Vec2 calculateDirection();
 
-private:
-	bool lineOfSight(float playerX, 
-					 float playerY, 
-					 float enemyX, 
-					 float enemyY
-					 );
+	
+
 };
