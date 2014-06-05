@@ -129,6 +129,7 @@ LocalPlayer* GameScene::GetLocalPlayer() {
 	return _localPlayer;
 }
 
+/*
 LocalPlayer* GameScene::GetLocalPlayer() {
 	return _localPlayer;
 }
@@ -136,6 +137,7 @@ LocalPlayer* GameScene::GetLocalPlayer() {
 vector<RemotePlayer*> GameScene::GetRemotePlayers() {
 	return _remotePlayers;
 }
+*/
 
 ShadowLayer* GameScene::GetShadowLayer()
 {
@@ -254,6 +256,6 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 
 void GameScene::LoadTerminal() 
 {
-	_terminal = new Terminal(_world, "res/term.png");
+	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
 	_gameLayer->AddChild(_terminal);
 }

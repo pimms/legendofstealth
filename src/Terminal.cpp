@@ -1,9 +1,9 @@
 #include "Terminal.h"
 #include "Hack.h"
 
-Terminal::Terminal(b2World *world, string texture) : Entity(world) {
+Terminal::Terminal(b2World *world, string texture, Vec2 pos) : Entity(world) {
 	LoadTexture(texture);
-	Position() = Vec2(200.0f, 100.0f);	
+	Position() = pos;	
 	AddComponent<Hackable>(this);
 }
 
