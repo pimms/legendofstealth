@@ -3,8 +3,11 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 #include "FollowMouseComponent.h"
+<<<<<<< HEAD
 #include "Terminal.h"
+=======
 #include "FollowGameObjectComponent.h"
+>>>>>>> 5a19fc1457f64781db47156c3a0c3e7576a1edfa
 
 
 GameScene* GameScene::_singleton = NULL;

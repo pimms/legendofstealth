@@ -8,7 +8,7 @@ void FollowMouseComponent::Update(const DeltaTime &dt)
 	Window *window = GetGameObject()->GetApp()->GetWindow();
 
 	Vec2 mpos = in->GetMousePosition();
-	Vec2 spos = ((Entity*)GetGameObject())->WorldPosition();
+	Vec2 spos = ((Entity*)GetGameObject())->GetScreenPosition();
 	Vec2 size = window->GetWindowSize();
 	mpos.y = size.y - mpos.y;
 
@@ -24,8 +24,6 @@ void FollowMouseComponent::Update(const DeltaTime &dt)
 
 	if (diff.y < 0)
 		deg += 360.f;
-
-	printf("Rotation: %g\n", deg);
 
 	Rotation() = deg;
 }

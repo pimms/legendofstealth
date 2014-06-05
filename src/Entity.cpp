@@ -63,8 +63,8 @@ Vec2 Entity::GetScreenPosition()
 	Vec2 layerPos = GetParentLayer()->Position();
 	Vec2 pos = Position();
 
-	pos.x -= layerPos.x;
-	pos.y -= layerPos.y;
+	pos.x += layerPos.x;
+	pos.y += layerPos.y;
 	return pos;
 }
 
