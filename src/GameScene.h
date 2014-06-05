@@ -14,11 +14,13 @@
 #include "ShadowLayer.h"
 
 
+
 class ShadowLayer;
 class RemotePlayer;
 class LocalPlayer;
 class Player;
 class Socket;
+class Terminal;
 
 class GameScene : public Scene {
 public:
@@ -33,6 +35,9 @@ public:
 
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
+
+	LocalPlayer* GetLocalPlayer();
+	vector<RemotePlayer*> GetRemotePlayers();
 
 	ShadowLayer* GetShadowLayer();
 	Layer* GetGameLayer();
@@ -51,14 +56,19 @@ private:
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
 
+	Terminal *_terminal;
+
+
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..
 	void LoadInfrastructure();
 	void CreateB2World();
 	void LoadMap();
-
+	void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo = 100);
 	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
+	void HandlePacketPlayerFire(const PacketPlayerFire *packet);
+	void HandlePacketPlayerHit(const PacketPlayerHit *packet);
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
-
+	void LoadTerminal();
 };

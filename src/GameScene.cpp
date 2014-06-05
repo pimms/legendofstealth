@@ -3,7 +3,10 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 #include "FollowMouseComponent.h"
+#include "Terminal.h"
 #include "FollowGameObjectComponent.h"
+#include "FireComponent.h"
+#include "Terminal.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -93,11 +96,43 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return true;
 		}
 
+		case PACKET_PLAYER_FIRE:
+		{	
+			PacketPlayerFire *ppf = (PacketPlayerFire*)packet;
+			HandlePacketPlayerFire(ppf);
+			return true;
+		}
+
+		case PACKET_PLAYER_HIT:
+		{	
+			PacketPlayerHit *pph = (PacketPlayerHit*)packet;
+			HandlePacketPlayerHit(pph);
+			return true;
+		}
+
 		default:
 			return false;
 	}
+
+	return false;
 }
 
+LocalPlayer* GameScene::GetLocalPlayer() {
+	if (_localPlayer)
+	{
+		return _localPlayer;
+	} 
+	else 
+	{
+		return NULL;
+	}
+	return _localPlayer;
+}
+
+
+vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+	return _remotePlayers;
+}
 
 ShadowLayer* GameScene::GetShadowLayer()
 {
@@ -108,7 +143,6 @@ Layer* GameScene::GetGameLayer()
 {
 	return _gameLayer;
 }
-
 
 /*
 ================
@@ -131,10 +165,67 @@ void GameScene::CreateB2World()
 
 void GameScene::LoadMap()
 {
-	GameObject *background = new GameObject;
-	background->LoadTexture("res/bg.png");
-	background->Position() = Vec2(320.f, 240.f);
-	_gameLayer->AddChild(background);
+	
+	InitalizeMap("res/bg.png", Vec2(1, 1), Vec2(320.f, 240.f), 1);
+	// Walls (1,7)
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(17, 63));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(17, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(52, 63));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(52, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(11, 61));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 39));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(16, 31));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(27, 18));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(45, 39));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(53, 31));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(42, 18));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(45, 5));
+
+	// Walls(7,1)
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(0, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(10, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(53, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(63, 53));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(17, 38));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(46, 38));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(4, 9));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(59, 9));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(17, 4));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(46, 4));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(28, 12));
+	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(35, 12));
+
+	// Walls (2,11)
+	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 58));
+	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 41));
+	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 26));
+
+	// Walls (11,2)
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(6, 45));
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(53, 45));
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(0, 29));
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(59, 29));
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(9, 19));
+	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(50, 19));
+
+	// Walls (1,3)
+	InitalizeMap("res/Wall2D.png", Vec2(1, 3), Vec2(59, 56));
+
+	// Walls (3,1)
+	InitalizeMap("res/Wall2D.png", Vec2(3, 1), Vec2(56, 59));
+	InitalizeMap("res/Wall2D.png", Vec2(3, 1), Vec2(3, 60));
+
+	// Walls around the map (1,70)
+	InitalizeMap("res/Wall2D.png", Vec2(1, 70), Vec2(0, 0));
+	InitalizeMap("res/Wall2D.png", Vec2(1, 70), Vec2(69, 0));
+
+
+	// Walls around the map(68,1)
+	InitalizeMap("res/Wall2D.png", Vec2(68, 1), Vec2(1, 0));
+	InitalizeMap("res/Wall2D.png", Vec2(68, 1), Vec2(1, 69));
+	
 	
 	// Create a couple of lights
 	for (int i=0; i<4; i++) {
@@ -164,6 +255,7 @@ void GameScene::LoadMap()
 		_shadowLayer->AddShadowCaster(box);
 	}
 
+	LoadTerminal();
 }
 
 
@@ -175,6 +267,20 @@ void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
 			player->HandleUpdatePacket(packet);
 		}
 	}
+}
+
+void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
+{
+	Vec2 pos(packet->posX, packet->posY);
+
+	BulletHitTester hit(_localPlayer, _udpSocket);
+	hit.TestBullet(pos, packet->rotation);
+}
+
+void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
+{
+	// TODO
+	// Deduct one HP from the hit player
 }
 
 
@@ -192,4 +298,24 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 		_remotePlayers.push_back(rp);
 		_gameLayer->AddChild(rp);
 	}
+}
+
+void GameScene::LoadTerminal() 
+{
+	_terminal = new Terminal(_world, "res/term.png");
+	_gameLayer->AddChild(_terminal);
+}
+
+
+void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
+{
+	GameObject* temp = new GameObject;
+	temp->LoadTexture(name);
+	temp->Scale() = scale;
+	pos.x *= yolo;
+	pos.y *= yolo;
+	temp->Position() = pos;
+	temp->Pivot() = Vec2(0, 0);
+	_gameLayer->AddChild(temp);
+
 }
