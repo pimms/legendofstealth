@@ -6,9 +6,10 @@
 Public ShadowLayer
 ================
 */
-ShadowLayer::ShadowLayer()
+ShadowLayer::ShadowLayer(Layer *siblingLayer)
 	: 	_shader(NULL),
-		_renderTexture(NULL)
+		_renderTexture(NULL),
+		_sibling(siblingLayer)
 {
 	_renderTexture = new RenderTexture(Vec2(1280.f, 720.f));
 
@@ -59,11 +60,16 @@ void ShadowLayer::RemoveShadowCaster(ShadowCaster *obj)
 
 void ShadowLayer::Update(const DeltaTime &dt)
 {
+	Layer::Update(dt);
 
+	Position() = _sibling->Position();
 }
 
 void ShadowLayer::Render(Renderer *renderer)
 {
+	renderer->PushTransform();
+	renderer->ApplyTransform(this);
+
 	_renderTexture->BindFBO();
 
 	glEnable(GL_STENCIL_TEST);
@@ -82,6 +88,8 @@ void ShadowLayer::Render(Renderer *renderer)
 	_renderTexture->UnbindFBO();
 
 	DrawRenderTexture();
+
+	renderer->PopTransform();
 }
 
 

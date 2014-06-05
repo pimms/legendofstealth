@@ -3,6 +3,7 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 #include "FollowMouseComponent.h"
+#include "FollowGameObjectComponent.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -119,7 +120,7 @@ void GameScene::LoadInfrastructure()
 	_gameLayer = new Layer();
 	AddLayer(_gameLayer);
 
-	_shadowLayer = new ShadowLayer();
+	_shadowLayer = new ShadowLayer(_gameLayer);
 	AddLayer(_shadowLayer);
 }
 
@@ -183,6 +184,9 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 		_localPlayer = new LocalPlayer(_world, team, playerID, _udpSocket);
 		AddComponent<FollowMouseComponent>(_localPlayer);
 		_gameLayer->AddChild(_localPlayer);
+
+		AddComponent<FollowGameObjectComponent>(_gameLayer);
+		GetComponent<FollowGameObjectComponent>(_gameLayer)->SetTarget(_localPlayer, Vec2(1280.f/2.f, 720.f/2.f));
 	} else {
 		RemotePlayer *rp = new RemotePlayer(_world, team, playerID);
 		_remotePlayers.push_back(rp);

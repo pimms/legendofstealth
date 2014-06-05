@@ -14,7 +14,7 @@
 
 class ShadowLayer : public Layer {
 public:
-	ShadowLayer();
+	ShadowLayer(Layer *siblingLayer);
 	~ShadowLayer();
 
 	void AddLightSource(LightSource *obj);
@@ -34,6 +34,7 @@ private:
 	Color _shadowColor;
 	RenderTexture *_renderTexture;
 	Shader *_shader;
+	Layer *_sibling;
 
 	void RenderLight(LightSource *source, Renderer *renderer);
 	void RenderShadows(LightSource *source, Renderer *renderer);
