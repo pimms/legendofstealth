@@ -16,7 +16,7 @@ ShadowLayer::ShadowLayer()
 	_shader->SetUniform1i("tex", 0);
 	_shader->SetUniform1f("lalpha", 0.8f);
 
-	SetShadowColor(Color(0.f, 0.f, 0.f, 1.f));
+	SetShadowColor(Color(0.f, 0.f, 0.f, 0.9f));
 }
 
 ShadowLayer::~ShadowLayer()
@@ -99,52 +99,10 @@ Private ShadowLayer
 */
 void ShadowLayer::RenderLight(LightSource *source, Renderer *renderer)
 {
-	const int triangles = 101;
-	const float pi2 = 2.f * M_PI;
-		
-	Vec2 p = source->GetCenterPosition();
-
-	// Create the vertex buffer
-	float v[2 * triangles];
-	v[0] = p.x;
-	v[1] = p.y;
-	for (int i=1; i<triangles; i++) {
-		float rad = ( float(i)/float(triangles-1) ) * pi2;
-		v[i*2 + 0] = p.x + source->GetLightDistance() * cos(rad);
-		v[i*2 + 1] = p.y + source->GetLightDistance() * sin(rad);
-	}
-
-	v[2*(triangles-1) + 0] = v[2];
-	v[2*(triangles-1) + 1] = v[3];
-
-	// Create the color buffer
-	Color oc = source->GetColor();
-	unsigned char c[4 * triangles];
-	// Inner color, white
-	c[0] = (unsigned char)(oc.r * 255.f);
-	c[1] = (unsigned char)(oc.g * 255.f);
-	c[2] = (unsigned char)(oc.b * 255.f);
-	c[3] = (unsigned char)(oc.a * 255.f * 0.2f);
-	for (int i=1; i<triangles; i++) {
-		// Outer color 
-		c[i * 4 + 0] = (unsigned char)(oc.r * 255.f);
-		c[i * 4 + 1] = (unsigned char)(oc.g * 255.f);
-		c[i * 4 + 2] = (unsigned char)(oc.b * 255.f);
-		c[i * 4 + 3] = 0;
-	}
-
 	glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-
-	glVertexPointer(2, GL_FLOAT, 0, v);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, c);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, triangles);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
+	source->DrawRenderTexture();
 }
 
 void ShadowLayer::RenderShadows(LightSource *source, Renderer *renderer)

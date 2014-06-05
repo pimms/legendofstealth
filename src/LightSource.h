@@ -6,9 +6,13 @@
 	#include <trutle/Trutle.h>
 #endif
 
+class RenderTexture;
+
+
 class LightSource : public GameObject {
 public:
 	LightSource();
+	~LightSource();
 
 	void SetLightDistance(float distance);
 	float GetLightDistance() const;
@@ -16,7 +20,12 @@ public:
 	void SetColor(Color c);
 	Color GetColor() const;
 
-private:
+	void DrawRenderTexture();
+
+protected:
+	virtual void CreateLightTexture();
+
 	float _distance;
 	Color _color;
+	RenderTexture *_texture;
 };

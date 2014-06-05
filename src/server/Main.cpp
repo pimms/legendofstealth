@@ -1,6 +1,7 @@
 #include <SDL2/SDL_net.h>
 #include <pthread.h>
 #include <sstream>
+#include <unistd.h>
 
 #ifdef _WIN32
 	#include <SDL_net.h>
@@ -66,7 +67,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		if (udpSocket->HasActivity()) {
+		while (udpSocket->HasActivity()) {
 			Packet *pkt = udpSocket->GetPacket();
 			if (pkt && pkt->type != PACKET_PLAYER_UPDATE) {
 				Log::Debug("Received UDP packet: " + PacketTypeStr(pkt->type));
@@ -82,18 +83,17 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		if (loops % 100 == 0) {
-			for (int i=0; i<players.size(); i++) {
-				for (int j=0; j<players.size(); j++) {
-					if (j == i) continue;
-					
-					PacketPlayerUpdate pkt = players[i]->CreateUpdatePacket();
-					players[j]->SendPacket(UDP, &pkt);			
-				}
+		for (int i=0; i<players.size(); i++) {
+			for (int j=0; j<players.size(); j++) {
+				if (j == i) continue;
+				
+				PacketPlayerUpdate pkt = players[i]->CreateUpdatePacket();
+				players[j]->SendPacket(UDP, &pkt);			
 			}
 		}
 
-		loops++;
+		usleep(50000);
+
 	}
 
 	for (int i=0; i<players.size(); i++) {
