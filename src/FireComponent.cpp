@@ -100,7 +100,7 @@ FireCallback::FireCallback(Player *targetPlayer)
 	: 	_targetPlayer(targetPlayer),
 		_hitPlayer(false)
 {
-
+	printf("Looking for player with ID %i\n", targetPlayer->GetPlayerID());
 }
 
 float32 FireCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point, 
@@ -115,9 +115,11 @@ float32 FireCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point,
 		Player *player = dynamic_cast<Player*>(entity);
 		if (player) {
 			if (player == _targetPlayer) {
+				printf("Hit target player\n");
 				_hitPlayer = true;
 			} else {
 				// Ignore all other players
+				printf("Hit player with ID %i\n", player->GetPlayerID());
 				return -1.f;
 			}
 		}
