@@ -110,8 +110,6 @@ bool RemotePlayer::IsConnected()
 
 
 
-
-
 /*
 ================
 RemotePlayer Private 
@@ -136,12 +134,6 @@ void RemotePlayer::HandleJoinRequest()
 			ipa.port = udpPort;
 			_udp = new Socket(UDP, ipa, 0);
 
-			// TODO
-			// Broadcast the addition of the new player
-			Log::Debug("Player joined the game");
-
-			// TODO
-			// Assign teams
 			SendJoinResponse(true);
 			delete p;
 

@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		usleep(50000);
+		usleep(40000);
 
 	}
 

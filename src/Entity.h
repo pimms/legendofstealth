@@ -24,6 +24,8 @@ public:
 	void Update(const DeltaTime &dt);
 	b2World* getWorld() const;
 	Vec2 GetScreenPosition();
+	void MoveB2Body(Vec2 velocity);
+	void SetPosition(Vec2 position);
 	
 protected:
 	b2World *_world;

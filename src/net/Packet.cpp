@@ -270,10 +270,12 @@ WRITE_METHOD_END
 // PacketPlayerHack
 FILL_METHOD_BEGIN(PacketPlayerHack)
 READ_UINT(playerID)
+READ_UINT(terminalID)
 READ_BYTE(isHacking)
 FILL_METHOD_END
 
 WRITE_METHOD_BEGIN(PacketPlayerHack)
 WRITE_LONG(playerID)
+WRITE_LONG(terminalID)
 WRITE_BYTE(isHacking)
 WRITE_METHOD_END

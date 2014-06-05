@@ -145,6 +145,7 @@ struct PacketPlayerHack : public Packet {
 	byte* GetSendablePacket(int &packetlen);
 
 	unsigned playerID;
+	unsigned terminalID;
 	bool isHacking;
 };
 

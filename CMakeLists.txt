@@ -4,7 +4,7 @@ LIST( APPEND CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 FILE(GLOB GAME_SRC "src/*.h" "src/*.cpp")
 FILE(GLOB SHARE_SRC "src/net/*.h" "src/net/*.cpp")
-FILE(GLOB SERV_SRC "src/serv/*.h" "src/serv/*.cpp")
+FILE(GLOB SERV_SRC "src/server/*.h" "src/server/*.cpp")
 
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 

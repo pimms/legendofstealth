@@ -61,15 +61,10 @@ void ShadowLayer::RemoveShadowCaster(ShadowCaster *obj)
 void ShadowLayer::Update(const DeltaTime &dt)
 {
 	Layer::Update(dt);
-
-	Position() = _sibling->Position();
 }
 
 void ShadowLayer::Render(Renderer *renderer)
 {
-	renderer->PushTransform();
-	renderer->ApplyTransform(this);
-
 	_renderTexture->BindFBO();
 
 	glEnable(GL_STENCIL_TEST);
@@ -77,8 +72,11 @@ void ShadowLayer::Render(Renderer *renderer)
 	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	for (int i=0; i<_lightSources.size(); i++) {
+		renderer->PushTransform();
+		renderer->ApplyTransform(_sibling);
 		RenderShadows(_lightSources[i], renderer);
 		RenderLight(_lightSources[i], renderer);
+		renderer->PopTransform();
 	}
 
 	glDisable(GL_STENCIL_TEST);
@@ -88,8 +86,6 @@ void ShadowLayer::Render(Renderer *renderer)
 	_renderTexture->UnbindFBO();
 
 	DrawRenderTexture();
-
-	renderer->PopTransform();
 }
 
 
