@@ -3,6 +3,7 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 #include "FollowMouseComponent.h"
+#include "Terminal.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -141,6 +142,7 @@ void GameScene::LoadMap()
 	background->LoadTexture("res/bg.png");
 	background->Position() = Vec2(320.f, 240.f);
 	_gameLayer->AddChild(background);
+	LoadTerminal();
 	
 	// Create a couple of lights
 	for (int i=0; i<4; i++) {
@@ -195,4 +197,9 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 		_remotePlayers.push_back(rp);
 		_gameLayer->AddChild(rp);
 	}
+}
+
+void LoadTerminal() 
+{
+	Terminal terminal = new Terminal(_world, "res/term.png");
 }

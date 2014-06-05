@@ -36,6 +36,7 @@ public:
 
 	LocalPlayer GetLocalPlayer();
 	vector<RemotePlayer*> GetRemotePlayers();
+
 	ShadowLayer* GetShadowLayer();
 	Layer* GetGameLayer();
 
@@ -53,6 +54,8 @@ private:
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
 
+	Terminal *_terminal;
+
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..
@@ -63,5 +66,5 @@ private:
 	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
-
+	void LoadTerminal();
 };
