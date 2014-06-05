@@ -14,12 +14,16 @@ class Hackable : public Component {
 		Hackable();
 
 		void Update(const DeltaTime &dt);
+		void StartHack();
+		void HackInterrupt();
+
+		bool GetCurHacking();
+		bool HackIsFinished();
 
 	private:
 		const float HACKTIME = 100;
 		const float RESET_TIME = 10;
-		const float HACK_RADIUS = 50;
-		const float AREA_RADIUS = 200;
+		
 
 		bool _hacking = false;
 		bool _hackdone = false;
@@ -28,7 +32,7 @@ class Hackable : public Component {
 		float _hacktime = HACKTIME;
 		float _resettime = RESET_TIME;
 
-		
+		void PrintInfo();
 };
 
 class Hacker : public Component {
@@ -37,6 +41,13 @@ class Hacker : public Component {
 
 		void Update();
 	private:
+		const float HACK_RADIUS = 50;
+		const float AREA_RADIUS = 200;
+
+		bool hacked = false;
+
+		Hackable hackable;
+
 		void StartHack();
 		void StopHack();
 

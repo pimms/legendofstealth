@@ -52,7 +52,10 @@ void Entity::Update(const DeltaTime &dt)
 {
 	GameObject::Update(dt);
 
-	_body->SetTransform(Tob2Vec2(Position()), 0.f);
+	if (_body)
+	{
+		_body->SetTransform(Tob2Vec2(Position()), 0.f);
+	}
 }
 
 Vec2 Entity::GetScreenPosition()

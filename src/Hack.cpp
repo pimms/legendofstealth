@@ -23,7 +23,31 @@ void Hackable::Update(const DeltaTime &dt)
 	if (_hackinter)
 	{
 		_hacking = false;
+		_resettime -= dt.dt;
 	}
+
+	if (_resettime <= 0)
+	{
+		_hacktime = HACKTIME;
+	}
+
+	PrintInfo();
+}
+
+void Hackable::StartHack() {
+	_hacking = true;
+}
+
+void Hackable::HackInterrupt() {
+	_hackinter = true;
+}
+
+bool Hackable::GetCurHacking() {
+	return _hacking;
+}
+
+bool Hackable::HackIsFinished() {
+	return _hackdone;
 }
 
 
@@ -42,17 +66,21 @@ void Hacker::Update() {
 
 	vector<Vec2> positions = GetPositions(lp, rp);
 	Vec2 tmpos = Position();
-	printf("What the hell...?\n");
 
-	if (PlayerInPosition(positions, tmpos) 
-		&& in->IsKeyDown(SDLK_h))
+	if (hackable.HackIsFinished())
 	{
-		StartHack();
+		hacked = true;
 	}
 
-	if (!PlayerInHackingArea(positions, tmpos))
+	if (PlayerInPosition(positions, tmpos) 
+		&& in->IsKeyDown(SDLK_h) && !hacked)
 	{
-		StopHack();
+		hackable.StartHack();
+	}
+
+	if (!PlayerInHackingArea(positions, tmpos) && hackable.GetCurHacking() && !hacked)
+	{
+		hackable.HackInterrupt();
 	}
 }
 
@@ -117,13 +145,4 @@ bool Hacker::PlayerInHackingArea(vector<Vec2> pos, Vec2 tmpos)
 			return false;
 		}
 	}
-}
-
-void Hacker::StartHack()
-{
-
-}
-
-void Hacker::StopHack() {
-
 }
