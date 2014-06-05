@@ -17,6 +17,17 @@ b2Vec2 Tob2Vec2(Vec2 vec)
 }
 
 
+float Deg2Rad(float deg)
+{
+	return deg * (M_PI / 180.f);
+}
+
+float Rad2Deg(float rad)
+{
+	return rad * (180.f / M_PI);
+}
+
+
 /*
 ================
 Entity Public 
@@ -42,6 +53,16 @@ void Entity::Update(const DeltaTime &dt)
 	GameObject::Update(dt);
 
 	_body->SetTransform(Tob2Vec2(Position()), 0.f);
+}
+
+Vec2 Entity::GetScreenPosition()
+{
+	Vec2 layerPos = GetParentLayer()->Position();
+	Vec2 pos = Position();
+
+	pos.x -= layerPos.x;
+	pos.y -= layerPos.y;
+	return pos;
 }
 
 

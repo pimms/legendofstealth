@@ -34,10 +34,13 @@ public:
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
 
+<<<<<<< HEAD
 	LocalPlayer GetLocalPlayer();
 	vector<RemotePlayer*> GetRemotePlayers();
+=======
 	ShadowLayer* GetShadowLayer();
 	Layer* GetGameLayer();
+>>>>>>> 09535772215bb89d024bc7176278cc5c2ed264d3
 
 private:
 	static GameScene *_singleton;

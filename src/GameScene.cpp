@@ -1,8 +1,18 @@
 #include "GameScene.h"
-#include "ShadowLayer.h"
 #include "LightSource.h"
 #include "ShadowCaster.h"
 #include "Player.h"
+#include "FollowMouseComponent.h"
+
+
+GameScene* GameScene::_singleton = NULL;
+
+
+GameScene* GameScene::Singleton()
+{
+	return _singleton;
+}
+
 
 /*
 ================
@@ -17,7 +27,7 @@ GameScene::GameScene(Socket *tcp, Socket *udp)
 		_tcpSocket(tcp),
 		_udpSocket(udp)
 {
-
+	_singleton = this;
 }
 
 GameScene::~GameScene()
@@ -25,6 +35,8 @@ GameScene::~GameScene()
 	if (_world) {
 		delete _world;
 	}
+
+	_singleton = NULL;
 }
 
 
@@ -92,6 +104,17 @@ LocalPlayer GameScene::GetLocalPlayer() {
 vector<RemotePlayer*> GameScene::GetRemotePlayers() {
 	return _remotePlayers;
 }
+
+ShadowLayer* GameScene::GetShadowLayer()
+{
+	return _shadowLayer;
+}
+
+Layer* GameScene::GetGameLayer()
+{
+	return _gameLayer;
+}
+
 
 /*
 ================
@@ -165,6 +188,7 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 {
 	if (localPlayer) {
 		_localPlayer = new LocalPlayer(_world, team, playerID, _udpSocket);
+		AddComponent<FollowMouseComponent>(_localPlayer);
 		_gameLayer->AddChild(_localPlayer);
 	} else {
 		RemotePlayer *rp = new RemotePlayer(_world, team, playerID);

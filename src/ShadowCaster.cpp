@@ -29,7 +29,7 @@ Rect ShadowCaster::GetShadowRect()
 	dim.x *= scale.x;
 	dim.y *= scale.y;
 
-	Vec2 pos = Position();
+	Vec2 pos = WorldPosition();
 	pos.x -= Pivot().x * dim.x;
 	pos.y -= Pivot().y * dim.y;
 

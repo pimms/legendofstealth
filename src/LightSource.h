@@ -29,3 +29,14 @@ protected:
 	Color _color;
 	RenderTexture *_texture;
 };
+
+
+class ConeLightSource : public LightSource {
+public:
+	ConeLightSource();
+
+protected:
+	void CreateLightTexture();
+
+	float _angle;
+};
