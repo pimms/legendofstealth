@@ -11,8 +11,6 @@ void Hackable::Update(const DeltaTime &dt)
 {
 	_hackablepos = Position();
 
-	printf("Position of TERMINAL: %f, %f\n", _position.x, _position.y);
-
 	if (_hacking)
 	{
 		_hacktime -= dt.dt;
@@ -34,6 +32,7 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_resettime <= 0)
 	{
+		printf("TERMINAL has been RESET\n");
 		_hackinter = false;
 		_resettime = RESET_TIME;
 		_hacktime = HACKTIME;
@@ -52,15 +51,12 @@ void Hacker::Update(const DeltaTime &dt) {
 	GameScene *scene = (GameScene*)GetGameObject()->GetScene();
 	vector<RemotePlayer*> rp = scene->GetRemotePlayers();
 
-	printf("Position of SPY: %f, %f\n", Position().x, Position().y);
-
 	//vector<Vec2> positions = GetPositions(rp);
 	Vec2 tmpos = _hackablepos;
-	printf("Position of TERMINAL: %f, %f\n", tmpos.x, tmpos.y);
 
-	if (PlayerInPosition(_hackablepos))
+	if (PlayerInPosition(_hackablepos) && !_hacking)
 	{
-		printf("Start hacking NOW!\n");
+		printf("Start hacking NOW, by pressing 'H'!\n");
 	}
 
 	if (PlayerInPosition(_hackablepos) 
@@ -97,8 +93,6 @@ vector<Vec2> Hacker::GetPositions(vector<RemotePlayer*> rp)
 
 bool Hacker::PlayerInPosition(Vec2 tmpos)
 {
-	printf("HACK_RADIUS: %f\n", HACK_RADIUS);
-	printf("Position of Player: %f, %f\n", tmpos.x, tmpos.y);
 	if ((Position().x >= (tmpos.x - HACK_RADIUS)) &&
 		(Position().x <= (tmpos.x + HACK_RADIUS)) &&
 		(Position().y >= (tmpos.y - HACK_RADIUS)) &&
@@ -113,21 +107,6 @@ bool Hacker::PlayerInPosition(Vec2 tmpos)
 
 bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 {
-	/*
-	for (int i = 0; i < pos.size(); i++)
-	{
-		if ((pos[i].x >= (tmpos.x - AREA_RADIUS)) &&
-			(pos[i].x <= (tmpos.x + AREA_RADIUS)) &&
-			(pos[i].y >= (tmpos.y - AREA_RADIUS)) &&
-			(pos[i].y <= (tmpos.y + AREA_RADIUS)))
-		{
-			return true;
-		} else {
-			return false;
-		}
-	}
-	*/
-
 	if ((Position().x >= (tmpos.x - AREA_RADIUS)) &&
 		(Position().x <= (tmpos.x + AREA_RADIUS)) &&
 		(Position().y >= (tmpos.y - AREA_RADIUS)) &&
@@ -135,7 +114,6 @@ bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 	{
 		return true;
 	} else {
-		printf("SPY has left the hacking area!\n");
 		return false;
 	}
 }
