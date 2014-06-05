@@ -1,4 +1,4 @@
-#include "FireCompnent.h"
+#include "FireComponent.h"
 #include "Entity.h"
 
 FireComponent::FireComponent(){	}
@@ -16,7 +16,6 @@ void FireComponent::Update(const DeltaTime &dt){
 		b2Vec2 p2 = calculateDirection();
 		
 		entity->getWorld()->RayCast(&callback, p1, p2);
-		printf("fixture %d\n", callback.m_fixture);
 		
 		if (callback.m_fixture != 0){
 			GameObject *go = (Entity*)callback.m_fixture->GetUserData();
@@ -24,10 +23,8 @@ void FireComponent::Update(const DeltaTime &dt){
 			if (dynamic_cast<Player*>(go)) {
 				printf("You hit something\n");
 			}
-
-			printf("fixture %d\n", callback.m_fixture);
-
 		}
+
 		if (callback.m_fixture == 0){
 			printf("\nDidn't hit anything");
 		}

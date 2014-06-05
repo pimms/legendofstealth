@@ -6,7 +6,7 @@
 	#include <trutle/Trutle.h>
 #endif
 
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 #include "RayCastUtility.h"
 #include "Player.h"
 

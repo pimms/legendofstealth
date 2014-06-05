@@ -4,11 +4,8 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
-<<<<<<< HEAD
-#include "FireCompnent.h"
-=======
+#include "FireComponent.h"
 #include "MovePlayer.h"
->>>>>>> 28c3e50a868b28877471b9155ffa30211af917eb
 
 
 /*

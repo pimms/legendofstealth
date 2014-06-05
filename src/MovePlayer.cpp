@@ -17,12 +17,6 @@ MovePlayer::MovePlayer() {}
 
 void MovePlayer::Update(const DeltaTime &dt){
 	const InputState *in = GetGameObject()->GetInputState();
-<<<<<<< HEAD
-	Vec2 temp(0,0);
-	if (in->IsKeyDown(SDLK_a))
-		temp.x -= SPEED;
-=======
->>>>>>> 28c3e50a868b28877471b9155ffa30211af917eb
 
 	bool isSprinting = false;
 	float speed = (isSprinting) ? PLAYER_WALK_SPEED : PLAYER_SPRINT_SPEED;
