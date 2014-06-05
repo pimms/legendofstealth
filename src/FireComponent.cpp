@@ -18,9 +18,10 @@ void FireComponent::SetUDPSocket(Socket *socket)
 }
 
 
-void FireComponent::Update(const DeltaTime &dt){
+void FireComponent::Update(const DeltaTime &dt)
+{
 	const InputState *in = GetGameObject()->GetInputState();
-	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT)){
+	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT) && in->IsMouseKeyDown(SDL_BUTTON_LEFT)){
 		// TODO
 		// Display a muzzle flash on the player
 		
@@ -75,6 +76,7 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 	_localPlayer->GetWorld()->RayCast(&cb, p1, p2);
 
 	if (cb.DidHitTargetPlayer()) {
+		Log::Debug("I got hit by a bullet :(");
 		SendHitPacket();
 	}
 }
@@ -98,7 +100,7 @@ FireCallback::FireCallback(Player *targetPlayer)
 	: 	_targetPlayer(targetPlayer),
 		_hitPlayer(false)
 {
-
+	printf("Looking for player with ID %i\n", targetPlayer->GetPlayerID());
 }
 
 float32 FireCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point, 
@@ -113,9 +115,11 @@ float32 FireCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point,
 		Player *player = dynamic_cast<Player*>(entity);
 		if (player) {
 			if (player == _targetPlayer) {
+				printf("Hit target player\n");
 				_hitPlayer = true;
 			} else {
 				// Ignore all other players
+				printf("Hit player with ID %i\n", player->GetPlayerID());
 				return -1.f;
 			}
 		}

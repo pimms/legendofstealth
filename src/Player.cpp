@@ -7,6 +7,7 @@
 #include "FireComponent.h"
 #include "MovePlayer.h"
 #include "Hack.h"
+#include "NightVisionComponent.h"
 
 
 /*
@@ -31,6 +32,7 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 	if (team == TEAM_MERC) {
 		ConeLightSource *light = new ConeLightSource();
 		light->SetLightDistance(350.f);
+		light->SetColor(Color(1.f, 1.f, 1.f, 1.f));
 		AddChild(light);
 		GameScene::Singleton()->GetShadowLayer()->AddLightSource(light);
 	}
@@ -76,6 +78,7 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 		GetComponent<FireComponent>(this)->SetUDPSocket(udpSocket);
 	} else if (team == TEAM_SPY) {
 		AddComponent<Hacker>(this);
+		AddComponent<NightVisionComponent>(this);
 	}
 }
 

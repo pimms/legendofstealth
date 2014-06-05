@@ -109,6 +109,25 @@ bool RemotePlayer::IsConnected()
 }
 
 
+void RemotePlayer::AddPacketToQueue(Packet *packet)
+{
+	_recvPackets.push_back(packet);
+}
+
+vector<Packet*> RemotePlayer::GetPacketQueue()
+{
+	return _recvPackets;
+}
+
+void RemotePlayer::ClearPacketQueue()
+{
+	for (int i=0; i<_recvPackets.size(); i++) 
+		delete _recvPackets[i];
+
+	_recvPackets.clear();
+}
+
+
 
 /*
 ================
@@ -157,23 +176,6 @@ void RemotePlayer::SendJoinResponse(bool response)
 
 void RemotePlayer::HandleIncomingPackets()
 {
-	while (_udp->HasActivity()) {
-		Packet *pkt = _udp->GetPacket();
-		if (pkt) {
-			switch (pkt->type) {
-				case PACKET_PLAYER_UPDATE:
-					HandlePlayerUpdate((PacketPlayerUpdate*)pkt);
-					break;
-
-				default:
-					Log::Warning("Unhandled UDP packet: " + PacketTypeStr(pkt->type));
-					break;
-			}
-		} else {
-			break;
-		}
-	}
-
 	while (_tcp->HasActivity()) {
 		Packet *pkt = _tcp->GetPacket();
 		if (pkt) {
@@ -186,11 +188,4 @@ void RemotePlayer::HandleIncomingPackets()
 			break;
 		}
 	}
-}
-
-void RemotePlayer::HandlePlayerUpdate(PacketPlayerUpdate *pkt)
-{
-	_position = Vec2(pkt->posX, pkt->posY);
-	_rotation = pkt->rotation;
-	_counter = pkt->counter;
 }
