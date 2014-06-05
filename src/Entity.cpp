@@ -16,7 +16,7 @@ b2Vec2 Tob2Vec2(Vec2 vec)
 	return b2Vec2(vec.x / PTM, vec.y / PTM);
 }
 
-
+//push
 float Deg2Rad(float deg)
 {
 	return deg * (M_PI / 180.f);

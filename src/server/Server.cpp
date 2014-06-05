@@ -77,7 +77,7 @@ Team Server::DecideTeamForNewPlayer()
 	if (mercs > spies)
 		return TEAM_SPY;
 
-	return TEAM_SPY;
+	return TEAM_MERC;
 }
 
 void Server::GetTeamDistribution(int &spies, int &mercs)
@@ -140,6 +140,7 @@ void Server::HandlePacket(Packet *packet)
 			{
 				PacketPlayerFire *pkt = (PacketPlayerFire*)packet;
 				AddPacketToPlayerQueue(packet, pkt->playerID);
+				printf("Added packet to queue\n");
 				break;
 			}
 

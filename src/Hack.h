@@ -34,7 +34,7 @@ class Hackable : public Component {
 
 	private:
 		Vec2 _position;
-		
+
 		void PrintInfo();
 };
 

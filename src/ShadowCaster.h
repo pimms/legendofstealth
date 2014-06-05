@@ -7,11 +7,7 @@
 #endif
 
 
-class ShadowCaster : public GameObject {
+class ShadowCaster  {
 public:
-	vector<Vec2> GetShapeVertices();
-	
-private:
-	Rect GetShadowRect();	
-
+	virtual vector<Vec2> GetShapeVertices() = 0;
 };
