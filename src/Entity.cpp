@@ -52,8 +52,10 @@ void Entity::Update(const DeltaTime &dt)
 {
 	GameObject::Update(dt);
 
-	Position() = ToVec2(_body->GetPosition());
-	_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
+	if (_body) {
+		Position() = ToVec2(_body->GetPosition());
+		_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
+	}
 }
 
 Vec2 Entity::GetScreenPosition()
@@ -65,7 +67,6 @@ Vec2 Entity::GetScreenPosition()
 	pos.y += layerPos.y;
 	return pos;
 }
-
 
 void Entity::MoveB2Body(Vec2 velocity)
 {

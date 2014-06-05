@@ -4,7 +4,7 @@
 Terminal::Terminal(b2World *world, string texture) : Entity(world) {
 	LoadTexture(texture);
 	Position() = Vec2(200.0f, 100.0f);	
-	AddComponent<Hack>(this);
+	AddComponent<Hackable>(this);
 }
 
 Terminal::~Terminal() {
