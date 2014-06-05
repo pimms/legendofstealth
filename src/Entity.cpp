@@ -17,6 +17,17 @@ b2Vec2 Tob2Vec2(Vec2 vec)
 }
 
 
+float Deg2Rad(float deg)
+{
+	return deg * (M_PI / 180.f);
+}
+
+float Rad2Deg(float rad)
+{
+	return rad * (180.f / M_PI);
+}
+
+
 /*
 ================
 Entity Public 

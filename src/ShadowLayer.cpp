@@ -130,7 +130,7 @@ vector<Vec2> ShadowLayer::GetShadowVertices(LightSource *source)
 	for (int i=0; i<_shadowCasters.size(); i++) {
 		ShadowCaster *caster = _shadowCasters[i];
 		vector<Vec2> shape = caster->GetShapeVertices();
-		Vec2 p = source->Position();
+		Vec2 p = source->WorldPosition();
 		
 		// Push P1, P2, P2', P1' to create a quad
 		for (int j=0; j<shape.size(); j++) {

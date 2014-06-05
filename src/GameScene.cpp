@@ -1,8 +1,17 @@
 #include "GameScene.h"
-#include "ShadowLayer.h"
 #include "LightSource.h"
 #include "ShadowCaster.h"
 #include "Player.h"
+
+
+GameScene* GameScene::_singleton = NULL;
+
+
+GameScene* GameScene::Singleton()
+{
+	return _singleton;
+}
+
 
 /*
 ================
@@ -17,7 +26,7 @@ GameScene::GameScene(Socket *tcp, Socket *udp)
 		_tcpSocket(tcp),
 		_udpSocket(udp)
 {
-
+	_singleton = this;
 }
 
 GameScene::~GameScene()
@@ -25,6 +34,8 @@ GameScene::~GameScene()
 	if (_world) {
 		delete _world;
 	}
+
+	_singleton = NULL;
 }
 
 
@@ -83,6 +94,17 @@ bool GameScene::HandlePacket(const Packet *packet)
 		default:
 			return false;
 	}
+}
+
+
+ShadowLayer* GameScene::GetShadowLayer()
+{
+	return _shadowLayer;
+}
+
+Layer* GameScene::GetGameLayer()
+{
+	return _gameLayer;
 }
 
 

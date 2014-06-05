@@ -2,6 +2,8 @@
 #include "PlayerUpdateComponent.h"
 #include "MovePlayer.h"
 #include "net/Socket.h"
+#include "LightSource.h"
+#include "GameScene.h"
 
 
 /*
@@ -21,6 +23,13 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 
 	AddComponent<PlayerUpdateComponent>(this);
 	_updateComponent = GetComponent<PlayerUpdateComponent>(this);
+
+	if (team == TEAM_MERC) {
+		ConeLightSource *light = new ConeLightSource();
+		light->SetLightDistance(350.f);
+		AddChild(light);
+		GameScene::Singleton()->GetShadowLayer()->AddLightSource(light);
+	}
 }
 
 

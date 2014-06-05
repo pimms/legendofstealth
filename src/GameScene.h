@@ -11,6 +11,7 @@
 
 #include <Box2D/Box2D.h>
 #include "net/Packet.h"
+#include "ShadowLayer.h"
 
 
 class ShadowLayer;
@@ -21,6 +22,9 @@ class Socket;
 
 class GameScene : public Scene {
 public:
+	// YOLO, gamejam etc
+	static GameScene* Singleton();
+
 	GameScene(Socket *tcpSocket, Socket *udpSocket);
 	~GameScene();
 
@@ -30,7 +34,12 @@ public:
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
 
+	ShadowLayer* GetShadowLayer();
+	Layer* GetGameLayer();
+
 private:
+	static GameScene *_singleton;
+
 	b2World *_world;
 
 	Socket *_tcpSocket;
