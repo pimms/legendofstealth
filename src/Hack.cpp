@@ -9,6 +9,8 @@ Hackable::Hackable() {}
 
 void Hackable::Update(const DeltaTime &dt) 
 {
+	_position = Position();
+
 	if (_hacking)
 	{
 		_hacktime -= dt.dt;
@@ -31,8 +33,6 @@ void Hackable::Update(const DeltaTime &dt)
 	{
 		_hacktime = HACKTIME;
 	}
-
-	printf("Position: %f, %f\n", Position().x, Position().y);
 }
 
 void Hackable::StartHack() {
@@ -52,7 +52,7 @@ bool Hackable::HackIsFinished() {
 }
 
 Vec2 Hackable::GetTmPosition() {
-	return Position();
+	return _position;
 }
 
 /*
@@ -69,16 +69,10 @@ void Hacker::Update(const DeltaTime &dt) {
 
 	vector<Vec2> positions = GetPositions(rp);
 	Vec2 tmpos = hackable.GetTmPosition();
-	printf("Spy position: %f, %f\n", Position().x, Position().y);
 
 	if (hackable.HackIsFinished())
 	{
 		hacked = true;
-	}
-
-	if (PlayerInPosition(positions, tmpos))
-	{
-		printf("Press 'H'\n");
 	}
 
 	if (PlayerInPosition(positions, tmpos) 
@@ -91,8 +85,6 @@ void Hacker::Update(const DeltaTime &dt) {
 	{
 		hackable.HackInterrupt();
 	}
-
-	printf("Spy position: %f, %f\n", Position().x, Position().x);
 }
 
 vector<Vec2> Hacker::GetPositions(vector<RemotePlayer*> rp) 
@@ -113,26 +105,11 @@ vector<Vec2> Hacker::GetPositions(vector<RemotePlayer*> rp)
 
 bool Hacker::PlayerInPosition(vector<Vec2> pos, Vec2 tmpos)
 {
-	/*
-	for (int i = 0; i < pos.size(); i++)
-	{
-		if ((pos[i].x >= (tmpos.x - HACK_RADIUS)) &&
-			(pos[i].x <= (tmpos.x + HACK_RADIUS)) &&
-			(pos[i].y >= (tmpos.y - HACK_RADIUS)) &&
-			(pos[i].y <= (tmpos.y + HACK_RADIUS)))
-		{
-			return true;
-		} else {
-			return false;
-		}
-	}
-	*/
 	if ((Position().x >= (tmpos.x - HACK_RADIUS)) &&
 		(Position().x <= (tmpos.x + HACK_RADIUS)) &&
 		(Position().y >= (tmpos.y - HACK_RADIUS)) &&
 		(Position().y <= (tmpos.y + HACK_RADIUS)))
 	{
-		printf("Hallo alle sammen som skal være hjemme i helgen!\n");
 		return true;
 	} else {
 		return false;
