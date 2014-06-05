@@ -140,6 +140,7 @@ void Server::HandlePacket(Packet *packet)
 			{
 				PacketPlayerFire *pkt = (PacketPlayerFire*)packet;
 				AddPacketToPlayerQueue(packet, pkt->playerID);
+				printf("Added packet to queue\n");
 				break;
 			}
 

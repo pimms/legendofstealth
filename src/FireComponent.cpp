@@ -18,9 +18,10 @@ void FireComponent::SetUDPSocket(Socket *socket)
 }
 
 
-void FireComponent::Update(const DeltaTime &dt){
+void FireComponent::Update(const DeltaTime &dt)
+{
 	const InputState *in = GetGameObject()->GetInputState();
-	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT)){
+	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT) && in->IsMouseKeyDown(SDL_BUTTON_LEFT)){
 		// TODO
 		// Display a muzzle flash on the player
 		
@@ -75,6 +76,7 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 	_localPlayer->GetWorld()->RayCast(&cb, p1, p2);
 
 	if (cb.DidHitTargetPlayer()) {
+		Log::Debug("I got hit by a bullet :(");
 		SendHitPacket();
 	}
 }
