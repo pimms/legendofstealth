@@ -30,6 +30,9 @@ public:
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
 
+	LocalPlayer GetLocalPlayer();
+	vector<RemotePlayer*> GetRemotePlayers();
+
 private:
 	b2World *_world;
 
@@ -41,6 +44,7 @@ private:
 
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
+
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..

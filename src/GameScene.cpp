@@ -85,6 +85,13 @@ bool GameScene::HandlePacket(const Packet *packet)
 	}
 }
 
+LocalPlayer GameScene::GetLocalPlayer() {
+	return _localPlayer;
+}
+
+vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+	return _remotePlayers;
+}
 
 /*
 ================

@@ -6,8 +6,13 @@
 	#include <trutle/Trutle.h>
 #endif
 
+#include "GameScene.h"
+#include "Player.h"
+
 #define HACKTIME 100;
 #define RESET_TIME 10;
+#define HACK_RADIUS 50;
+#define AREA_RADIUS 200;
 
 class Hack : public Component {
 	public:
@@ -20,6 +25,7 @@ class Hack : public Component {
 		float _hacktime = HACKTIME;
 		float _resettime = RESET_TIME;
 
-		void ResetCount();
-
+		vector<Vec2> GetPositions(LocalPlayer lp, vector<RemotePlayer> rp);
+		bool PlayerInPosition(vector<Vec2> pos);
+		bool PlayerInHackingArea(vector<Vec2> pos);
 };
