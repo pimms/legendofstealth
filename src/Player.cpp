@@ -4,6 +4,7 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
+#include "MovePlayer.h"
 
 
 /*
@@ -86,6 +87,12 @@ RemotePlayer::RemotePlayer(b2World *world, Team team, unsigned playerID)
 	:	Player(world, team, playerID)
 {
 	
+}
+
+
+void RemotePlayer::Update(const DeltaTime &dt)
+{
+	Player::Update(dt);
 }
 
 void RemotePlayer::HandleUpdatePacket(const PacketPlayerUpdate *packet)

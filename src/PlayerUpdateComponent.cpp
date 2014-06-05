@@ -9,6 +9,11 @@
 PlayerUpdateComponent Public 
 ================
 */
+PlayerUpdateComponent::PlayerUpdateComponent()
+	:	_updateTimer(0.f)
+{
+}
+	
 PlayerUpdateComponent::~PlayerUpdateComponent()
 {
 	
@@ -16,7 +21,8 @@ PlayerUpdateComponent::~PlayerUpdateComponent()
 
 void PlayerUpdateComponent::Update(const DeltaTime &dt)
 {
-	_timer += dt.dt;
+	_updateTimer += dt.dt;
+
 }
 
 
@@ -28,9 +34,9 @@ void PlayerUpdateComponent::SetUDPSocket(Socket *udp)
 
 void PlayerUpdateComponent::SendUpdatePacket()
 {
-	if (_timer < 0.1f)
+	if (_updateTimer < 0.05f)
 		return;
-	_timer = 0.f;
+	_updateTimer = 0.f;
 
 	PacketPlayerUpdate packet;
 
@@ -54,8 +60,5 @@ void PlayerUpdateComponent::HandleUpdatePacket(const PacketPlayerUpdate *packet)
 }
 
 
-/*
-================
-PlayerUpdateComponent private
-================
-*/
+
+
