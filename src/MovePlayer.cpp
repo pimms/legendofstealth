@@ -42,7 +42,7 @@ void MovePlayer::Update(const DeltaTime &dt){
 	}
 
 	// update position
-	Position().x += temp.x;
-	Position().y += temp.y;	
+	Entity *entity = (Entity*)GetGameObject();
+	entity->MoveB2Body(temp);
 }
 
