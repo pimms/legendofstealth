@@ -71,17 +71,18 @@ void ShadowLayer::Render(Renderer *renderer)
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+	renderer->PushTransform();
+	renderer->ApplyTransform(_sibling);
+
 	for (int i=0; i<_lightSources.size(); i++) {
-		renderer->PushTransform();
-		renderer->ApplyTransform(_sibling);
 		RenderShadows(_lightSources[i], renderer);
 		RenderLight(_lightSources[i], renderer);
-		renderer->PopTransform();
 	}
 
 	glDisable(GL_STENCIL_TEST);
 
 	DrawFillShadow();
+	renderer->PopTransform();
 
 	_renderTexture->UnbindFBO();
 
