@@ -53,7 +53,7 @@ void LightSource::DrawRenderTexture()
 
 	glPushMatrix();
 	glTranslatef(wp.x, wp.y, 0.f);
-	glRotatef(Rotation(), 0.f, 0.f, 1.f);
+	glRotatef(WorldRotation(), 0.f, 0.f, 1.f);
 	glEnable(GL_TEXTURE_2D);
 
 	_texture->BindTex();

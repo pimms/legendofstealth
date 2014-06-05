@@ -11,6 +11,7 @@
 #include "PlayerUpdateComponent.h"
 
 class Socket;
+class LightSource;
 
 class Player : public Entity {
 public:
@@ -19,12 +20,15 @@ public:
 	unsigned GetPlayerID() const;
 	Team GetTeam() const;
 
+	void Update(const DeltaTime &dt);
+
 protected:
 	PlayerUpdateComponent *_updateComponent;
 
 private:
 	unsigned _playerID;
 	Team _team;
+	LightSource *_lightSource;
 };
 
 
