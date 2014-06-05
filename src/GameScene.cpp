@@ -98,8 +98,15 @@ bool GameScene::HandlePacket(const Packet *packet)
 	}
 }
 
-LocalPlayer GameScene::GetLocalPlayer() {
-	return _localPlayer;
+LocalPlayer* GameScene::GetLocalPlayer() {
+	if (_localPlayer)
+	{
+		return _localPlayer;
+	} 
+	else 
+	{
+		return NULL;
+	}
 }
 
 vector<RemotePlayer*> GameScene::GetRemotePlayers() {
@@ -142,7 +149,8 @@ void GameScene::LoadMap()
 	background->LoadTexture("res/bg.png");
 	background->Position() = Vec2(320.f, 240.f);
 	_gameLayer->AddChild(background);
-	LoadTerminal();
+
+	
 	
 	// Create a couple of lights
 	for (int i=0; i<4; i++) {
@@ -172,6 +180,7 @@ void GameScene::LoadMap()
 		_shadowLayer->AddShadowCaster(box);
 	}
 
+	LoadTerminal();
 }
 
 
@@ -199,7 +208,8 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 	}
 }
 
-void LoadTerminal() 
+void GameScene::LoadTerminal() 
 {
-	Terminal terminal = new Terminal(_world, "res/term.png");
+	_terminal = new Terminal(_world, "res/term.png");
+	_gameLayer->AddChild(_terminal);
 }

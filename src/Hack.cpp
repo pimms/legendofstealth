@@ -1,22 +1,14 @@
 #include "Hack.h"
 
-Hack::Hack() {}
+/*
+=========
+Hackable
+=========
+*/
+Hackable::Hackable() {}
 
-void Hack::Update(const DeltaTime &dt) 
+void Hackable::Update(const DeltaTime &dt) 
 {
-	const InputState *in = GetGameObject()->GetInputState();
-	const GameScene *scene = GetGameObject()->GetScene();
-	LocalPlayer lp = scene->GetLocalPlayer();
-	vector<RemotePlayer> rp = scene->GetRemotePlayers();
-
-	vector<Vec2> positions = GetPositions(lp, rp);
-
-	if (PlayerInPosition(positions) 
-		&& in->IsKeyDown(SDLK_h))
-	{
-		_hacking = true;
-	}
-
 	if (_hacking)
 	{
 		_hacktime -= dt.dt;
@@ -28,33 +20,74 @@ void Hack::Update(const DeltaTime &dt)
 		_hacking = false;
 	}
 
-	if (!PlayerInHackingArea(positions))
+	if (_hackinter)
 	{
 		_hacking = false;
-		_resettime -= dt.dt
-
-		if (_resettime <tm.Position()
-		{
-			_hacktime = HACKTIME;
-		}
 	}
 }
 
-vector<Vec2> GetPositions(LocalPlayer lp, vector<RemotePlayer> rp) 
-{
-	vector<Vec2> pos;
-	Vec2 tmpos = Position();
-	pos.push_back(lp.Position());
 
-	for (int i = 1; i < rp.size(); i++)
+/*
+============
+Hacker
+============
+*/
+Hacker::Hacker() {}
+
+void Hacker::Update() {
+	const InputState *in = GetGameObject()->GetInputState();
+	GameScene *scene = (GameScene*)GetGameObject()->GetScene();
+	LocalPlayer *lp = scene->GetLocalPlayer();
+	vector<RemotePlayer*> rp = scene->GetRemotePlayers();
+
+	vector<Vec2> positions = GetPositions(lp, rp);
+	Vec2 tmpos = Position();
+	printf("What the hell...?\n");
+
+	if (PlayerInPosition(positions, tmpos) 
+		&& in->IsKeyDown(SDLK_h))
 	{
-		pos.push_back(rp[i].Position())
+		StartHack();
 	}
 
+	if (!PlayerInHackingArea(positions, tmpos))
+	{
+		StopHack();
+	}
+}
+
+vector<Vec2> Hacker::GetPositions(LocalPlayer *lp, vector<RemotePlayer*> rp) 
+{
+	vector<Vec2> pos;
+	printf("Hey ho!\n");
+
+	if (lp)
+	{
+		printf("Still no playa!\n");
+		pos.push_back(lp->Position());
+		printf("Yey, local playa!\n");
+	}
+
+	printf("Yolo McSwagger!\n");
+
+	if (rp.size() <= 1)
+	{
+		printf("We've entered the lion's nest.\n");
+		for (int i = 1; i < rp.size(); i++)
+		{
+			if (rp[i])
+			{
+				pos.push_back(rp[i]->Position());
+				printf("RemotePlayer go: %i\n", i);
+			}
+		}
+	}
+
+	printf("We're outta here!\n");
 	return pos;
 }
 
-bool Hack::PlayerInPosition(vector<Vec2> pos)
+bool Hacker::PlayerInPosition(vector<Vec2> pos, Vec2 tmpos)
 {
 	for (int i = 0; i < pos.size(); i++)
 	{
@@ -70,7 +103,7 @@ bool Hack::PlayerInPosition(vector<Vec2> pos)
 	}
 }
 
-bool Hack::PlayerInHackingArea(vector<Vec2> pos)
+bool Hacker::PlayerInHackingArea(vector<Vec2> pos, Vec2 tmpos)
 {
 	for (int i = 0; i < pos.size(); i++)
 	{
@@ -84,4 +117,13 @@ bool Hack::PlayerInHackingArea(vector<Vec2> pos)
 			return false;
 		}
 	}
+}
+
+void Hacker::StartHack()
+{
+
+}
+
+void Hacker::StopHack() {
+
 }

@@ -14,11 +14,13 @@
 #include "ShadowLayer.h"
 
 
+
 class ShadowLayer;
 class RemotePlayer;
 class LocalPlayer;
 class Player;
 class Socket;
+class Terminal;
 
 class GameScene : public Scene {
 public:
@@ -34,7 +36,7 @@ public:
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
 
-	LocalPlayer GetLocalPlayer();
+	LocalPlayer* GetLocalPlayer();
 	vector<RemotePlayer*> GetRemotePlayers();
 
 	ShadowLayer* GetShadowLayer();
