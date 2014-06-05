@@ -2,7 +2,7 @@
 // Ray cast callback class helper
 
 #pragma once
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 
 class RayCastUtility : public b2RayCastCallback
 {
