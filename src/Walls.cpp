@@ -41,4 +41,18 @@ Rect Walls::GetShadowRect()
 
 	return Rect(pos.x, pos.y, dim.x, dim.y);
 }
-//
+
+void Walls::Render(Renderer *renderer)
+{
+	// Don't render off-screen walls
+	Vec2 dim = GetTexture()->GetDimensions();
+	Rect r(Position().x, Position().y, dim.x, dim.y);
+
+	Layer *layer = GetParentLayer();
+	Vec2 lp = layer->Position();
+	Rect s(-lp.x, -lp.y, 1280.f, 720.f);
+
+	if (r.Overlaps(s)) {
+		Entity::Render(renderer);
+	}
+}

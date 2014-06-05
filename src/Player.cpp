@@ -32,6 +32,7 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 	if (team == TEAM_MERC) {
 		ConeLightSource *light = new ConeLightSource();
 		light->SetLightDistance(350.f);
+		light->SetColor(Color(1.f, 1.f, 1.f, 1.f));
 		AddChild(light);
 		GameScene::Singleton()->GetShadowLayer()->AddLightSource(light);
 	}

@@ -77,7 +77,7 @@ Team Server::DecideTeamForNewPlayer()
 	if (mercs > spies)
 		return TEAM_SPY;
 
-	return TEAM_SPY;
+	return TEAM_MERC;
 }
 
 void Server::GetTeamDistribution(int &spies, int &mercs)

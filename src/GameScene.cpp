@@ -9,7 +9,6 @@
 #include "Terminal.h"
 #include "Walls.h"
 
-//
 GameScene* GameScene::_singleton = NULL;
 
 
@@ -150,6 +149,7 @@ void GameScene::LoadInfrastructure()
 	AddLayer(_gameLayer);
 
 	_shadowLayer = new ShadowLayer(_gameLayer);
+	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 0.5f));
 	AddLayer(_shadowLayer);
 }
 
@@ -162,63 +162,63 @@ void GameScene::LoadMap()
 {
 	InitalizeMap("res/bg.png", Vec2(1, 1), Vec2(320.f, 240.f), 1);
 	// Walls (1,7)
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(17, 63));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(17, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(52, 63));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(52, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(11, 61));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 39));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(16, 31));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(27, 18));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 5));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(24, 5));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(45, 39));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(53, 31));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(42, 18));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 7), Vec2(45, 5));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 53));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 63));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 53));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(11, 61));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 39));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(16, 31));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(27, 18));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 39));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(53, 31));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(42, 18));
+	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 5));
 
 	// Walls(7,1)
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(0, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(10, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(53, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(63, 53));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(17, 38));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(46, 38));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(4, 9));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(59, 9));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(17, 4));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(46, 4));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(28, 12));
-	InitalizeMap("res/Wall2D.png", Vec2(7, 1), Vec2(35, 12));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(0, 53));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(10, 53));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(53, 53));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(63, 53));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 38));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 38));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(4, 9));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(59, 9));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 4));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 4));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(28, 12));
+	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(35, 12));
 
 	// Walls (2,11)
-	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 58));
-	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 41));
-	InitalizeMap("res/Wall2D.png", Vec2(2, 11), Vec2(34, 26));
+	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 58));
+	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 41));
+	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 26));
 
 	// Walls (11,2)
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(6, 45));
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(53, 45));
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(0, 29));
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(59, 29));
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(9, 19));
-	InitalizeMap("res/Wall2D.png", Vec2(11, 2), Vec2(50, 19));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(6, 45));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(53, 45));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(0, 29));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(59, 29));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(9, 19));
+	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(50, 19));
 
 	// Walls (1,3)
-	InitalizeMap("res/Wall2D.png", Vec2(1, 3), Vec2(59, 56));
+	InitalizeMap("res/wall2D.png", Vec2(1, 3), Vec2(59, 56));
 
 	// Walls (3,1)
-	InitalizeMap("res/Wall2D.png", Vec2(3, 1), Vec2(56, 59));
-	InitalizeMap("res/Wall2D.png", Vec2(3, 1), Vec2(3, 60));
+	InitalizeMap("res/wall2D.png", Vec2(3, 1), Vec2(56, 59));
+	InitalizeMap("res/wall2D.png", Vec2(3, 1), Vec2(3, 60));
 
 	// Walls around the map (1,70)
-	InitalizeMap("res/Wall2D.png", Vec2(1, 70), Vec2(0, 0));
-	InitalizeMap("res/Wall2D.png", Vec2(1, 70), Vec2(69, 0));
+	InitalizeMap("res/wall2D.png", Vec2(1, 70), Vec2(0, 0));
+	InitalizeMap("res/wall2D.png", Vec2(1, 70), Vec2(69, 0));
 
 
 	// Walls around the map(68,1)
-	InitalizeMap("res/Wall2D.png", Vec2(68, 1), Vec2(1, 0));
-	InitalizeMap("res/Wall2D.png", Vec2(68, 1), Vec2(1, 69));
+	InitalizeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 0));
+	InitalizeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 69));
 	
 	
 	/* Create a couple of lights
