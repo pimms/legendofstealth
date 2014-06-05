@@ -34,11 +34,11 @@ public:
 	// Returns true if the packet could be handled
 	bool HandlePacket(const Packet *packet);
 
-	ShadowLayer* GetShadowLayer();
-	Layer* GetGameLayer();
-
 	LocalPlayer GetLocalPlayer();
 	vector<RemotePlayer*> GetRemotePlayers();
+
+	ShadowLayer* GetShadowLayer();
+	Layer* GetGameLayer();
 
 private:
 	static GameScene *_singleton;
@@ -54,6 +54,8 @@ private:
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
 
+	Terminal *_terminal;
+
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..
@@ -66,5 +68,5 @@ private:
 	void HandlePacketPlayerHit(const PacketPlayerHit *packet);
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
-
+	void LoadTerminal();
 };
