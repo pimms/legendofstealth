@@ -37,6 +37,9 @@ public:
 	ShadowLayer* GetShadowLayer();
 	Layer* GetGameLayer();
 
+	LocalPlayer GetLocalPlayer();
+	vector<RemotePlayer*> GetRemotePlayers();
+
 private:
 	static GameScene *_singleton;
 
@@ -50,6 +53,7 @@ private:
 
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
+
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..

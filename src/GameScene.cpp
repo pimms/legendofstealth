@@ -126,6 +126,13 @@ Layer* GameScene::GetGameLayer()
 	return _gameLayer;
 }
 
+LocalPlayer GameScene::GetLocalPlayer() {
+	return _localPlayer;
+}
+
+vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+	return _remotePlayers;
+}
 
 /*
 ================
