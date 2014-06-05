@@ -47,5 +47,6 @@ class RemotePlayer : public Player {
 public:
 	RemotePlayer(b2World *world, Team team, unsigned playerID);
 
+	void Update(const DeltaTime &dt);
 	void HandleUpdatePacket(const PacketPlayerUpdate *packet);
 };

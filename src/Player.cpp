@@ -4,6 +4,8 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
+#include "FireComponent.h"
+#include "MovePlayer.h"
 #include "Hack.h"
 
 
@@ -69,7 +71,10 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 	AddComponent<MovePlayer>(this);
 	_updateComponent->SetUDPSocket(_udpSocket);
 
-	if (team == TEAM_SPY) {
+	if (team == TEAM_MERC) {
+		AddComponent<FireComponent>(this);
+		GetComponent<FireComponent>(this)->SetUDPSocket(udpSocket);
+	} else if (team == TEAM_SPY) {
 		AddComponent<Hacker>(this);
 	}
 }
@@ -90,7 +95,13 @@ RemotePlayer Public
 RemotePlayer::RemotePlayer(b2World *world, Team team, unsigned playerID)
 	:	Player(world, team, playerID)
 {
-	
+	_body->SetType(b2_staticBody);
+}
+
+
+void RemotePlayer::Update(const DeltaTime &dt)
+{
+	Player::Update(dt);
 }
 
 void RemotePlayer::HandleUpdatePacket(const PacketPlayerUpdate *packet)

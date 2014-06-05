@@ -17,9 +17,17 @@ class Socket;
  *
  * Component which sends and retrieves player updates. Can be 
  * attached to both local and remote players.
+ *
+ * Local Players use:
+ * 		SendUpdatePacket
+ *
+ * 	Remote Players use:
+ * 		HandleUpdatePacket
+ * 		PredictNextPosition
  */
 class PlayerUpdateComponent : public Component {
 public:
+	PlayerUpdateComponent();
 	~PlayerUpdateComponent();
 	void Update(const DeltaTime &dt);
 
@@ -31,6 +39,5 @@ public:
 private:
 	Socket *_udpSocket;
 
-	float _timer;
-
+	float _updateTimer;
 };

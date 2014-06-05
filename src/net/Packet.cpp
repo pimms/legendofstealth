@@ -252,10 +252,16 @@ WRITE_METHOD_END
 // PacketPlayerFire
 FILL_METHOD_BEGIN(PacketPlayerFire)
 READ_UINT(playerID)
+READ_FLOAT(posX)
+READ_FLOAT(posY)
+READ_FLOAT(rotation)
 FILL_METHOD_END
 
 WRITE_METHOD_BEGIN(PacketPlayerFire)
 WRITE_LONG(playerID)
+WRITE_LONG(posX)
+WRITE_LONG(posY)
+WRITE_LONG(rotation)
 WRITE_METHOD_END
 
 // PacketPlayerHit
@@ -270,10 +276,12 @@ WRITE_METHOD_END
 // PacketPlayerHack
 FILL_METHOD_BEGIN(PacketPlayerHack)
 READ_UINT(playerID)
+READ_UINT(terminalID)
 READ_BYTE(isHacking)
 FILL_METHOD_END
 
 WRITE_METHOD_BEGIN(PacketPlayerHack)
 WRITE_LONG(playerID)
+WRITE_LONG(terminalID)
 WRITE_BYTE(isHacking)
 WRITE_METHOD_END

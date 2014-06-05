@@ -66,6 +66,8 @@ private:
 	void LoadMap();
 
 	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
+	void HandlePacketPlayerFire(const PacketPlayerFire *packet);
+	void HandlePacketPlayerHit(const PacketPlayerHit *packet);
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
 	void LoadTerminal();

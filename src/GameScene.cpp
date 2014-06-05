@@ -5,6 +5,8 @@
 #include "FollowMouseComponent.h"
 #include "Terminal.h"
 #include "FollowGameObjectComponent.h"
+#include "FireComponent.h"
+#include "Terminal.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -94,9 +96,37 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return true;
 		}
 
+		case PACKET_PLAYER_FIRE:
+		{	
+			PacketPlayerFire *ppf = (PacketPlayerFire*)packet;
+			HandlePacketPlayerFire(ppf);
+			return true;
+		}
+
+		case PACKET_PLAYER_HIT:
+		{	
+			PacketPlayerHit *pph = (PacketPlayerHit*)packet;
+			HandlePacketPlayerHit(pph);
+			return true;
+		}
+
 		default:
 			return false;
 	}
+
+	return false;
+}
+
+LocalPlayer* GameScene::GetLocalPlayer() {
+	if (_localPlayer)
+	{
+		return _localPlayer;
+	} 
+	else 
+	{
+		return NULL;
+	}
+	return _localPlayer;
 }
 
 LocalPlayer* GameScene::GetLocalPlayer() {
@@ -117,6 +147,9 @@ Layer* GameScene::GetGameLayer()
 	return _gameLayer;
 }
 
+vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+	return _remotePlayers;
+}
 
 /*
 ================
@@ -186,6 +219,20 @@ void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
 			player->HandleUpdatePacket(packet);
 		}
 	}
+}
+
+void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
+{
+	Vec2 pos(packet->posX, packet->posY);
+
+	BulletHitTester hit(_localPlayer, _udpSocket);
+	hit.TestBullet(pos, packet->rotation);
+}
+
+void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
+{
+	// TODO
+	// Deduct one HP from the hit player
 }
 
 
