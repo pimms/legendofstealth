@@ -3,11 +3,10 @@
 #include "ShadowCaster.h"
 #include "Player.h"
 #include "FollowMouseComponent.h"
-<<<<<<< HEAD
 #include "Terminal.h"
-=======
 #include "FollowGameObjectComponent.h"
->>>>>>> 5a19fc1457f64781db47156c3a0c3e7576a1edfa
+#include "FireComponent.h"
+#include "Terminal.h"
 
 
 GameScene* GameScene::_singleton = NULL;
@@ -97,18 +96,43 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return true;
 		}
 
+		case PACKET_PLAYER_FIRE:
+		{	
+			PacketPlayerFire *ppf = (PacketPlayerFire*)packet;
+			HandlePacketPlayerFire(ppf);
+			return true;
+		}
+
+		case PACKET_PLAYER_HIT:
+		{	
+			PacketPlayerHit *pph = (PacketPlayerHit*)packet;
+			HandlePacketPlayerHit(pph);
+			return true;
+		}
+
 		default:
 			return false;
 	}
+
+	return false;
 }
 
+
+<<<<<<< HEAD
+/*
 LocalPlayer* GameScene::GetLocalPlayer() {
+=======
+LocalPlayer* GameScene::GetLocalPlayer() 
+{
+>>>>>>> 702ce8d8524f97f287763e5a944943f79991b47d
 	return _localPlayer;
 }
 
-vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+vector<RemotePlayer*> GameScene::GetRemotePlayers() 
+{
 	return _remotePlayers;
 }
+*/
 
 ShadowLayer* GameScene::GetShadowLayer()
 {
@@ -191,6 +215,20 @@ void GameScene::HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet)
 	}
 }
 
+void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
+{
+	Vec2 pos(packet->posX, packet->posY);
+
+	BulletHitTester hit(_localPlayer, _udpSocket);
+	hit.TestBullet(pos, packet->rotation);
+}
+
+void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
+{
+	// TODO
+	// Deduct one HP from the hit player
+}
+
 
 void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 {
@@ -210,6 +248,6 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 
 void GameScene::LoadTerminal() 
 {
-	_terminal = new Terminal(_world, "res/term.png");
+	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
 	_gameLayer->AddChild(_terminal);
 }

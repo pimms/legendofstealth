@@ -117,24 +117,14 @@ bool GameScene::HandlePacket(const Packet *packet)
 	return false;
 }
 
-LocalPlayer* GameScene::GetLocalPlayer() {
-	if (_localPlayer)
-	{
-		return _localPlayer;
-	} 
-	else 
-	{
-		return NULL;
-	}
-	return _localPlayer;
-}
 
 /*
-LocalPlayer* GameScene::GetLocalPlayer() {
+{
 	return _localPlayer;
 }
 
-vector<RemotePlayer*> GameScene::GetRemotePlayers() {
+vector<RemotePlayer*> GameScene::GetRemotePlayers() 
+{
 	return _remotePlayers;
 }
 */
@@ -149,9 +139,6 @@ Layer* GameScene::GetGameLayer()
 	return _gameLayer;
 }
 
-vector<RemotePlayer*> GameScene::GetRemotePlayers() {
-	return _remotePlayers;
-}
 
 /*
 ================
