@@ -29,10 +29,18 @@ int main(int argc, char *argv[])
 	unsigned npid = 1;
 	vector<RemotePlayer*> players;
 	unsigned loops = 0;
+	int spy = 0, merc = 0;
 	while (true) {
 		if (listener.HasNewConnection()) {
 			Socket *tcp = listener.GetSocket();
-			RemotePlayer *rplayer = new RemotePlayer(npid++, TEAM_MERC, tcp);
+			RemotePlayer *rplayer = NULL;
+			if (spy > merc) {
+				merc++;
+				rplayer = new RemotePlayer(npid++, TEAM_MERC, tcp);
+			} else {
+				spy++;
+				rplayer = new RemotePlayer(npid++, TEAM_SPY, tcp);
+			}
 
 			for (int i=0; i<players.size(); i++) {
 				// Notify the other players of the new dude
@@ -58,6 +66,11 @@ int main(int argc, char *argv[])
 		for (int i=0; i<players.size(); i++) {
 			players[i]->Update();
 			if (!players[i]->IsConnected()) {
+				if (players[i]->GetTeam() == TEAM_SPY) {
+					spy--;
+				} else {
+					merc--;
+				}
 				std::stringstream ss;
 				ss << "Player left: " << players[i]->GetPlayerID();
 				Log::Debug(ss.str());

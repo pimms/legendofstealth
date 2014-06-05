@@ -4,6 +4,7 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
+#include "Hack.h"
 
 
 /*
@@ -67,6 +68,10 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 {
 	AddComponent<MovePlayer>(this);
 	_updateComponent->SetUDPSocket(_udpSocket);
+
+	if (team == TEAM_SPY) {
+		AddComponent<Hacker>(this);
+	}
 }
 
 

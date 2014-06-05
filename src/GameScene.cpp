@@ -99,14 +99,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 }
 
 LocalPlayer* GameScene::GetLocalPlayer() {
-	if (_localPlayer)
-	{
-		return _localPlayer;
-	} 
-	else 
-	{
-		return NULL;
-	}
+	return _localPlayer;
 }
 
 vector<RemotePlayer*> GameScene::GetRemotePlayers() {
