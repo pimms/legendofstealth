@@ -1,47 +1,135 @@
 #include "FireComponent.h"
 #include "Entity.h"
+#include "net/Socket.h"
 
-FireComponent::FireComponent(){	}
+/*
+================
+FireComponent 
+================
+*/
+FireComponent::FireComponent()
+	:	_udpSocket(NULL)
+{	
+}
+
+void FireComponent::SetUDPSocket(Socket *socket)
+{
+	_udpSocket = socket;
+}
 
 
 void FireComponent::Update(const DeltaTime &dt){
 	const InputState *in = GetGameObject()->GetInputState();
-	if (in->IsKeyDown(SDLK_e)){
-		// Get position from player
-		Entity* entity = (Entity*)GetGameObject();
-		RayCastUtility callback;
-		Vec2 pos1 (Position().x, Position().y);
+	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT)){
+		// TODO
+		// Display a muzzle flash on the player
 		
-		b2Vec2 p1 = Tob2Vec2(pos1);
-		b2Vec2 p2 = calculateDirection();
+		// TODO
+		// player->GetWorld()->RayCast(&callback, p1, p2);
+		// Display a hit indicator on whatever was hit
 		
-		entity->getWorld()->RayCast(&callback, p1, p2);
-		
-		if (callback.m_fixture != 0){
-			GameObject *go = (Entity*)callback.m_fixture->GetUserData();
-			
-			if (dynamic_cast<Player*>(go)) {
-				printf("You hit something\n");
-			}
-		}
-
-		if (callback.m_fixture == 0){
-			printf("\nDidn't hit anything");
-		}
-		
-		
+		SendFirePacket();
 	}
-
 }
 
 
-b2Vec2 FireComponent::calculateDirection()
+void FireComponent::SendFirePacket()
 {
-	float radFireComp = atan2f(Position().y, Position().x);
-	float degFireComp = Rad2Deg(radFireComp);
+	if (!_udpSocket) {
+		Log::Error("Firing a gun without giving the FireComponent an UDP Socket");
+		return;
+	}
 
-	Vec2 dir(cosf(degFireComp), sinf(degFireComp));
-	dir.x *= FIRE_LENGTH;
-	dir.y *= FIRE_LENGTH;
-	return b2Vec2(Tob2Vec2(dir));
+	Player *player = (Player*)GetGameObject();
+
+	PacketPlayerFire pkt;
+	pkt.type = PACKET_PLAYER_FIRE;
+	pkt.playerID = player->GetPlayerID();
+	pkt.posX = player->Position().x;
+	pkt.posY = player->Position().y;
+	pkt.rotation = player->Rotation();
+
+	_udpSocket->SendPacket(&pkt);
+}
+
+
+/*
+================
+BulletHitTester
+================
+*/
+BulletHitTester::BulletHitTester(LocalPlayer *localp, Socket *udpSocket)
+	:	_localPlayer(localp),
+		_udpSocket(udpSocket)
+{
+}
+
+void BulletHitTester::TestBullet(Vec2 position, float rotation)
+{
+	FireCallback cb(_localPlayer);
+	
+	b2Vec2 p1 = Tob2Vec2(_localPlayer->Position());
+	b2Vec2 p2 = b2Vec2(cosf(Deg2Rad(rotation)), sinf(Deg2Rad(rotation)));
+	p2 *= 1000.f;
+
+	_localPlayer->GetWorld()->RayCast(&cb, p1, p2);
+
+	if (cb.DidHitTargetPlayer()) {
+		SendHitPacket();
+	}
+}
+
+void BulletHitTester::SendHitPacket()
+{
+	PacketPlayerHit pkt;
+	pkt.type = PACKET_PLAYER_HIT;
+	pkt.playerID = _localPlayer->GetPlayerID();
+
+	_udpSocket->SendPacket(&pkt);
+}
+
+
+/*
+================
+FireCallback 
+================
+*/
+FireCallback::FireCallback(Player *targetPlayer) 
+	: 	_targetPlayer(targetPlayer),
+		_hitPlayer(false)
+{
+
+}
+
+float32 FireCallback::ReportFixture(b2Fixture* fixture, const b2Vec2& point, 
+									  const b2Vec2& normal, float32 fraction)
+{
+	_point = point;
+	_normal = normal;
+	_fraction = fraction;
+
+	if (fixture->GetUserData()) {
+		Entity *entity = (Entity*)fixture->GetUserData();
+		Player *player = dynamic_cast<Player*>(entity);
+		if (player) {
+			if (player == _targetPlayer) {
+				_hitPlayer = true;
+			} else {
+				// Ignore all other players
+				return -1.f;
+			}
+		}
+	}
+
+	return fraction;
+}
+
+bool FireCallback::DidHitTargetPlayer()
+{
+	return _hitPlayer;
+}
+
+b2Vec2 FireCallback::GetPoint()
+{
+	return _point;
 }

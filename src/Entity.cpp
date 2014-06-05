@@ -47,10 +47,6 @@ Entity::~Entity()
 	}
 }
 
-b2World* Entity::getWorld() const {
-	return  _world;
-}
-
 
 void Entity::Update(const DeltaTime &dt)
 {
@@ -79,6 +75,17 @@ void Entity::MoveB2Body(Vec2 velocity)
 void Entity::SetPosition(Vec2 position)
 {
 	_body->SetTransform(Tob2Vec2(position), Deg2Rad(Rotation()));
+}
+
+
+b2Body* Entity::GetBody()
+{
+	return _body;
+}
+
+b2World* Entity::GetWorld()
+{
+	return _world;
 }
 
 

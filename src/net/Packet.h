@@ -131,6 +131,9 @@ struct PacketPlayerFire : public Packet {
 	byte* GetSendablePacket(int &packetlen);
 
 	unsigned playerID;
+	float posX;
+	float posY;
+	float rotation;
 };
 
 struct PacketPlayerHit : public Packet {
