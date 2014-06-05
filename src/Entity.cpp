@@ -53,6 +53,7 @@ void Entity::Update(const DeltaTime &dt)
 	GameObject::Update(dt);
 
 	Position() = ToVec2(_body->GetPosition());
+	_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
 }
 
 Vec2 Entity::GetScreenPosition()
@@ -68,9 +69,12 @@ Vec2 Entity::GetScreenPosition()
 
 void Entity::MoveB2Body(Vec2 velocity)
 {
-	b2Vec2 pos = _body->GetPosition();
-	pos += Tob2Vec2(velocity);
-	_body->SetTransform(pos, Deg2Rad(Rotation()));
+	_body->SetLinearVelocity(Tob2Vec2(velocity));
+}
+
+void Entity::SetPosition(Vec2 position)
+{
+	_body->SetTransform(Tob2Vec2(position), Deg2Rad(Rotation()));
 }
 
 
@@ -88,13 +92,14 @@ void Entity::CreateSquareBody(b2BodyType type)
 
 	b2Vec2 dim = Tob2Vec2(GetTexture()->GetDimensions());
 	b2PolygonShape shape;
-	shape.SetAsBox(dim.x, dim.y);
+	shape.SetAsBox(dim.x/2.f, dim.y/2.f);
 	
 	b2FixtureDef fd;
 	fd.isSensor = false;
 	fd.density = 3.5f;
 	fd.userData = this;
 	fd.shape = &shape;
+	fd.friction = 1.f;
 
 	_body = _world->CreateBody(&bd);
 	_body->CreateFixture(&fd);

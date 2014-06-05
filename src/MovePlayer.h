@@ -6,8 +6,8 @@
 	#include <trutle/Trutle.h>
 #endif
 
-#define PLAYER_WALK_SPEED 100
-#define PLAYER_SPRINT_SPEED 140
+#define PLAYER_WALK_SPEED 150
+#define PLAYER_SPRINT_SPEED 200
 
 class MovePlayer :public Component {
 public:
@@ -16,5 +16,7 @@ public:
 
 	MovePlayer();
 	void Update(const DeltaTime &dt);
+
+private:
 };
 

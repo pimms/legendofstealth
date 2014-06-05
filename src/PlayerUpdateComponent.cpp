@@ -54,9 +54,14 @@ void PlayerUpdateComponent::SendUpdatePacket()
 
 void PlayerUpdateComponent::HandleUpdatePacket(const PacketPlayerUpdate *packet)
 {
-	Position().x = packet->posX;
-	Position().y = packet->posY;
 	Rotation() = packet->rotation;
+
+	Vec2 position;
+	position.x = packet->posX;
+	position.y = packet->posY;
+
+	Entity *entity = (Entity*)GetGameObject();
+	entity->SetPosition(position);
 }
 
 

@@ -86,7 +86,7 @@ RemotePlayer Public
 RemotePlayer::RemotePlayer(b2World *world, Team team, unsigned playerID)
 	:	Player(world, team, playerID)
 {
-	
+	_body->SetType(b2_staticBody);
 }
 
 
