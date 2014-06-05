@@ -47,17 +47,15 @@ Entity::~Entity()
 	}
 }
 
-b2World* Entity::getWorld() const {
-	return  _world;
-}
-
 
 void Entity::Update(const DeltaTime &dt)
 {
 	GameObject::Update(dt);
 
-	Position() = ToVec2(_body->GetPosition());
-	_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
+	if (_body) {
+		Position() = ToVec2(_body->GetPosition());
+		_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
+	}
 }
 
 Vec2 Entity::GetScreenPosition()
@@ -70,7 +68,6 @@ Vec2 Entity::GetScreenPosition()
 	return pos;
 }
 
-
 void Entity::MoveB2Body(Vec2 velocity)
 {
 	_body->SetLinearVelocity(Tob2Vec2(velocity));
@@ -79,6 +76,17 @@ void Entity::MoveB2Body(Vec2 velocity)
 void Entity::SetPosition(Vec2 position)
 {
 	_body->SetTransform(Tob2Vec2(position), Deg2Rad(Rotation()));
+}
+
+
+b2Body* Entity::GetBody()
+{
+	return _body;
+}
+
+b2World* Entity::GetWorld()
+{
+	return _world;
 }
 
 

@@ -4,11 +4,9 @@
 #include "net/Socket.h"
 #include "LightSource.h"
 #include "GameScene.h"
-<<<<<<< HEAD
-#include "FireCompnent.h"
-=======
+#include "FireComponent.h"
 #include "MovePlayer.h"
->>>>>>> 28c3e50a868b28877471b9155ffa30211af917eb
+#include "Hack.h"
 
 
 /*
@@ -71,8 +69,14 @@ LocalPlayer::LocalPlayer(b2World *world, Team team, unsigned playerID, Socket *u
 		_udpSocket(udpSocket)
 {
 	AddComponent<MovePlayer>(this);
-	AddComponent<FireComponent>(this);
 	_updateComponent->SetUDPSocket(_udpSocket);
+
+	if (team == TEAM_MERC) {
+		AddComponent<FireComponent>(this);
+		GetComponent<FireComponent>(this)->SetUDPSocket(udpSocket);
+	} else if (team == TEAM_SPY) {
+		AddComponent<Hacker>(this);
+	}
 }
 
 
