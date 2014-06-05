@@ -9,12 +9,14 @@ Hackable::Hackable() {}
 
 void Hackable::Update(const DeltaTime &dt) 
 {
-	_position = Position();
+	_hackablepos = Position();
+
+	printf("Position of TERMINAL: %f, %f\n", _position.x, _position.y);
 
 	if (_hacking)
 	{
 		_hacktime -= dt.dt;
-		printf("%f\n", _hacktime);
+		printf("Hacking remaining: %f\n", _hacktime);
 	}
 
 	if (_hacktime <= 0) 
@@ -25,34 +27,17 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_hackinter)
 	{
+		printf("Time until terminal RESET: %f\n", _resettime);
 		_hacking = false;
 		_resettime -= dt.dt;
 	}
 
 	if (_resettime <= 0)
 	{
+		_hackinter = false;
+		_resettime = RESET_TIME;
 		_hacktime = HACKTIME;
 	}
-}
-
-void Hackable::StartHack() {
-	_hacking = true;
-}
-
-void Hackable::HackInterrupt() {
-	_hackinter = true;
-}
-
-bool Hackable::GetCurHacking() {
-	return _hacking;
-}
-
-bool Hackable::HackIsFinished() {
-	return _hackdone;
-}
-
-Vec2 Hackable::GetTmPosition() {
-	return _position;
 }
 
 /*
@@ -67,23 +52,30 @@ void Hacker::Update(const DeltaTime &dt) {
 	GameScene *scene = (GameScene*)GetGameObject()->GetScene();
 	vector<RemotePlayer*> rp = scene->GetRemotePlayers();
 
-	vector<Vec2> positions = GetPositions(rp);
-	Vec2 tmpos = hackable.GetTmPosition();
+	printf("Position of SPY: %f, %f\n", Position().x, Position().y);
 
-	if (hackable.HackIsFinished())
+	//vector<Vec2> positions = GetPositions(rp);
+	Vec2 tmpos = _hackablepos;
+	printf("Position of TERMINAL: %f, %f\n", tmpos.x, tmpos.y);
+
+	if (PlayerInPosition(_hackablepos))
 	{
-		hacked = true;
+		printf("Start hacking NOW!\n");
 	}
 
-	if (PlayerInPosition(positions, tmpos) 
-		&& in->IsKeyDown(SDLK_h) && !hacked)
+	if (PlayerInPosition(_hackablepos) 
+		&& in->IsKeyDown(SDLK_h) && !_hackdone)
 	{
-		hackable.StartHack();
+		_hacking = true;
 	}
 
-	if (!PlayerInHackingArea(positions, tmpos) && hackable.GetCurHacking() && !hacked)
+	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
 	{
-		hackable.HackInterrupt();
+		_hackinter = true;
+	} else if (PlayerInHackingArea(_hackablepos) && !_hacking && !_hackdone && _hackinter) {
+		_hackinter = false;
+		_resettime = RESET_TIME;
+		_hacking = true;
 	}
 }
 
@@ -103,8 +95,10 @@ vector<Vec2> Hacker::GetPositions(vector<RemotePlayer*> rp)
 	return pos;
 }
 
-bool Hacker::PlayerInPosition(vector<Vec2> pos, Vec2 tmpos)
+bool Hacker::PlayerInPosition(Vec2 tmpos)
 {
+	printf("HACK_RADIUS: %f\n", HACK_RADIUS);
+	printf("Position of Player: %f, %f\n", tmpos.x, tmpos.y);
 	if ((Position().x >= (tmpos.x - HACK_RADIUS)) &&
 		(Position().x <= (tmpos.x + HACK_RADIUS)) &&
 		(Position().y >= (tmpos.y - HACK_RADIUS)) &&
@@ -117,8 +111,9 @@ bool Hacker::PlayerInPosition(vector<Vec2> pos, Vec2 tmpos)
 
 }
 
-bool Hacker::PlayerInHackingArea(vector<Vec2> pos, Vec2 tmpos)
+bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 {
+	/*
 	for (int i = 0; i < pos.size(); i++)
 	{
 		if ((pos[i].x >= (tmpos.x - AREA_RADIUS)) &&
@@ -130,5 +125,17 @@ bool Hacker::PlayerInHackingArea(vector<Vec2> pos, Vec2 tmpos)
 		} else {
 			return false;
 		}
+	}
+	*/
+
+	if ((Position().x >= (tmpos.x - AREA_RADIUS)) &&
+		(Position().x <= (tmpos.x + AREA_RADIUS)) &&
+		(Position().y >= (tmpos.y - AREA_RADIUS)) &&
+		(Position().y <= (tmpos.y + AREA_RADIUS)))
+	{
+		return true;
+	} else {
+		printf("SPY has left the hacking area!\n");
+		return false;
 	}
 }
