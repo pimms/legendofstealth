@@ -12,12 +12,12 @@
 const float HACKTIME = 100;
 const float RESET_TIME = 10;
 
-Vec2 _hackablepos;
-bool _hacking = false;
-bool _hackdone = false;
-bool _hackinter = false;
-float _hacktime = HACKTIME;
-float _resettime = RESET_TIME;
+static Vec2 _hackablepos;
+static bool _hacking = false;
+static bool _hackdone = false;
+static bool _hackinter = false;
+static float _hacktime = HACKTIME;
+static float _resettime = RESET_TIME;
 
 class Hackable : public Component {
 	public:
