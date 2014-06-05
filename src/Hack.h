@@ -8,6 +8,7 @@
 
 #include "GameScene.h"
 #include "Player.h"
+#include "Overlayer.h"
 
 const float HACKTIME = 100;
 const float RESET_TIME = 10;

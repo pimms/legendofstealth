@@ -117,18 +117,6 @@ bool GameScene::HandlePacket(const Packet *packet)
 	return false;
 }
 
-
-/*
-{
-	return _localPlayer;
-}
-
-vector<RemotePlayer*> GameScene::GetRemotePlayers() 
-{
-	return _remotePlayers;
-}
-*/
-
 ShadowLayer* GameScene::GetShadowLayer()
 {
 	return _shadowLayer;
@@ -152,6 +140,9 @@ void GameScene::LoadInfrastructure()
 
 	_shadowLayer = new ShadowLayer(_gameLayer);
 	AddLayer(_shadowLayer);
+
+	_overlayer = new Overlayer();
+	AddLayer(_overlayer);	
 }
 
 void GameScene::CreateB2World()
@@ -197,6 +188,7 @@ void GameScene::LoadMap()
 	}
 
 	LoadTerminal();
+	LoadOverlay();
 }
 
 
@@ -245,4 +237,9 @@ void GameScene::LoadTerminal()
 {
 	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
 	_gameLayer->AddChild(_terminal);
+}
+
+void GameScene::LoadOverlay() 
+{
+	_overlay = new Overlayer();
 }

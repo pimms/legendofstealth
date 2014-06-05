@@ -12,15 +12,17 @@
 #include <Box2D/Box2D.h>
 #include "net/Packet.h"
 #include "ShadowLayer.h"
+#include "Overlayer.h"
 
 
-
+class Overlayer;
 class ShadowLayer;
 class RemotePlayer;
 class LocalPlayer;
 class Player;
 class Socket;
 class Terminal;
+class Overlayer;
 
 class GameScene : public Scene {
 public:
@@ -52,11 +54,14 @@ private:
 	
 	Layer *_gameLayer;
 	ShadowLayer *_shadowLayer;
+	Overlayer *_overlayer;
+
 
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
 
 	Terminal *_terminal;
+	Overlayer *_overlay;
 
 
 	// Call the load methods in the order in which they appear plssss.
@@ -71,4 +76,5 @@ private:
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
 	void LoadTerminal();
+	void LoadOverlayer();
 };

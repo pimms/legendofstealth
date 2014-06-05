@@ -12,5 +12,4 @@ class Terminal : public Entity {
 	public:
 		Terminal(b2World *world, string texture, Vec2 pos);
 		~Terminal();
-
 };

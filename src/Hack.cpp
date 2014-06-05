@@ -48,19 +48,19 @@ Hacker::Hacker() {}
 
 void Hacker::Update(const DeltaTime &dt) {
 	const InputState *in = GetGameObject()->GetInputState();
-	GameScene *scene = (GameScene*)GetGameObject()->GetScene();
-	vector<RemotePlayer*> rp = scene->GetRemotePlayers();
+	//GameScene *scene = (GameScene*)GetGameObject()->GetScene();
+	//vector<RemotePlayer*> rp = scene->GetRemotePlayers();
 
 	//vector<Vec2> positions = GetPositions(rp);
 	Vec2 tmpos = _hackablepos;
 
 	if (PlayerInPosition(_hackablepos) && !_hacking)
 	{
-		printf("Start hacking NOW, by pressing 'H'!\n");
+		printf("Start hacking NOW, by pressing 'E'!\n");
 	}
 
 	if (PlayerInPosition(_hackablepos) 
-		&& in->IsKeyDown(SDLK_h) && !_hackdone)
+		&& in->IsKeyDown(SDLK_e) && !_hackdone)
 	{
 		_hacking = true;
 	}
