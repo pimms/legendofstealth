@@ -24,7 +24,8 @@ class Hackable : public Component {
 	private:
 		const float HACKTIME = 100;
 		const float RESET_TIME = 10;
-		
+
+		Vec2 _position;
 
 		bool _hacking = false;
 		bool _hackdone = false;
