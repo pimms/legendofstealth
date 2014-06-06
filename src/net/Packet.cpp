@@ -43,6 +43,9 @@ string PacketTypeStr(PacketType type)
 		case PACKET_PLAYER_HACK:
 			return "PACKET_PLAYER_HACK";
 			break;
+		case PACKET_HACK_COMPLETE:
+			return "PACKET_HACK_COMPLETE";
+			break;
 	}
 }
 
@@ -284,4 +287,15 @@ WRITE_METHOD_BEGIN(PacketPlayerHack)
 WRITE_LONG(playerID)
 WRITE_LONG(terminalID)
 WRITE_BYTE(isHacking)
+WRITE_METHOD_END
+
+// PacketHackComplete
+FILL_METHOD_BEGIN(PacketHackComplete)
+READ_UINT(playerID)
+READ_UINT(terminalID)
+FILL_METHOD_END
+
+WRITE_METHOD_BEGIN(PacketHackComplete)
+WRITE_LONG(playerID)
+WRITE_LONG(terminalID)
 WRITE_METHOD_END

@@ -64,6 +64,9 @@ void GameScene::LoadContent()
 
 	_rayDraw = new RayDebugDraw();
 	_gameLayer->AddChild(_rayDraw);
+
+	_overlay = new Hackoverlay;
+	AddLayer(_overlay);
 }
 
 void GameScene::Update(const DeltaTime &dt)
@@ -84,6 +87,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 			HandlePacketPlayerUpdate((PacketPlayerUpdate*)packet);
 			return true;
 
+		
 		case PACKET_JOIN_RESPONSE:
 		{
 			PacketJoinResponse *pjr = (PacketJoinResponse*)packet;
@@ -123,6 +127,26 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return true;
 		}
 
+		case PACKET_PLAYER_HACK:
+		{
+			PacketPlayerHack *pph = (PacketPlayerHack*)packet;
+			if (pph->isHacking) 
+				LoadOverlay("res/yellow.png");
+			else
+				RemoveOverlay("");
+			return true;
+		}
+
+		case PACKET_HACK_COMPLETE:
+		{
+			PacketHackComplete *phc = (PacketHackComplete*)packet;
+			printf("--------------------------------\n");
+			printf("---------- GAME OVER -----------\n");
+			printf("--------------------------------\n");
+			printf("\n Player %i hacked the terminal successfully\n", phc->playerID);
+			return true;
+		}
+
 		default:
 			return false;
 	}
@@ -142,12 +166,12 @@ Layer* GameScene::GetGameLayer()
 
 void GameScene::LoadOverlay(string texture) 
 {
-	_overlay = new Hackoverlay(_world, texture, Vec2(200.f, 100.f));
-	_overlayer->AddChild(_overlay);
+	_overlay->SetVisible(true);
+	_overlay->SetTexture(texture);
 }
 
 void GameScene::RemoveOverlay(string texture) {
-	_overlayer->RemoveChild(_overlay);
+	_overlay->SetVisible(false);
 }
 
 /*

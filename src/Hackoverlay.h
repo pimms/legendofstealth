@@ -8,8 +8,14 @@
 
 #include "Entity.h"
 
-class Hackoverlay : public Entity {
-	public:
-		Hackoverlay(b2World *world, string texture, Vec2 pos);
-		~Hackoverlay();
+class Hackoverlay : public Layer {
+public:
+	Hackoverlay();
+	~Hackoverlay();
+
+	void SetTexture(string texture);
+
+private:
+	GameObject *_go;
 };
+
