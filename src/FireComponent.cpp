@@ -76,7 +76,7 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 	_localPlayer->GetWorld()->RayCast(&cb, _p1, _p2);
 
 	if (cb.DidHitTargetPlayer()) {
-		Log::Debug("I got hit by a bullet :(");
+		_localPlayer->DeductHP();
 		SendHitPacket();
 	}
 }

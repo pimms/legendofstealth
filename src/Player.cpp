@@ -84,9 +84,8 @@ void Player::Update(const DeltaTime &dt)
 
 void Player::Respawn()
 {
-	// TODO
-	// Set health to full
-	Position() = _spawnPosition;
+	hp = 5;
+	SetPosition(_spawnPosition);
 }
 
 void Player::DisplayMuzzleFlash()
@@ -99,6 +98,14 @@ void Player::DisplayBloodSplat()
 {
 	if (_splat)
 		_splat->Show();
+}
+
+void Player::DeductHP() {
+	Log::Error("OUCH");
+	hp--;
+
+	if (hp == 0) 
+		Respawn();
 }
 
 
@@ -129,7 +136,6 @@ void LocalPlayer::Update(const DeltaTime &dt)
 	Player::Update(dt);
 	_updateComponent->SendUpdatePacket();
 }
-
 
 /*
 ================

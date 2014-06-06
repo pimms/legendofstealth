@@ -23,6 +23,7 @@ public:
 
 	void Update(const DeltaTime &dt);
 
+	void DeductHP();
 	void Respawn();
 
 	void DisplayMuzzleFlash();
@@ -39,6 +40,7 @@ private:
 	MuzzleFlash *_flash;
 	BloodSplat *_splat;
 
+	int hp = 5;
 	Vec2 _spawnPosition;
 };
 
