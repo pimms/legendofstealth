@@ -44,4 +44,5 @@ private:
 	void DrawRenderTexture();
 
 	bool ShouldDrawLight(LightSource *source);
+	bool WillLightHitCaster(LightSource *source, ShadowCaster *caster);
 };

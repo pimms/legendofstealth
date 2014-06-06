@@ -138,6 +138,9 @@ vector<Vec2> ShadowLayer::GetShadowVertices(LightSource *source)
 
 	for (int i=0; i<_shadowCasters.size(); i++) {
 		ShadowCaster *caster = _shadowCasters[i];
+		if (!WillLightHitCaster(source, caster))
+			continue;
+
 		vector<Vec2> shape = caster->GetShapeVertices();
 		Vec2 p = source->WorldPosition();
 		
@@ -237,4 +240,15 @@ bool ShadowLayer::ShouldDrawLight(LightSource *source)
 	Rect s(-lp.x, -lp.y, 1280.f, 720.f);
 
 	return l.Overlaps(s);
+}
+
+bool ShadowLayer::WillLightHitCaster(LightSource *source, ShadowCaster *caster)
+{
+	Vec2 lp = source->Position();
+	float rad = source->GetLightDistance();
+	Rect l(	lp.x - rad, lp.y - rad, rad, rad);
+
+	Rect c = caster->GetAABB();
+
+	return l.Overlaps(c);
 }

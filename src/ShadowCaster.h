@@ -10,4 +10,5 @@
 class ShadowCaster  {
 public:
 	virtual vector<Vec2> GetShapeVertices() = 0;
+	virtual Rect GetAABB() = 0;
 };
