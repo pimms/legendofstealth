@@ -58,6 +58,9 @@ enum PacketType {
 
 	// Sent from client upon beginning or ending a hack
 	PACKET_PLAYER_HACK,
+
+	// Sent from a client upon completing a hack
+	PACKET_HACK_COMPLETE,
 };
 
 string PacketTypeStr(PacketType type);
@@ -152,3 +155,10 @@ struct PacketPlayerHack : public Packet {
 	bool isHacking;
 };
 
+struct PacketHackComplete : public Packet {
+	int FillPacketFromBuffer(byte *buffer, int len);
+	byte* GetSendablePacket(int &packetlen);
+
+	unsigned playerID;
+	unsigned terminalID;
+};

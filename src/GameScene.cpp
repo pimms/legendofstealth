@@ -86,6 +86,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 			HandlePacketPlayerUpdate((PacketPlayerUpdate*)packet);
 			return true;
 
+		
 		case PACKET_JOIN_RESPONSE:
 		{
 			PacketJoinResponse *pjr = (PacketJoinResponse*)packet;
@@ -122,6 +123,26 @@ bool GameScene::HandlePacket(const Packet *packet)
 		{	
 			PacketPlayerHit *pph = (PacketPlayerHit*)packet;
 			HandlePacketPlayerHit(pph);
+			return true;
+		}
+
+		case PACKET_PLAYER_HACK:
+		{
+			PacketPlayerHack *pph = (PacketPlayerHack*)packet;
+			if (pph->isHacking) 
+				LoadOverlay("res/yellow.png");
+			else
+				RemoveOverlay("");
+			return true;
+		}
+
+		case PACKET_HACK_COMPLETE:
+		{
+			PacketHackComplete *phc = (PacketHackComplete*)packet;
+			printf("--------------------------------\n");
+			printf("---------- GAME OVER -----------\n");
+			printf("--------------------------------\n");
+			printf("\n Player %i hacked the terminal successfully\n", phc->playerID);
 			return true;
 		}
 
