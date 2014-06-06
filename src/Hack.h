@@ -9,7 +9,7 @@
 #include "GameScene.h"
 #include "Player.h"
 
-const float HACKTIME = 100;
+const float HACKTIME = 30;
 const float RESET_TIME = 10;
 
 static Vec2 _hackablepos;
