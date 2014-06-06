@@ -56,3 +56,8 @@ void Walls::Render(Renderer *renderer)
 		Entity::Render(renderer);
 	}
 }
+
+Rect Walls::GetAABB()
+{
+	return GetShadowRect();
+}

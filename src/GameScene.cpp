@@ -150,7 +150,7 @@ void GameScene::LoadInfrastructure()
 	AddLayer(_gameLayer);
 
 	_shadowLayer = new ShadowLayer(_gameLayer);
-	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 0.5f));
+	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 1.f));
 	AddLayer(_shadowLayer);
 
 	_overlayer = new Layer();
@@ -164,7 +164,10 @@ void GameScene::CreateB2World()
 
 void GameScene::LoadMap()
 {
-	InitalizeMap("res/bg.png", Vec2(1, 1), Vec2(320.f, 240.f), 1);
+	GameObject *bg = new GameObject();
+	bg->LoadTexture("res/background.png");
+	bg->Pivot() = Vec2(0.f, 0.f);
+	_gameLayer->AddChild(bg);
 	
 	// Walls (1,7)
 	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
@@ -413,7 +416,6 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 
 {
 	LightSource* temp = new LightSource;
-	temp->LoadTexture(name);
 	temp->SetLightDistance(lightDist);
 	pos.x *= yolo;
 	pos.y *= yolo;
@@ -430,6 +432,5 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 		Color c(0.f, 0.f, 1.f, 1.f);
 		temp->SetColor(c);
 	}
-
 }
 

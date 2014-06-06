@@ -5,9 +5,11 @@ class Walls :public Entity , public ShadowCaster
 {
 public:
 	Walls(b2World *world, string texture);
-	virtual vector<Vec2> GetShapeVertices();
 	Rect GetShadowRect();
 
 	void Render(Renderer *renderer);
+
+	virtual vector<Vec2> GetShapeVertices();
+	virtual Rect GetAABB();
 };
 
