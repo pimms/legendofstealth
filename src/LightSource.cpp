@@ -184,9 +184,8 @@ ConeLightSource Public
 ================
 */
 ConeLightSource::ConeLightSource()
-	:	_angle(120.f)
+	:	_angle(100.f)
 {
-
 }
 
 void ConeLightSource::CreateLightTexture()

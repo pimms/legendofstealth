@@ -46,9 +46,14 @@ public:
 
 	void TestBullet(Vec2 position, float rotation);
 
+	void GetLine(b2Vec2 &p1, b2Vec2 &p2);
+
 private:
 	LocalPlayer *_localPlayer;
 	Socket *_udpSocket;
+
+	b2Vec2 _p1;
+	b2Vec2 _p2;
 
 	void SendHitPacket();
 };

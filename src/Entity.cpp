@@ -54,10 +54,7 @@ void Entity::Update(const DeltaTime &dt)
 
 	if (_body) {
 		_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
-
 		Vec2 bpos = ToVec2(_body->GetPosition());
-		//bpos.x -= GetTexture()->GetDimensions().x * (0.5f - Pivot().x);
-		//bpos.y -= GetTexture()->GetDimensions().y * (0.5f - Pivot().y);
 		Position() = bpos;
 	}
 }

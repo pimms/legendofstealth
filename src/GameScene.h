@@ -23,6 +23,7 @@ class Socket;
 class Terminal;
 class Overlayer;
 class Hackoverlay;
+class RayDebugDraw;
 
 class GameScene : public Scene {
 public:
@@ -66,6 +67,8 @@ private:
 
 	Terminal *_terminal;
 	Hackoverlay *_overlay;
+
+	RayDebugDraw *_rayDraw;
 
 
 	// Call the load methods in the order in which they appear plssss.
