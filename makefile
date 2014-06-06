@@ -1,5 +1,5 @@
 CXX=g++
-LIBS=-ltrutle -lSDL2 -lSDL2_image -lSDL2_net -lGL -lGLU -lGLEW -lBox2D -lSDL_TTF
+LIBS=-ltrutle -lSDL2 -lSDL2_image -lSDL2_net -lGL -lGLU -lGLEW -lBox2D
 FLG=-std=gnu++0x -g
 GAME_OUT=game
 SERV_OUT=serv

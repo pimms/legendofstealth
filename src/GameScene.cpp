@@ -8,6 +8,7 @@
 #include "FireComponent.h"
 #include "Terminal.h"
 #include "Walls.h"
+#include "Hackoverlay.h"
 
 GameScene* GameScene::_singleton = NULL;
 
@@ -127,6 +128,16 @@ Layer* GameScene::GetGameLayer()
 	return _gameLayer;
 }
 
+void GameScene::LoadOverlay(string texture) 
+{
+	_overlay = new Hackoverlay(_world, texture, Vec2(200.f, 100.f));
+	_overlayer->AddChild(_overlay);
+}
+
+void GameScene::RemoveOverlay(string texture) {
+
+}
+
 /*
 ================
 GameScene private
@@ -141,7 +152,7 @@ void GameScene::LoadInfrastructure()
 	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 0.5f));
 	AddLayer(_shadowLayer);
 
-	_overlayer = new Overlayer();
+	_overlayer = new Layer();
 	AddLayer(_overlayer);	
 }
 
@@ -317,7 +328,6 @@ void GameScene::LoadMap()
 	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(23, 32));
 
 	LoadTerminal();
-	LoadOverlay();
 }
 
 
@@ -367,6 +377,7 @@ void GameScene::LoadTerminal()
 	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
 	_gameLayer->AddChild(_terminal);
 }
+
 
 
 void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
@@ -421,7 +432,3 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 
 }
 
-void GameScene::LoadOverlay() 
-{
-	_overlay = new Overlayer();
-}

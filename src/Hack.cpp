@@ -9,18 +9,32 @@ Hackable::Hackable() {}
 
 void Hackable::Update(const DeltaTime &dt) 
 {
+	scene = (GameScene*)GetGameObject()->GetScene();
 	_hackablepos = Position();
 
 	if (_hacking)
 	{
+		CheckProgress();
 		_hacktime -= dt.dt;
 		printf("Hacking remaining: %f\n", _hacktime);
 	}
 
 	if (_hacktime <= 0) 
 	{
+		scene->LoadOverlay("redhackcomplete.png");
+		scene->RemoveOverlay("red.png");
 		_hackdone = true;
 		_hacking = false;
+	}
+
+	if (_hackdone)
+	{
+		_showhackdone -= dt.dt;
+	}
+
+	if (_showhackdone <= 0)
+	{
+		scene->RemoveOverlay("redhackcomplete.png");
 	}
 
 	if (_hackinter)
@@ -36,6 +50,19 @@ void Hackable::Update(const DeltaTime &dt)
 		_hackinter = false;
 		_resettime = RESET_TIME;
 		_hacktime = HACKTIME;
+	}
+}
+
+void Hackable::CheckProgress() {
+	if ((HACKTIME / _hacktime) <= 3/3)
+	{
+		scene->LoadOverlay("green.png");
+	} else if ((HACKTIME / _hacktime) <= (2/3)) {
+		scene->LoadOverlay("yellow.png");
+		scene->RemoveOverlay("green.png");
+	} else if ((HACKTIME / _hacktime) <= (1/3)) {
+		scene->LoadOverlay("red.png");
+		scene->RemoveOverlay("yellow.png");
 	}
 }
 
