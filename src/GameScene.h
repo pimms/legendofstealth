@@ -70,8 +70,6 @@ private:
 	Terminal *_terminal;
 	Hackoverlay *_overlay;
 
-	RayDebugDraw *_rayDraw;
-
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..

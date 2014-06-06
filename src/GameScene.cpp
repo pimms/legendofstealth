@@ -61,12 +61,10 @@ void GameScene::LoadContent()
 	CreateB2World();
 	LoadMap();
 
-
-	_rayDraw = new RayDebugDraw();
-	_gameLayer->AddChild(_rayDraw);
-
 	_overlay = new Hackoverlay;
 	AddLayer(_overlay);
+
+	LoadOverlay("res/green.png");
 }
 
 void GameScene::Update(const DeltaTime &dt)
@@ -327,10 +325,6 @@ void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
 
 	BulletHitTester hit(_localPlayer, _udpSocket);
 	hit.TestBullet(pos, packet->rotation);
-
-	b2Vec2 p1, p2;
-	hit.GetLine(p1, p2);
-	_rayDraw->SetRay(p1, p2);
 
 	for (int i=0; i<_remotePlayers.size(); i++) {
 		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {

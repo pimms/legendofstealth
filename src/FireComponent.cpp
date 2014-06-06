@@ -77,6 +77,7 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 
 	if (cb.DidHitTargetPlayer()) {
 		_localPlayer->DeductHP();
+		_localPlayer->DisplayBloodSplat();
 		SendHitPacket();
 	}
 }
