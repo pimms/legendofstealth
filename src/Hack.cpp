@@ -22,7 +22,7 @@ void Hackable::Update(const DeltaTime &dt)
 	if (_hacktime <= 0) 
 	{
 		scene->LoadOverlay("redhackcomplete.png");
-		scene->RemoveOverlay("red.png");
+		//scene->RemoveOverlay("red.png");
 		_hackdone = true;
 		_hacking = false;
 	}
@@ -34,7 +34,7 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_showhackdone <= 0)
 	{
-		scene->RemoveOverlay("redhackcomplete.png");
+		//scene->RemoveOverlay("redhackcomplete.png");
 	}
 
 	if (_hackinter)
@@ -54,15 +54,14 @@ void Hackable::Update(const DeltaTime &dt)
 }
 
 void Hackable::CheckProgress() {
-	if ((HACKTIME / _hacktime) <= 3/3)
-	{
+	if ((HACKTIME / _hacktime) <= 3/3) {
 		scene->LoadOverlay("green.png");
 	} else if ((HACKTIME / _hacktime) <= (2/3)) {
 		scene->LoadOverlay("yellow.png");
-		scene->RemoveOverlay("green.png");
+		//scene->RemoveOverlay("green.png");
 	} else if ((HACKTIME / _hacktime) <= (1/3)) {
 		scene->LoadOverlay("red.png");
-		scene->RemoveOverlay("yellow.png");
+		//scene->RemoveOverlay("yellow.png");
 	}
 }
 

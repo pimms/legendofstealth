@@ -135,7 +135,7 @@ void GameScene::LoadOverlay(string texture)
 }
 
 void GameScene::RemoveOverlay(string texture) {
-
+	_overlayer->RemoveChild(_overlay);
 }
 
 /*
