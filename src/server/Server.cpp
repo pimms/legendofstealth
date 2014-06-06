@@ -151,6 +151,20 @@ void Server::HandlePacket(Packet *packet)
 				break;
 			}
 
+		case PACKET_HACK_COMPLETE:
+			{
+				PacketHackComplete *pkt = (PacketHackComplete*)packet;
+				AddPacketToPlayerQueue(pkt, pkt->playerID);
+				break;
+			}
+
+		case PACKET_PLAYER_HACK:
+			{
+				PacketPlayerHack *pkt = (PacketPlayerHack*)packet;
+				AddPacketToPlayerQueue(pkt, pkt->playerID);
+				break;
+			}
+
 		default:
 			Log::Warning("Received packet but was unable to handle it: " + PacketTypeStr(packet->type));
 			delete packet;
