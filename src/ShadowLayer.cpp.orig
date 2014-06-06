@@ -82,16 +82,13 @@ void ShadowLayer::Render(Renderer *renderer)
 	}
 
 	glDisable(GL_STENCIL_TEST);
+	renderer->PopTransform();
 <<<<<<< HEAD
 	renderer->PopTransform();
-
-	DrawFillShadow();
-	renderer->PopTransform();
 =======
-	renderer->PopTransform();
 
+>>>>>>> 4112e11edaf12be781d64b9f04456395beec88ff
 	DrawFillShadow();
->>>>>>> fkn shit
 	_renderTexture->UnbindFBO();
 
 	glPushMatrix();
@@ -248,7 +245,6 @@ bool ShadowLayer::ShouldDrawLight(LightSource *source)
 
 	return l.Overlaps(s);
 }
-<<<<<<< HEAD
 
 bool ShadowLayer::WillLightHitCaster(LightSource *source, ShadowCaster *caster)
 {
@@ -260,5 +256,3 @@ bool ShadowLayer::WillLightHitCaster(LightSource *source, ShadowCaster *caster)
 
 	return l.Overlaps(c);
 }
-=======
->>>>>>> fkn shit
