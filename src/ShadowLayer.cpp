@@ -83,7 +83,7 @@ void ShadowLayer::Render(Renderer *renderer)
 
 	glDisable(GL_STENCIL_TEST);
 	renderer->PopTransform();
-	renderer->PopTransform();
+
 	DrawFillShadow();
 	_renderTexture->UnbindFBO();
 
