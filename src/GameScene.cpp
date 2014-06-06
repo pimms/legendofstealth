@@ -63,6 +63,9 @@ void GameScene::LoadContent()
 
 	_rayDraw = new RayDebugDraw();
 	_gameLayer->AddChild(_rayDraw);
+
+	_overlay = new Hackoverlay;
+	AddLayer(_overlay);
 }
 
 void GameScene::Update(const DeltaTime &dt)
@@ -141,12 +144,12 @@ Layer* GameScene::GetGameLayer()
 
 void GameScene::LoadOverlay(string texture) 
 {
-	_overlay = new Hackoverlay(_world, texture, Vec2(200.f, 100.f));
-	_overlayer->AddChild(_overlay);
+	_overlay->SetVisible(true);
+	_overlay->SetTexture(texture);
 }
 
 void GameScene::RemoveOverlay(string texture) {
-	_overlayer->RemoveChild(_overlay);
+	_overlay->SetVisible(false);
 }
 
 /*

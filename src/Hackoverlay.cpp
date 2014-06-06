@@ -1,10 +1,18 @@
 #include "Hackoverlay.h"
 
-Hackoverlay::Hackoverlay(b2World *world, string texture, Vec2 pos) : Entity(world) {
-	LoadTexture(texture);
-	Position() = pos;
+Hackoverlay::Hackoverlay() 
+	:	_go(NULL)
+{
+	_go = new GameObject();
+	AddChild(_go);
 }
 
 Hackoverlay::~Hackoverlay() {
 
+}
+
+
+void Hackoverlay::SetTexture(string texture)
+{
+	_go->LoadTexture(texture);
 }
