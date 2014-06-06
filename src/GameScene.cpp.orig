@@ -8,7 +8,9 @@
 #include "FireComponent.h"
 #include "Terminal.h"
 #include "Walls.h"
+#include "Hackoverlay.h"
 
+//
 GameScene* GameScene::_singleton = NULL;
 
 
@@ -127,6 +129,16 @@ Layer* GameScene::GetGameLayer()
 	return _gameLayer;
 }
 
+void GameScene::LoadOverlay(string texture) 
+{
+	_overlay = new Hackoverlay(_world, texture, Vec2(200.f, 100.f));
+	_overlayer->AddChild(_overlay);
+}
+
+void GameScene::RemoveOverlay(string texture) {
+	_overlayer->RemoveChild(_overlay);
+}
+
 /*
 ================
 GameScene private
@@ -138,10 +150,10 @@ void GameScene::LoadInfrastructure()
 	AddLayer(_gameLayer);
 
 	_shadowLayer = new ShadowLayer(_gameLayer);
-	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 0.5f));
+	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 1.f));
 	AddLayer(_shadowLayer);
 
-	_overlayer = new Overlayer();
+	_overlayer = new Layer();
 	AddLayer(_overlayer);	
 }
 
@@ -152,7 +164,15 @@ void GameScene::CreateB2World()
 
 void GameScene::LoadMap()
 {
+<<<<<<< HEAD
+	GameObject *bg = new GameObject();
+	bg->LoadTexture("res/background.png");
+	bg->Pivot() = Vec2(0.f, 0.f);
+	_gameLayer->AddChild(bg);
+=======
 	InitalizeMap("res/bg.png", Vec2(1, 1), Vec2(320.f, 240.f), 1);
+>>>>>>> fkn shit
+	
 	// Walls (1,7)
 	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
 	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 53));
@@ -317,7 +337,6 @@ void GameScene::LoadMap()
 	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(23, 32));
 
 	LoadTerminal();
-	LoadOverlay();
 }
 
 
@@ -368,12 +387,7 @@ void GameScene::LoadTerminal()
 	_gameLayer->AddChild(_terminal);
 }
 
-<<<<<<< HEAD
-void GameScene::LoadOverlay() 
-{
-	_overlay = new Overlayer();
-}
-=======
+
 
 void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
 {
@@ -406,9 +420,7 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 
 {
 	LightSource* temp = new LightSource;
-	temp->LoadTexture(name);
 	temp->SetLightDistance(lightDist);
-	temp->Scale() = scale;
 	pos.x *= yolo;
 	pos.y *= yolo;
 	temp->Position() = pos;
@@ -424,6 +436,5 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 		Color c(0.f, 0.f, 1.f, 1.f);
 		temp->SetColor(c);
 	}
-
 }
->>>>>>> 5b6d9ea3064ed5613540ebfaa55fbea6d513d3c6
+

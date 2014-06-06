@@ -395,6 +395,7 @@ void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
 	go->Pivot() = Vec2(0, 0);
 	_gameLayer->AddChild(go);
 	_shadowLayer->AddShadowCaster(go);
+
 }
 
 void GameScene::InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo)
@@ -408,6 +409,7 @@ void GameScene::InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo
 	go->Pivot() = Vec2(0, 0);
 	_gameLayer->AddChild(go);
 	_shadowLayer->AddShadowCaster(go);
+
 }
 
 void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo, float lightDist)
