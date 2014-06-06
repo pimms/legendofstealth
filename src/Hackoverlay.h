@@ -8,8 +8,8 @@
 
 #include "Entity.h"
 
-class Terminal : public Entity {
+class Hackoverlay : public Entity {
 	public:
-		Terminal(b2World *world, string texture, Vec2 pos);
-		~Terminal();
+		Hackoverlay(b2World *world, string texture, Vec2 pos);
+		~Hackoverlay();
 };

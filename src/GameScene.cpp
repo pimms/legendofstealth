@@ -8,6 +8,7 @@
 #include "FireComponent.h"
 #include "Terminal.h"
 #include "Walls.h"
+#include "Hackoverlay.h"
 
 //
 GameScene* GameScene::_singleton = NULL;
@@ -123,17 +124,6 @@ bool GameScene::HandlePacket(const Packet *packet)
 	return false;
 }
 
-
-LocalPlayer* GameScene::GetLocalPlayer() 
-{
-	return _localPlayer;
-}
-
-vector<RemotePlayer*> GameScene::GetRemotePlayers() 
-{
-	return _remotePlayers;
-}
-
 ShadowLayer* GameScene::GetShadowLayer()
 {
 	return _shadowLayer;
@@ -142,6 +132,16 @@ ShadowLayer* GameScene::GetShadowLayer()
 Layer* GameScene::GetGameLayer()
 {
 	return _gameLayer;
+}
+
+void GameScene::LoadOverlay(string texture) 
+{
+	_overlay = new Hackoverlay(_world, texture, Vec2(200.f, 100.f));
+	_overlayer->AddChild(_overlay);
+}
+
+void GameScene::RemoveOverlay(string texture) {
+	_overlayer->RemoveChild(_overlay);
 }
 
 /*
@@ -157,6 +157,9 @@ void GameScene::LoadInfrastructure()
 	_shadowLayer = new ShadowLayer(_gameLayer);
 	_shadowLayer->SetShadowColor(Color(0.f, 0.f, 0.f, 1.f));
 	AddLayer(_shadowLayer);
+
+	_overlayer = new Layer();
+	AddLayer(_overlayer);	
 }
 
 void GameScene::CreateB2World()
@@ -350,7 +353,7 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 
 void GameScene::LoadTerminal() 
 {
-	_terminal = new Terminal(_world, "res/term.png");
+	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
 	_gameLayer->AddChild(_terminal);
 }
 
@@ -392,3 +395,4 @@ void GameScene::InitalizeLight(Vec2 pos)
 		temp->SetColor(c);
 	}
 }
+

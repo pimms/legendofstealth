@@ -9,18 +9,32 @@ Hackable::Hackable() {}
 
 void Hackable::Update(const DeltaTime &dt) 
 {
+	scene = (GameScene*)GetGameObject()->GetScene();
 	_hackablepos = Position();
 
 	if (_hacking)
 	{
+		CheckProgress();
 		_hacktime -= dt.dt;
 		printf("Hacking remaining: %f\n", _hacktime);
 	}
 
 	if (_hacktime <= 0) 
 	{
+		scene->LoadOverlay("redhackcomplete.png");
+		//scene->RemoveOverlay("red.png");
 		_hackdone = true;
 		_hacking = false;
+	}
+
+	if (_hackdone)
+	{
+		_showhackdone -= dt.dt;
+	}
+
+	if (_showhackdone <= 0)
+	{
+		//scene->RemoveOverlay("redhackcomplete.png");
 	}
 
 	if (_hackinter)
@@ -39,6 +53,18 @@ void Hackable::Update(const DeltaTime &dt)
 	}
 }
 
+void Hackable::CheckProgress() {
+	if ((HACKTIME / _hacktime) <= 3/3) {
+		scene->LoadOverlay("green.png");
+	} else if ((HACKTIME / _hacktime) <= (2/3)) {
+		scene->LoadOverlay("yellow.png");
+		//scene->RemoveOverlay("green.png");
+	} else if ((HACKTIME / _hacktime) <= (1/3)) {
+		scene->LoadOverlay("red.png");
+		//scene->RemoveOverlay("yellow.png");
+	}
+}
+
 /*
 ============
 Hacker
@@ -48,19 +74,19 @@ Hacker::Hacker() {}
 
 void Hacker::Update(const DeltaTime &dt) {
 	const InputState *in = GetGameObject()->GetInputState();
-	GameScene *scene = (GameScene*)GetGameObject()->GetScene();
-	vector<RemotePlayer*> rp = scene->GetRemotePlayers();
+	//GameScene *scene = (GameScene*)GetGameObject()->GetScene();
+	//vector<RemotePlayer*> rp = scene->GetRemotePlayers();
 
 	//vector<Vec2> positions = GetPositions(rp);
 	Vec2 tmpos = _hackablepos;
 
 	if (PlayerInPosition(_hackablepos) && !_hacking)
 	{
-		printf("Start hacking NOW, by pressing 'H'!\n");
+		printf("Start hacking NOW, by pressing 'E'!\n");
 	}
 
 	if (PlayerInPosition(_hackablepos) 
-		&& in->IsKeyDown(SDLK_h) && !_hackdone)
+		&& in->IsKeyDown(SDLK_e) && !_hackdone)
 	{
 		_hacking = true;
 	}

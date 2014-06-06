@@ -18,6 +18,7 @@ static bool _hackdone = false;
 static bool _hackinter = false;
 static float _hacktime = HACKTIME;
 static float _resettime = RESET_TIME;
+static float _showhackdone = 5;
 
 class Hackable : public Component {
 	public:
@@ -33,8 +34,9 @@ class Hackable : public Component {
 
 	private:
 		Vec2 _position;
+		GameScene *scene;
 
-		void PrintInfo();
+		void CheckProgress();
 };
 
 class Hacker : public Component {

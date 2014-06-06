@@ -14,13 +14,15 @@
 #include "ShadowLayer.h"
 
 
-
+class Overlayer;
 class ShadowLayer;
 class RemotePlayer;
 class LocalPlayer;
 class Player;
 class Socket;
 class Terminal;
+class Overlayer;
+class Hackoverlay;
 
 class GameScene : public Scene {
 public:
@@ -43,6 +45,9 @@ public:
 	ShadowLayer* GetShadowLayer();
 	Layer* GetGameLayer();
 
+	void LoadOverlay(string texture);
+	void RemoveOverlay(string texture);
+
 private:
 	static GameScene *_singleton;
 
@@ -53,11 +58,14 @@ private:
 	
 	Layer *_gameLayer;
 	ShadowLayer *_shadowLayer;
+	Layer *_overlayer;
+
 
 	LocalPlayer *_localPlayer;
 	vector<RemotePlayer*> _remotePlayers;
 
 	Terminal *_terminal;
+	Hackoverlay *_overlay;
 
 
 	// Call the load methods in the order in which they appear plssss.
@@ -74,4 +82,5 @@ private:
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
 	void LoadTerminal();
+	
 };
