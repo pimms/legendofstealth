@@ -271,39 +271,39 @@ void GameScene::LoadMap()
 	InitalizeLight(Vec2(27, 25));
 	
 	// Create BOXES
-	InitializeMap("res/crate.png",Vec2(1,1) , Vec2(10,66));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(16, 52));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(27, 65));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(37, 68));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(36, 59));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(36, 50));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(56, 65));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 48));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(66, 45));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(40, 30));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(46, 28));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(46, 29));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(47, 28));
+	InitializeMap("res/crate.png",Vec2(3,3) , Vec2(10,66));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(16, 52));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(27, 65));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(37, 68));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(36, 59));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(36, 50));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(56, 65));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(68, 48));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(66, 45));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(40, 30));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(46, 28));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(46, 29));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(47, 28));
 
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(67, 24));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 25));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 20));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 1));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(67, 24));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(68, 25));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(68, 20));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(68, 1));
 
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(43, 4));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(27, 8));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(1, 1));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(1, 2));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(43, 4));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(27, 8));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(1, 1));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(1, 2));
 
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(2, 1));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(10, 8));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(15, 18));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(3, 22));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(2, 1));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(10, 8));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(15, 18));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(3, 22));
 
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(22, 31));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(22, 32));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(23, 31));
-	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(23, 32));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(22, 31));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(22, 32));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(23, 31));
+	InitializeMap("res/crate.png", Vec2(3,3), Vec2(23, 32));
 
 	LoadTerminal();
 }
