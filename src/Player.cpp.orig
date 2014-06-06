@@ -68,15 +68,16 @@ void Player::Update(const DeltaTime &dt)
 	}
 }
 
+<<<<<<< HEAD
+void Player::DeductHP() {
+	hp--;
+=======
 void Player::Respawn()
 {
 	// TODO
 	// Set health to full
 	Position() = _spawnPosition;
-}
-
-void Player::DeductHP() {
-	hp--;
+>>>>>>> b44bdf1b15928f66ca1c68ee1d58d14b4b70d0e5
 }
 
 

@@ -22,9 +22,11 @@ public:
 
 	void Update(const DeltaTime &dt);
 
+<<<<<<< HEAD
 	void DeductHP();
+=======
 	void Respawn();
-
+>>>>>>> b44bdf1b15928f66ca1c68ee1d58d14b4b70d0e5
 
 protected:
 	PlayerUpdateComponent *_updateComponent;
@@ -33,8 +35,12 @@ private:
 	unsigned _playerID;
 	Team _team;
 	LightSource *_lightSource;
+<<<<<<< HEAD
 	int hp = 5;
+=======
+
 	Vec2 _spawnPosition;
+>>>>>>> b44bdf1b15928f66ca1c68ee1d58d14b4b70d0e5
 };
 
 

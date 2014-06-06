@@ -69,11 +69,11 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 {
 	FireCallback cb(_localPlayer);
 	
-	b2Vec2 p1 = Tob2Vec2(_localPlayer->Position());
-	b2Vec2 p2 = b2Vec2(cosf(Deg2Rad(rotation)), sinf(Deg2Rad(rotation)));
-	p2 *= 1000.f;
+	_p1 = Tob2Vec2(position);
+	_p2 = b2Vec2(cosf(Deg2Rad(rotation)), sinf(Deg2Rad(rotation)));
+	_p2 *= 1000.f;
 
-	_localPlayer->GetWorld()->RayCast(&cb, p1, p2);
+	_localPlayer->GetWorld()->RayCast(&cb, _p1, _p2);
 
 	if (cb.DidHitTargetPlayer()) {
 		Log::Debug("I got hit by a bullet :(");
@@ -88,6 +88,12 @@ void BulletHitTester::SendHitPacket()
 	pkt.playerID = _localPlayer->GetPlayerID();
 
 	_udpSocket->SendPacket(&pkt);
+}
+
+void BulletHitTester::GetLine(b2Vec2 &p1, b2Vec2 &p2)
+{
+	p1 = _p1;
+	p2 = _p2;
 }
 
 

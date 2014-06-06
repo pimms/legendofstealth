@@ -9,6 +9,7 @@
 #include "Terminal.h"
 #include "Walls.h"
 #include "Hackoverlay.h"
+#include "RayDebugDraw.h"
 
 //
 GameScene* GameScene::_singleton = NULL;
@@ -58,6 +59,10 @@ void GameScene::LoadContent()
 	LoadInfrastructure();
 	CreateB2World();
 	LoadMap();
+
+
+	_rayDraw = new RayDebugDraw();
+	_gameLayer->AddChild(_rayDraw);
 }
 
 void GameScene::Update(const DeltaTime &dt)
@@ -330,6 +335,24 @@ void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
 
 	BulletHitTester hit(_localPlayer, _udpSocket);
 	hit.TestBullet(pos, packet->rotation);
+
+	b2Vec2 p1, p2;
+	hit.GetLine(p1, p2);
+	_rayDraw->SetRay(p1, p2);
+
+	Player *p = NULL;
+	for (int i=0; i<_remotePlayers.size(); i++) {
+		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {
+			p = _remotePlayers[i];
+		}
+	}
+
+	if (p) {
+		Vec2 pos = p->Position();
+		printf("BULLET OFFSET: %g %g\n", pos.x - ToVec2(p1).x, pos.y - ToVec2(p1).y);
+		printf("PACKET OFFSET: %g %g\n", pos.x - packet->posX, pos.y - packet->posY);
+	}
+
 }
 
 void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
