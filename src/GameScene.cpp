@@ -140,11 +140,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 		case PACKET_HACK_COMPLETE:
 		{
 			PacketHackComplete *phc = (PacketHackComplete*)packet;
-			printf("--------------------------------\n");
-			printf("---------- GAME OVER -----------\n");
-			printf("--------------------------------\n");
-			printf("\n Player %i hacked the terminal successfully\n", phc->playerID);
-			LoadOverlay("res/redhackcomplete.png");
+			OnGameOver(phc->playerID);
 			return true;
 		}
 
@@ -419,3 +415,12 @@ void GameScene::InitalizeLight(Vec2 pos)
 	}
 }
 
+
+void GameScene::OnGameOver(unsigned playerID)
+{
+	printf("--------------------------------\n");
+	printf("---------- GAME OVER -----------\n");
+	printf("--------------------------------\n");
+	printf("\n Player %i hacked the terminal successfully\n", playerID);
+	LoadOverlay("res/redhackcomplete.png");
+}
