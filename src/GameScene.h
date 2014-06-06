@@ -12,7 +12,6 @@
 #include <Box2D/Box2D.h>
 #include "net/Packet.h"
 #include "ShadowLayer.h"
-#include "Overlayer.h"
 
 
 class Overlayer;
