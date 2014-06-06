@@ -4,12 +4,12 @@
 class Walls :public Entity , public ShadowCaster
 {
 public:
-	Walls(b2World *world, string texture);
-	Rect GetShadowRect();
-
-	void Render(Renderer *renderer);
+	Walls(b2World *world, string texture, Vec2 scale, Vec2 pos);
 
 	virtual vector<Vec2> GetShapeVertices();
-	virtual Rect GetAABB();
+	Rect GetShadowRect();
+	Rect GetAABB();
+
+	void Render(Renderer *renderer);
 };
 

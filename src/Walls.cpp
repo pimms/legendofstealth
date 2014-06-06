@@ -6,13 +6,22 @@
 #include <trutle/res/Texture.h>
 #endif
 
-Walls::Walls(b2World *world, string texture) : Entity(world), ShadowCaster()
+Walls::Walls(b2World *world, string texture, Vec2 scale, Vec2 pos) 
+	: Entity(world), ShadowCaster()
 {
 	LoadTexture(texture);
-	CreateSquareBody( b2_staticBody );
+	Scale() = scale;
+	Position() = pos;
 
+	Vec2 dim = GetTexture()->GetDimensions();
+	dim.x *= scale.x;
+	dim.y *= scale.y;
+	Position().x += dim.x / 2.f;
+	Position().y += dim.y / 2.f;
 
+	CreateSquareBody(b2_staticBody);
 }
+
 
 vector<Vec2> Walls::GetShapeVertices()
 {
@@ -42,6 +51,11 @@ Rect Walls::GetShadowRect()
 	return Rect(pos.x, pos.y, dim.x, dim.y);
 }
 
+Rect Walls::GetAABB()
+{
+	return GetShadowRect();
+}
+
 void Walls::Render(Renderer *renderer)
 {
 	// Don't render off-screen walls
@@ -55,9 +69,4 @@ void Walls::Render(Renderer *renderer)
 	if (r.Overlaps(s)) {
 		Entity::Render(renderer);
 	}
-}
-
-Rect Walls::GetAABB()
-{
-	return GetShadowRect();
 }

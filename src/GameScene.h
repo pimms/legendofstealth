@@ -26,6 +26,7 @@ class GameScene : public Scene {
 public:
 	// YOLO, gamejam etc
 	static GameScene* Singleton();
+	static int GetMapScalingFactor();
 
 	GameScene(Socket *tcpSocket, Socket *udpSocket);
 	~GameScene();
@@ -64,9 +65,8 @@ private:
 	void LoadInfrastructure();
 	void CreateB2World();
 	void LoadMap();
-	void InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo = 100);
-	void InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo = 100);
-	void InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo = 100, float lightDist = 700.0f);
+	void InitializeMap(std::string name, Vec2 scale, Vec2 pos);
+	void InitalizeLight(Vec2 pos);
 
 	void HandlePacketPlayerUpdate(const PacketPlayerUpdate *packet);
 	void HandlePacketPlayerFire(const PacketPlayerFire *packet);

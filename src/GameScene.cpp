@@ -18,6 +18,11 @@ GameScene* GameScene::Singleton()
 	return _singleton;
 }
 
+int GameScene::GetMapScalingFactor()
+{
+	return 30;
+}
+
 
 /*
 ================
@@ -167,167 +172,136 @@ void GameScene::LoadMap()
 	_gameLayer->AddChild(bg);
 	
 	// Walls (1,7)
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 53));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 63));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 53));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(11, 61));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 39));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(16, 31));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(27, 18));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 39));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(53, 31));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(42, 18));
-	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 5));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 53));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 63));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(52, 53));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(11, 61));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 39));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(16, 31));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(27, 18));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(24, 5));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 39));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(53, 31));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(42, 18));
+	InitializeMap("res/wall2D.png", Vec2(1, 7), Vec2(45, 5));
 
 	// Walls(7,1)
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(0, 53));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(10, 53));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(53, 53));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(63, 53));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 38));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 38));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(4, 9));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(59, 9));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 4));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 4));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(28, 12));
-	InitalizeMap("res/wall2D.png", Vec2(7, 1), Vec2(35, 12));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(0, 53));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(10, 53));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(53, 53));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(63, 53));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 38));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 38));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(4, 9));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(59, 9));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(17, 4));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(46, 4));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(28, 12));
+	InitializeMap("res/wall2D.png", Vec2(7, 1), Vec2(35, 12));
 
 	// Walls (2,11)
-	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 58));
-	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 41));
-	InitalizeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 26));
+	InitializeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 58));
+	InitializeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 41));
+	InitializeMap("res/wall2D.png", Vec2(2, 11), Vec2(34, 26));
 
 	// Walls (11,2)
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(6, 45));
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(53, 45));
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(0, 29));
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(59, 29));
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(9, 19));
-	InitalizeMap("res/wall2D.png", Vec2(11, 2), Vec2(50, 19));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(6, 45));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(53, 45));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(0, 29));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(59, 29));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(9, 19));
+	InitializeMap("res/wall2D.png", Vec2(11, 2), Vec2(50, 19));
 
 	// Walls (1,3)
-	InitalizeMap("res/wall2D.png", Vec2(1, 3), Vec2(59, 56));
+	InitializeMap("res/wall2D.png", Vec2(1, 3), Vec2(59, 56));
 
 	// Walls (3,1)
-	InitalizeMap("res/wall2D.png", Vec2(3, 1), Vec2(56, 59));
-	InitalizeMap("res/wall2D.png", Vec2(3, 1), Vec2(3, 60));
+	InitializeMap("res/wall2D.png", Vec2(3, 1), Vec2(56, 59));
+	InitializeMap("res/wall2D.png", Vec2(3, 1), Vec2(3, 60));
 
 	// Walls around the map (1,70)
-	InitalizeMap("res/wall2D.png", Vec2(1, 70), Vec2(0, 0));
-	InitalizeMap("res/wall2D.png", Vec2(1, 70), Vec2(69, 0));
+	InitializeMap("res/wall2D.png", Vec2(1, 70), Vec2(0, 0));
+	InitializeMap("res/wall2D.png", Vec2(1, 70), Vec2(69, 0));
 
 
 	// Walls around the map(68,1)
-	InitalizeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 0));
-	InitalizeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 69));
+	InitializeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 0));
+	InitializeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 69));
 	
-	
-	/* Create a couple of lights
-	for (int i=0; i<4; i++) {
-		LightSource *light = new LightSource;
-		light->SetLightDistance(150.f);
-		light->LoadTexture("res/light.png");
-		light->Position() = Vec2(100.f + 120*i, 200.f);
-		light->Pivot() = Vec2(0.5f, 0.5f);
-		_gameLayer->AddChild(light);
-		_shadowLayer->AddLightSource(light);
-		
-		if (rand() % 2 == 0) {
-			Color c(1.f, 0.f, 0.f, 1.f);
-			light->SetColor(c);
-		} else {
-			Color c(0.f, 0.f, 1.f, 1.f);
-			light->SetColor(c);
-		}
-	}
-
-	*/
 	// Create light
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(57, 60));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(65, 54));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(64, 45));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(64, 41));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(64, 15));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(64, 5));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(50, 10));
+	InitalizeLight(Vec2(57, 60));
+	InitalizeLight(Vec2(65, 54));
+	InitalizeLight(Vec2(64, 45));
+	InitalizeLight(Vec2(64, 41));
+	InitalizeLight(Vec2(64, 15));
+	InitalizeLight(Vec2(64, 5));
+	InitalizeLight(Vec2(50, 10));
 
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(45, 4));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(24, 4));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(5, 5));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(20, 10));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(5, 16));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(10, 25));
+	InitalizeLight(Vec2(45, 4));
+	InitalizeLight(Vec2(24, 4));
+	InitalizeLight(Vec2(5, 5));
+	InitalizeLight(Vec2(20, 10));
+	InitalizeLight(Vec2(5, 16));
+	InitalizeLight(Vec2(10, 25));
 
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(6, 31));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(16, 38));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(5, 45));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(11, 60));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(22, 52));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(24, 38));
+	InitalizeLight(Vec2(6, 31));
+	InitalizeLight(Vec2(16, 38));
+	InitalizeLight(Vec2(5, 45));
+	InitalizeLight(Vec2(11, 60));
+	InitalizeLight(Vec2(22, 52));
+	InitalizeLight(Vec2(24, 38));
 
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(33, 34));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(42, 15));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(27, 18));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(42, 25));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(27, 25));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(25, 38));
+	InitalizeLight(Vec2(33, 34));
+	InitalizeLight(Vec2(42, 15));
+	InitalizeLight(Vec2(27, 18));
+	InitalizeLight(Vec2(42, 25));
+	InitalizeLight(Vec2(27, 25));
+	InitalizeLight(Vec2(25, 38));
 
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(53, 38));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(21, 64));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(48, 64));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(40, 60));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(29, 60));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(46, 52));
-	InitalizeLight("res/light.png", Vec2(1, 1), Vec2(22, 52));
+	InitalizeLight(Vec2(53, 38));
+	InitalizeLight(Vec2(21, 64));
+	InitalizeLight(Vec2(48, 64));
+	InitalizeLight(Vec2(40, 60));
+	InitalizeLight(Vec2(29, 60));
+	InitalizeLight(Vec2(46, 52));
+	InitalizeLight(Vec2(22, 52));
 
 	// Create BOXES
+	InitializeMap("res/crate.png",Vec2(1,1) , Vec2(10,66));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(16, 52));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(27, 65));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(37, 68));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(36, 59));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(36, 50));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(56, 65));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 48));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(66, 45));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(40, 30));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(46, 28));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(46, 29));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(47, 28));
 
-	/*for (int i=0; i<5; i++) {
-		ShadowCaster *box = new ShadowCaster;
-		box->LoadTexture("res/box.png");
-		box->Position() = Vec2(100.f + 70*i, 240.f);
-		_gameLayer->AddChild(box);
-		_shadowLayer->AddShadowCaster(box);
-	}
-	*/
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(67, 24));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 25));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 20));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(68, 1));
 
-	InitalizeCrates("res/crate.png",Vec2(1,1) , Vec2(10,66));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(16, 52));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(27, 65));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(37, 68));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(36, 59));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(36, 50));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(56, 65));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(68, 48));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(66, 45));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(40, 30));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(46, 28));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(46, 29));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(47, 28));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(43, 4));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(27, 8));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(1, 1));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(1, 2));
 
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(67, 24));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(68, 25));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(68, 20));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(68, 1));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(2, 1));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(10, 8));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(15, 18));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(3, 22));
 
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(43, 4));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(27, 8));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(1, 1));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(1, 2));
-
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(2, 1));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(10, 8));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(15, 18));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(3, 22));
-
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(22, 31));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(22, 32));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(23, 31));
-	InitalizeCrates("res/crate.png", Vec2(1, 1), Vec2(23, 32));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(22, 31));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(22, 32));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(23, 31));
+	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(23, 32));
 
 	LoadTerminal();
 }
@@ -381,40 +355,29 @@ void GameScene::LoadTerminal()
 }
 
 
-void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
+void GameScene::InitializeMap(std::string name, Vec2 scale, Vec2 pos)
 {
-	Walls* go = new Walls(_world, name);
-	go->Scale() = scale;
-	pos.x *= yolo;
-	pos.y *= yolo;
-	go->Position() = pos;
-	go->Pivot() = Vec2(0, 0);
+	float s = GetMapScalingFactor();
+	scale.x *= s/100.f;
+	scale.y *= s/100.f;
+
+	pos.x *= GetMapScalingFactor();
+	pos.y *= GetMapScalingFactor();
+
+	Walls* go = new Walls(_world, name, scale, pos);
+	go->SetPosition(go->Position());
+
 	_gameLayer->AddChild(go);
 	_shadowLayer->AddShadowCaster(go);
-
 }
 
-void GameScene::InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo)
+void GameScene::InitalizeLight(Vec2 pos)
 
 {
-	Walls* go = new Walls(_world, name);
-	go->Scale() = scale;
-	pos.x *= yolo;
-	pos.y *= yolo;
-	go->Position() = pos;
-	go->Pivot() = Vec2(0, 0);
-	_gameLayer->AddChild(go);
-	_shadowLayer->AddShadowCaster(go);
-
-}
-
-void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo, float lightDist)
-
-{
-	LightSource* temp = new LightSource;
-	temp->SetLightDistance(lightDist);
-	pos.x *= yolo;
-	pos.y *= yolo;
+	LightSource* temp = new LightSource(true);
+	temp->SetLightDistance(7.5f * GetMapScalingFactor());
+	pos.x *= GetMapScalingFactor();
+	pos.y *= GetMapScalingFactor();
 	temp->Position() = pos;
 	temp->Pivot() = Vec2(0, 0);
 	_gameLayer->AddChild(temp);

@@ -22,7 +22,13 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 		_lightSource(NULL)
 {
 	LoadTexture(texture);
-	Position() = Vec2(100.0f, 100.0f);
+
+	int scale = GameScene::GetMapScalingFactor();
+	if (team == TEAM_MERC) {
+		Position() = Vec2(37.f * scale, 35.f * scale);
+	} else {
+		Position() = Vec2(67.f * scale, 35.f * scale);
+	}
 
 	CreateSquareBody();
 

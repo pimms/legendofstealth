@@ -53,9 +53,44 @@ void Entity::Update(const DeltaTime &dt)
 	GameObject::Update(dt);
 
 	if (_body) {
-		Position() = ToVec2(_body->GetPosition());
 		_body->SetTransform(_body->GetPosition(), Deg2Rad(Rotation()));
+
+		Vec2 bpos = ToVec2(_body->GetPosition());
+		//bpos.x -= GetTexture()->GetDimensions().x * (0.5f - Pivot().x);
+		//bpos.y -= GetTexture()->GetDimensions().y * (0.5f - Pivot().y);
+		Position() = bpos;
 	}
+}
+
+void Entity::Render(Renderer *renderer)
+{
+	if (_body && false) {
+		b2Fixture *fix = _body->GetFixtureList();
+		b2PolygonShape *shape = (b2PolygonShape*)fix->GetShape();
+
+		renderer->PushTransform();
+		glLoadIdentity();
+		
+		Vec2 pos = ToVec2(_body->GetPosition());
+		glTranslatef(pos.x, pos.y, 0.f);
+
+		glColor4ub(255, 0, 0, 128);
+		glBegin(GL_TRIANGLE_FAN);
+
+		for (int i=0; i<shape->GetVertexCount(); i++) {
+			b2Vec2 b2v = shape->GetVertex(i);
+			Vec2 v = ToVec2(b2v);
+			glVertex2f(v.x, v.y);
+		}
+
+		glEnd();
+
+		renderer->PopTransform();
+		glColor4ub(255, 255, 255, 255);
+	}
+
+
+	GameObject::Render(renderer);
 }
 
 Vec2 Entity::GetScreenPosition()
@@ -97,14 +132,24 @@ Entity Protected
 */
 void Entity::CreateSquareBody(b2BodyType type)
 {
+	Vec2 dim = GetTexture()->GetDimensions();
+	dim.x *= Scale().x;
+	dim.y *= Scale().y;
+
+	Vec2 pos = Position();
+	//pos.x += (0.5f - Pivot().x) * dim.x;
+	//pos.y += (0.5f - Pivot().y) * dim.y;
+
 	b2BodyDef bd;
 	bd.position = Tob2Vec2(Position());
 	bd.type = type;
 	bd.userData = this;
+	bd.position = Tob2Vec2(pos);
 
-	b2Vec2 dim = Tob2Vec2(GetTexture()->GetDimensions());
+
+	b2Vec2 b2dim = Tob2Vec2(dim);
 	b2PolygonShape shape;
-	shape.SetAsBox(dim.x/2.f, dim.y/2.f);
+	shape.SetAsBox(b2dim.x/2.f, b2dim.y/2.f);
 	
 	b2FixtureDef fd;
 	fd.isSensor = false;

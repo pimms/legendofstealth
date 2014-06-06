@@ -8,7 +8,7 @@
 #include <Box2D/Box2D.h>
 
 
-#define PTM 32
+#define PTM 32.f
 Vec2 ToVec2(b2Vec2 bvec);
 b2Vec2 Tob2Vec2(Vec2 vec);
 
@@ -22,6 +22,7 @@ public:
 	~Entity();
 
 	void Update(const DeltaTime &dt);
+	void Render(Renderer *renderer);
 
 	Vec2 GetScreenPosition();
 	void MoveB2Body(Vec2 velocity);

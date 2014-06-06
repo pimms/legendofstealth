@@ -3,23 +3,44 @@
 #include "Entity.h"
 
 
+RenderTexture* LightSource::_preloadTex = NULL;
+int LightSource::_preloadRefs = 0;
+
 /*
 ================
 LightSource Public
 ================
 */
-LightSource::LightSource()
+LightSource::LightSource(bool usePreloaded)
 	:	_color(1.f, 1.f, 1.f, 1.f),
 		_texture(NULL),
-		_distance(100.f)
+		_distance(100.f),
+		_usingPreloaded(usePreloaded)
 {
-	CreateLightTexture();
+	if (!usePreloaded) {
+		CreateLightTexture();
+	} else {
+		if (!_preloadTex) {
+			CreateLightTexture();
+			_preloadTex = _texture;
+		} else {
+			_texture = _preloadTex;
+		}
+	}
 }
 
 LightSource::~LightSource()
 {
-	if (_texture)
-		delete _texture;
+	if (!_usingPreloaded) {
+		if (_texture)
+			delete _texture;
+	} else {
+		_preloadRefs--;
+		if (!_preloadRefs) {
+			delete _preloadTex;
+			_preloadTex = NULL;
+		}
+	}
 }
 
 void LightSource::SetLightDistance(float distance)

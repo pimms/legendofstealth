@@ -11,7 +11,7 @@ class RenderTexture;
 
 class LightSource : public GameObject {
 public:
-	LightSource();
+	LightSource(bool usePreloaded = false);
 	~LightSource();
 
 	void SetLightDistance(float distance);
@@ -28,6 +28,11 @@ protected:
 	float _distance;
 	Color _color;
 	RenderTexture *_texture;
+
+	bool _usingPreloaded;
+
+	static RenderTexture *_preloadTex;
+	static int _preloadRefs;
 };
 
 
