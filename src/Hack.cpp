@@ -137,15 +137,7 @@ bool Hacker::PlayerInPosition(Vec2 tmpos)
 
 bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 {
-	if ((Position().x >= (tmpos.x - AREA_RADIUS)) &&
-		(Position().x <= (tmpos.x + AREA_RADIUS)) &&
-		(Position().y >= (tmpos.y - AREA_RADIUS)) &&
-		(Position().y <= (tmpos.y + AREA_RADIUS)))
-	{
-		return true;
-	} else {
-		return false;
-	}
+	return Position().x < 1280.f && Position().y < 900;
 }
 
 void Hacker::SendHackPacket(bool hacking) {
@@ -172,4 +164,6 @@ void Hacker::SendHackPacketComplete() {
 	packet.terminalID = 1;
 
 	_udpSocket->SendPacket(&packet);
+
+	GameScene::Singleton()->OnGameOver( ((Player*)GetGameObject())->GetPlayerID());
 }

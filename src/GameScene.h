@@ -49,6 +49,8 @@ public:
 	void LoadOverlay(string texture);
 	void RemoveOverlay(string texture);
 
+	void OnGameOver(unsigned playerID);
+
 private:
 	static GameScene *_singleton;
 
@@ -85,7 +87,4 @@ private:
 
 	void CreatePlayer(Team team, unsigned playerID, bool localPlayer);
 	void LoadTerminal();
-
-	void OnGameOver(unsigned playerID);
-	
 };
