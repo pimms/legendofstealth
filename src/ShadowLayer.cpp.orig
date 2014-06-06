@@ -75,17 +75,26 @@ void ShadowLayer::Render(Renderer *renderer)
 	renderer->ApplyTransform(_sibling);
 
 	for (int i=0; i<_lightSources.size(); i++) {
+<<<<<<< HEAD
 		if (ShouldDrawLight(_lightSources[i])) {
 			RenderShadows(_lightSources[i], renderer);
 			RenderLight(_lightSources[i], renderer);
 		}
+=======
+		RenderShadows(_lightSources[i], renderer);
+		RenderLight(_lightSources[i], renderer);
+>>>>>>> yolo
 	}
 
 	glDisable(GL_STENCIL_TEST);
 	renderer->PopTransform();
 
 	DrawFillShadow();
+<<<<<<< HEAD
+=======
 	renderer->PopTransform();
+
+>>>>>>> yolo
 	_renderTexture->UnbindFBO();
 
 	glPushMatrix();
