@@ -50,7 +50,6 @@ class Hacker : public Component {
 
 		Socket *_udpSocket;
 
-
 		vector<Vec2> GetPositions(vector<RemotePlayer*> rp);
 		bool PlayerInPosition(Vec2 tmpos);
 		bool PlayerInHackingArea(Vec2 tmpos);

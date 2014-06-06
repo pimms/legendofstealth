@@ -16,14 +16,14 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_hacking)
 	{
-		CheckProgress();
+		//CheckProgress();
 		_hacktime -= dt.dt;
 		printf("Hacking remaining: %f\n", _hacktime);
 	}
 
 	if (_hacktime <= 0) 
 	{
-		scene->LoadOverlay("res/redhackcomplete.png");
+		//scene->LoadOverlay("res/redhackcomplete.png");
 		//scene->RemoveOverlay("red.png");
 		_hackdone = true;
 		_hacking = false;
@@ -85,6 +85,7 @@ void Hacker::Update(const DeltaTime &dt) {
 	{
 		if (_hacking == false)
 		{
+			GameScene::Singleton()->LoadOverlay("res/yellow.png");
 			SendHackPacket();
 		}
 
@@ -93,12 +94,14 @@ void Hacker::Update(const DeltaTime &dt) {
 
 	if (_hackdone)
 	{
+		GameScene::Singleton()->LoadOverlay("res/redhackcomplete.png");	
 		SendHackPacketComplete();
 	}
 
 	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
 	{
 		_hackinter = true;
+		GameScene::Singleton()->LoadOverlay("res/green.png");
 		SendHackPacket();
 	}
 }
