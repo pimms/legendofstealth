@@ -20,6 +20,7 @@ static float _hacktime = HACKTIME;
 static float _resettime = RESET_TIME;
 static float _showhackdone = 5;
 static int _playerID;
+static int _yoloInter = 0;
 
 class Hackable : public Component {
 	public:
@@ -42,12 +43,14 @@ class Hacker : public Component {
 		void Update(const DeltaTime &dt);
 
 		void SetUDPSocket(Socket *udp);
-		void SendPacket();
+		void SendHackPacket();
+		void SendHackPacketComplete();
 	private:
 		const float HACK_RADIUS = 50;
 		const float AREA_RADIUS = 200;
 
 		Socket *_udpSocket;
+
 
 		vector<Vec2> GetPositions(vector<RemotePlayer*> rp);
 		bool PlayerInPosition(Vec2 tmpos);

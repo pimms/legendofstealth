@@ -1,5 +1,6 @@
 #include "Hack.h"
 #include "net/Packet.h"
+#include "net/Socket.h"
 
 /*
 =========
@@ -28,10 +29,12 @@ void Hackable::Update(const DeltaTime &dt)
 		_hacking = false;
 	}
 
+	/*
 	if (_hackdone)
 	{
 		_showhackdone -= dt.dt;
 	}
+	*/
 
 	if (_showhackdone <= 0)
 	{
@@ -40,16 +43,9 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_hackinter)
 	{
-		printf("Time until terminal RESET: %f\n", _resettime);
-		_hacking = false;
-		_resettime -= dt.dt;
-	}
-
-	if (_resettime <= 0)
-	{
 		printf("TERMINAL has been RESET\n");
+		_hacking = false;
 		_hackinter = false;
-		_resettime = RESET_TIME;
 		_hacktime = HACKTIME;
 	}
 }
@@ -87,17 +83,27 @@ void Hacker::Update(const DeltaTime &dt) {
 	if (PlayerInPosition(_hackablepos) 
 		&& in->IsKeyDown(SDLK_e) && !_hackdone)
 	{
+		if (_hacking == false)
+		{
+			SendHackPacket();
+		}
+
 		_hacking = true;
-		SendPacket();
+	}
+
+	if (_hackdone)
+	{
+		SendHackPacketComplete();
+	}
+
+	if (_hackinter)
+	{
+		SendHackPacket();
 	}
 
 	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
 	{
 		_hackinter = true;
-	} else if (PlayerInHackingArea(_hackablepos) && !_hacking && !_hackdone && _hackinter) {
-		_hackinter = false;
-		_resettime = RESET_TIME;
-		_hacking = true;
 	}
 }
 
@@ -144,16 +150,29 @@ bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 	}
 }
 
-void Hacker::SendPacket() {
+void Hacker::SendHackPacket() {
 	PacketPlayerHack packet;
 
 	packet.type = PACKET_PLAYER_HACK;
 	packet.playerID = ((Player*)GetGameObject())->GetPlayerID();
 	packet.terminalID = 1;
 	packet.isHacking = _hacking;
+
+	_udpSocket->SendPacket(&packet);
 }
 
 void Hacker::SetUDPSocket(Socket *udp)
 {
 	_udpSocket = udp;
+}
+
+void Hacker::SendHackPacketComplete() {
+	PacketPlayerHack packet;
+
+	packet.type = PACKET_PLAYER_HACK;
+	packet.playerID = ((Player*)GetGameObject())->GetPlayerID();
+	packet.terminalID = 1;
+	packet.isHacking = _hacking;
+
+	_udpSocket->SendPacket(&packet);
 }
