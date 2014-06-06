@@ -14,6 +14,7 @@ public:
 	~Hackoverlay();
 
 	void SetTexture(string texture);
+	void HideTexture();
 
 private:
 	GameObject *_go;
