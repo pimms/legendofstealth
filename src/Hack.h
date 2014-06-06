@@ -20,7 +20,6 @@ static float _hacktime = HACKTIME;
 static float _resettime = RESET_TIME;
 static float _showhackdone = 5;
 static int _playerID;
-static int _yoloInter = 0;
 
 class Hackable : public Component {
 	public:

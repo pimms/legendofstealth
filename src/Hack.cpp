@@ -96,14 +96,10 @@ void Hacker::Update(const DeltaTime &dt) {
 		SendHackPacketComplete();
 	}
 
-	if (_hackinter)
-	{
-		SendHackPacket();
-	}
-
 	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
 	{
 		_hackinter = true;
+		SendHackPacket();
 	}
 }
 
@@ -167,12 +163,11 @@ void Hacker::SetUDPSocket(Socket *udp)
 }
 
 void Hacker::SendHackPacketComplete() {
-	PacketPlayerHack packet;
+	PacketHackComplete packet;
 
-	packet.type = PACKET_PLAYER_HACK;
+	packet.type = PACKET_HACK_COMPLETE;
 	packet.playerID = ((Player*)GetGameObject())->GetPlayerID();
 	packet.terminalID = 1;
-	packet.isHacking = _hacking;
 
 	_udpSocket->SendPacket(&packet);
 }
