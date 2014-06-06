@@ -25,11 +25,13 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 
 	int scale = GameScene::GetMapScalingFactor();
 	if (team == TEAM_MERC) {
-		Position() = Vec2(37.f * scale, 35.f * scale);
+		_spawnPosition = Vec2(37.f * scale, 35.f * scale);
 	} else {
-		Position() = Vec2(67.f * scale, 35.f * scale);
+		_spawnPosition = Vec2(67.f * scale, 35.f * scale);
 	}
-
+	
+	Position() = _spawnPosition;
+	
 	CreateSquareBody();
 
 	AddComponent<PlayerUpdateComponent>(this);
@@ -64,6 +66,13 @@ void Player::Update(const DeltaTime &dt)
 	if (_lightSource) {
 		_lightSource->Rotation() = Rotation();
 	}
+}
+
+void Player::Respawn()
+{
+	// TODO
+	// Set health to full
+	Position() = _spawnPosition;
 }
 
 

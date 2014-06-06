@@ -22,6 +22,8 @@ public:
 
 	void Update(const DeltaTime &dt);
 
+	void Respawn();
+
 protected:
 	PlayerUpdateComponent *_updateComponent;
 
@@ -29,6 +31,8 @@ private:
 	unsigned _playerID;
 	Team _team;
 	LightSource *_lightSource;
+
+	Vec2 _spawnPosition;
 };
 
 
