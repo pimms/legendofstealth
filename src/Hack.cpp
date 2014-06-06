@@ -101,7 +101,7 @@ void Hacker::Update(const DeltaTime &dt) {
 	{
 		_hackinter = true;
 		GameScene::Singleton()->LoadOverlay("res/green.png");
-		SendHackPacket();
+		SendHackPacket(false);
 	}
 }
 
