@@ -85,9 +85,13 @@ void Hacker::Update(const DeltaTime &dt) {
 	{
 		if (_hacking == false)
 		{
+<<<<<<< HEAD
 			GameScene::Singleton()->LoadOverlay("res/yellow.png");
+			SendHackPacket();
+=======
 			_hacking = true;
 			SendHackPacket(true);
+>>>>>>> 17eea646ca02282445b8cfe7adb315103294f16f
 		}
 	}
 
@@ -100,8 +104,12 @@ void Hacker::Update(const DeltaTime &dt) {
 	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
 	{
 		_hackinter = true;
+<<<<<<< HEAD
 		GameScene::Singleton()->LoadOverlay("res/green.png");
 		SendHackPacket();
+=======
+		SendHackPacket(false);
+>>>>>>> 17eea646ca02282445b8cfe7adb315103294f16f
 	}
 }
 

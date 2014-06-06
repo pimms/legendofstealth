@@ -162,6 +162,12 @@ void Server::HandlePacket(Packet *packet)
 			{
 				PacketPlayerHack *pkt = (PacketPlayerHack*)packet;
 				AddPacketToPlayerQueue(pkt, pkt->playerID);
+
+				for (int i=0; i<_remotePlayers.size(); i++) {
+					if (_remotePlayers[i]->GetPlayerID() == pkt->playerID) {
+						_remotePlayers[i]->SendPacket(UDP, pkt);
+					}
+				}
 				break;
 			}
 
