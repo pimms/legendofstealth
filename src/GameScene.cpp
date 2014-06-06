@@ -336,25 +336,20 @@ void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
 	hit.GetLine(p1, p2);
 	_rayDraw->SetRay(p1, p2);
 
-	Player *p = NULL;
 	for (int i=0; i<_remotePlayers.size(); i++) {
 		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {
-			p = _remotePlayers[i];
+			_remotePlayers[i]->DisplayMuzzleFlash();
 		}
 	}
-
-	if (p) {
-		Vec2 pos = p->Position();
-		printf("BULLET OFFSET: %g %g\n", pos.x - ToVec2(p1).x, pos.y - ToVec2(p1).y);
-		printf("PACKET OFFSET: %g %g\n", pos.x - packet->posX, pos.y - packet->posY);
-	}
-
 }
 
 void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
 {
-	// TODO
-	// Deduct one HP from the hit player
+	for (int i=0; i<_remotePlayers.size(); i++) {
+		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {
+			_remotePlayers[i]->DisplayBloodSplat();
+		}
+	}
 }
 
 

@@ -22,13 +22,13 @@ void FireComponent::Update(const DeltaTime &dt)
 {
 	const InputState *in = GetGameObject()->GetInputState();
 	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT) && in->IsMouseKeyDown(SDL_BUTTON_LEFT)){
-		// TODO
-		// Display a muzzle flash on the player
 		
 		// TODO
 		// player->GetWorld()->RayCast(&callback, p1, p2);
 		// Display a hit indicator on whatever was hit
-		
+	
+		((Player*)GetGameObject())->DisplayMuzzleFlash();
+
 		SendFirePacket();
 	}
 }
