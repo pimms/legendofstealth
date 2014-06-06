@@ -66,6 +66,10 @@ void Player::Update(const DeltaTime &dt)
 	}
 }
 
+void Player::DeductHP() {
+	hp--;
+}
+
 
 /*
 ================
@@ -94,7 +98,6 @@ void LocalPlayer::Update(const DeltaTime &dt)
 	Player::Update(dt);
 	_updateComponent->SendUpdatePacket();
 }
-
 
 /*
 ================

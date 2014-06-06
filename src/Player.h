@@ -22,6 +22,8 @@ public:
 
 	void Update(const DeltaTime &dt);
 
+	void DeductHP();
+
 protected:
 	PlayerUpdateComponent *_updateComponent;
 
@@ -29,6 +31,7 @@ private:
 	unsigned _playerID;
 	Team _team;
 	LightSource *_lightSource;
+	int hp = 5;
 };
 
 

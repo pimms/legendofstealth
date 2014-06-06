@@ -121,6 +121,10 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return false;
 	}
 
+	if (_bullethit) {
+		_localPlayer->DeductHP();
+	}
+
 	return false;
 }
 
@@ -330,8 +334,7 @@ void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
 
 void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
 {
-	// TODO
-	// Deduct one HP from the hit player
+	_bullethit = true;
 }
 
 
