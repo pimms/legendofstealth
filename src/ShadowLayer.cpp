@@ -75,18 +75,22 @@ void ShadowLayer::Render(Renderer *renderer)
 	renderer->ApplyTransform(_sibling);
 
 	for (int i=0; i<_lightSources.size(); i++) {
-		RenderShadows(_lightSources[i], renderer);
-		RenderLight(_lightSources[i], renderer);
+		if (ShouldDrawLight(_lightSources[i])) {
+			RenderShadows(_lightSources[i], renderer);
+			RenderLight(_lightSources[i], renderer);
+		}
 	}
 
 	glDisable(GL_STENCIL_TEST);
-
-	DrawFillShadow();
 	renderer->PopTransform();
 
+	DrawFillShadow();
 	_renderTexture->UnbindFBO();
 
+	glPushMatrix();
+	glLoadIdentity();
 	DrawRenderTexture();
+	glPopMatrix();
 }
 
 
@@ -220,4 +224,17 @@ void ShadowLayer::DrawRenderTexture()
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	_shader->Disable();
+}
+
+
+bool ShadowLayer::ShouldDrawLight(LightSource *source)
+{
+	Vec2 lp = source->Position();
+	float rad = source->GetLightDistance();
+	Rect l(	lp.x - rad, lp.y - rad, rad, rad);
+
+	lp = _sibling->Position();
+	Rect s(-lp.x, -lp.y, 1280.f, 720.f);
+
+	return l.Overlaps(s);
 }

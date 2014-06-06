@@ -10,6 +10,7 @@
 #include "Walls.h"
 #include "Hackoverlay.h"
 
+//
 GameScene* GameScene::_singleton = NULL;
 
 
@@ -164,6 +165,7 @@ void GameScene::CreateB2World()
 void GameScene::LoadMap()
 {
 	InitalizeMap("res/bg.png", Vec2(1, 1), Vec2(320.f, 240.f), 1);
+	
 	// Walls (1,7)
 	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 63));
 	InitalizeMap("res/wall2D.png", Vec2(1, 7), Vec2(17, 53));
@@ -390,6 +392,7 @@ void GameScene::InitalizeMap(std::string name, Vec2 scale, Vec2 pos, int yolo)
 	go->Pivot() = Vec2(0, 0);
 	_gameLayer->AddChild(go);
 	_shadowLayer->AddShadowCaster(go);
+
 }
 
 void GameScene::InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo)
@@ -403,6 +406,7 @@ void GameScene::InitalizeCrates(std::string name, Vec2 scale, Vec2 pos, int yolo
 	go->Pivot() = Vec2(0, 0);
 	_gameLayer->AddChild(go);
 	_shadowLayer->AddShadowCaster(go);
+
 }
 
 void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo, float lightDist)
@@ -411,7 +415,6 @@ void GameScene::InitalizeLight(std::string name, Vec2 scale, Vec2 pos, int yolo,
 	LightSource* temp = new LightSource;
 	temp->LoadTexture(name);
 	temp->SetLightDistance(lightDist);
-	temp->Scale() = scale;
 	pos.x *= yolo;
 	pos.y *= yolo;
 	temp->Position() = pos;
