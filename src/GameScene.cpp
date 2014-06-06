@@ -133,7 +133,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 			if (pph->isHacking) 
 				LoadOverlay("res/yellow.png");
 			else
-				RemoveOverlay("");
+				LoadOverlay("res/green.png");
 			return true;
 		}
 
@@ -144,6 +144,7 @@ bool GameScene::HandlePacket(const Packet *packet)
 			printf("---------- GAME OVER -----------\n");
 			printf("--------------------------------\n");
 			printf("\n Player %i hacked the terminal successfully\n", phc->playerID);
+			LoadOverlay("res/redhackcomplete.png");
 			return true;
 		}
 
