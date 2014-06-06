@@ -42,7 +42,7 @@ class Hacker : public Component {
 		void Update(const DeltaTime &dt);
 
 		void SetUDPSocket(Socket *udp);
-		void SendHackPacket();
+		void SendHackPacket(bool hacking);
 		void SendHackPacketComplete();
 	private:
 		const float HACK_RADIUS = 50;
