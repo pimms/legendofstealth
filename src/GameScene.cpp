@@ -10,6 +10,7 @@
 #include "Walls.h"
 #include "Hackoverlay.h"
 #include "RayDebugDraw.h"
+#include "Hack.h"
 
 //
 GameScene* GameScene::_singleton = NULL;
@@ -370,6 +371,10 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 
 		AddComponent<FollowGameObjectComponent>(_gameLayer);
 		GetComponent<FollowGameObjectComponent>(_gameLayer)->SetTarget(_localPlayer, Vec2(1280.f/2.f, 720.f/2.f));
+	
+		if (team == TEAM_SPY) {
+			GetComponent<Hacker>(_localPlayer)->SetUDPSocket(_udpSocket);
+		}
 	} else {
 		RemotePlayer *rp = new RemotePlayer(_world, team, playerID);
 		_remotePlayers.push_back(rp);
@@ -379,7 +384,8 @@ void GameScene::CreatePlayer(Team team, unsigned playerID, bool localPlayer)
 
 void GameScene::LoadTerminal() 
 {
-	_terminal = new Terminal(_world, "res/term.png", Vec2(34.f, 6.f));
+	Vec2 pos = Vec2((34.f * GetMapScalingFactor()), (6.f * GetMapScalingFactor()));
+	_terminal = new Terminal(_world, "res/term.png", pos);
 	_gameLayer->AddChild(_terminal);
 }
 

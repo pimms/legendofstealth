@@ -1,4 +1,5 @@
 #include "Hack.h"
+#include "net/Packet.h"
 
 /*
 =========
@@ -21,7 +22,7 @@ void Hackable::Update(const DeltaTime &dt)
 
 	if (_hacktime <= 0) 
 	{
-		scene->LoadOverlay("redhackcomplete.png");
+		//scene->LoadOverlay("redhackcomplete.png");
 		//scene->RemoveOverlay("red.png");
 		_hackdone = true;
 		_hacking = false;
@@ -55,15 +56,17 @@ void Hackable::Update(const DeltaTime &dt)
 
 void Hackable::CheckProgress() {
 	if ((HACKTIME / _hacktime) <= 3/3) {
-		scene->LoadOverlay("green.png");
+		//scene->LoadOverlay("green.png");
 	} else if ((HACKTIME / _hacktime) <= (2/3)) {
-		scene->LoadOverlay("yellow.png");
+		//scene->LoadOverlay("yellow.png");
 		//scene->RemoveOverlay("green.png");
 	} else if ((HACKTIME / _hacktime) <= (1/3)) {
-		scene->LoadOverlay("red.png");
+		//scene->LoadOverlay("red.png");
 		//scene->RemoveOverlay("yellow.png");
 	}
 }
+
+
 
 /*
 ============
@@ -74,10 +77,6 @@ Hacker::Hacker() {}
 
 void Hacker::Update(const DeltaTime &dt) {
 	const InputState *in = GetGameObject()->GetInputState();
-	//GameScene *scene = (GameScene*)GetGameObject()->GetScene();
-	//vector<RemotePlayer*> rp = scene->GetRemotePlayers();
-
-	//vector<Vec2> positions = GetPositions(rp);
 	Vec2 tmpos = _hackablepos;
 
 	if (PlayerInPosition(_hackablepos) && !_hacking)
@@ -89,6 +88,7 @@ void Hacker::Update(const DeltaTime &dt) {
 		&& in->IsKeyDown(SDLK_e) && !_hackdone)
 	{
 		_hacking = true;
+		SendPacket();
 	}
 
 	if (!PlayerInHackingArea(_hackablepos) && _hacking && !_hackdone)
@@ -142,4 +142,18 @@ bool Hacker::PlayerInHackingArea(Vec2 tmpos)
 	} else {
 		return false;
 	}
+}
+
+void Hacker::SendPacket() {
+	PacketPlayerHack packet;
+
+	packet.type = PACKET_PLAYER_HACK;
+	packet.playerID = ((Player*)GetGameObject())->GetPlayerID();
+	packet.terminalID = 1;
+	packet.isHacking = _hacking;
+}
+
+void Hacker::SetUDPSocket(Socket *udp)
+{
+	_udpSocket = udp;
 }
