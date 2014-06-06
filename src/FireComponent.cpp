@@ -22,13 +22,13 @@ void FireComponent::Update(const DeltaTime &dt)
 {
 	const InputState *in = GetGameObject()->GetInputState();
 	if (in->IsMouseKeyFresh(SDL_BUTTON_LEFT) && in->IsMouseKeyDown(SDL_BUTTON_LEFT)){
-		// TODO
-		// Display a muzzle flash on the player
 		
 		// TODO
 		// player->GetWorld()->RayCast(&callback, p1, p2);
 		// Display a hit indicator on whatever was hit
-		
+	
+		((Player*)GetGameObject())->DisplayMuzzleFlash();
+
 		SendFirePacket();
 	}
 }
@@ -76,7 +76,7 @@ void BulletHitTester::TestBullet(Vec2 position, float rotation)
 	_localPlayer->GetWorld()->RayCast(&cb, _p1, _p2);
 
 	if (cb.DidHitTargetPlayer()) {
-		Log::Debug("I got hit by a bullet :(");
+		_localPlayer->DeductHP();
 		SendHitPacket();
 	}
 }

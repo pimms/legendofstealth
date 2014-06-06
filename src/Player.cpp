@@ -19,7 +19,9 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 	:	Entity(world),
 		_team(team),
 		_playerID(playerID),
-		_lightSource(NULL)
+		_lightSource(NULL),
+		_flash(NULL),
+		_splat(NULL)
 {
 	LoadTexture(texture);
 
@@ -37,12 +39,24 @@ Player::Player(b2World *world, Team team, unsigned playerID, string texture)
 	AddComponent<PlayerUpdateComponent>(this);
 	_updateComponent = GetComponent<PlayerUpdateComponent>(this);
 
+	_splat = new BloodSplat();
+	AddChild(_splat);
+
 	if (team == TEAM_MERC) {
-		ConeLightSource *light = new ConeLightSource();
+		LightSource *light = new ConeLightSource();
 		light->SetLightDistance(500.f);
 		light->SetColor(Color(1.f, 1.f, 1.f, 1.f));
 		AddChild(light);
 		GameScene::Singleton()->GetShadowLayer()->AddLightSource(light);
+
+		light = new LightSource();
+		light->SetLightDistance(100.f);
+		light->SetColor(Color(1.f, 1.f, 1.f, 1.f));
+		AddChild(light);
+		GameScene::Singleton()->GetShadowLayer()->AddLightSource(light);
+
+		_flash = new MuzzleFlash();
+		AddChild(_flash);
 	}
 }
 
@@ -70,13 +84,28 @@ void Player::Update(const DeltaTime &dt)
 
 void Player::Respawn()
 {
-	// TODO
-	// Set health to full
-	Position() = _spawnPosition;
+	hp = 5;
+	SetPosition(_spawnPosition);
+}
+
+void Player::DisplayMuzzleFlash()
+{
+	if (_flash) 
+		_flash->Show();
+}
+
+void Player::DisplayBloodSplat()
+{
+	if (_splat)
+		_splat->Show();
 }
 
 void Player::DeductHP() {
+	Log::Error("OUCH");
 	hp--;
+
+	if (hp == 0) 
+		Respawn();
 }
 
 

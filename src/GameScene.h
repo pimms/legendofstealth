@@ -70,8 +70,6 @@ private:
 
 	RayDebugDraw *_rayDraw;
 
-	bool _bullethit = false;
-
 
 	// Call the load methods in the order in which they appear plssss.
 	// Call each method exactly once..

@@ -9,6 +9,7 @@
 
 #include "Entity.h"
 #include "PlayerUpdateComponent.h"
+#include "MuzzleFlash.h"
 
 class Socket;
 class LightSource;
@@ -25,6 +26,8 @@ public:
 	void DeductHP();
 	void Respawn();
 
+	void DisplayMuzzleFlash();
+	void DisplayBloodSplat();
 
 protected:
 	PlayerUpdateComponent *_updateComponent;
@@ -33,6 +36,10 @@ private:
 	unsigned _playerID;
 	Team _team;
 	LightSource *_lightSource;
+
+	MuzzleFlash *_flash;
+	BloodSplat *_splat;
+
 	int hp = 5;
 	Vec2 _spawnPosition;
 };

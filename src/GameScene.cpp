@@ -127,10 +127,6 @@ bool GameScene::HandlePacket(const Packet *packet)
 			return false;
 	}
 
-	if (_bullethit) {
-		_localPlayer->DeductHP();
-	}
-
 	return false;
 }
 
@@ -244,43 +240,17 @@ void GameScene::LoadMap()
 	InitializeMap("res/wall2D.png", Vec2(68, 1), Vec2(1, 69));
 	
 	// Create light
-	InitalizeLight(Vec2(57, 60));
-	InitalizeLight(Vec2(65, 54));
-	InitalizeLight(Vec2(64, 45));
-	InitalizeLight(Vec2(64, 41));
-	InitalizeLight(Vec2(64, 15));
-	InitalizeLight(Vec2(64, 5));
-	InitalizeLight(Vec2(50, 10));
 
-	InitalizeLight(Vec2(45, 4));
 	InitalizeLight(Vec2(24, 4));
 	InitalizeLight(Vec2(5, 5));
 	InitalizeLight(Vec2(20, 10));
 	InitalizeLight(Vec2(5, 16));
 	InitalizeLight(Vec2(10, 25));
-
 	InitalizeLight(Vec2(6, 31));
-	InitalizeLight(Vec2(16, 38));
-	InitalizeLight(Vec2(5, 45));
-	InitalizeLight(Vec2(11, 60));
-	InitalizeLight(Vec2(22, 52));
-	InitalizeLight(Vec2(24, 38));
-
 	InitalizeLight(Vec2(33, 34));
-	InitalizeLight(Vec2(42, 15));
 	InitalizeLight(Vec2(27, 18));
-	InitalizeLight(Vec2(42, 25));
 	InitalizeLight(Vec2(27, 25));
-	InitalizeLight(Vec2(25, 38));
-
-	InitalizeLight(Vec2(53, 38));
-	InitalizeLight(Vec2(21, 64));
-	InitalizeLight(Vec2(48, 64));
-	InitalizeLight(Vec2(40, 60));
-	InitalizeLight(Vec2(29, 60));
-	InitalizeLight(Vec2(46, 52));
-	InitalizeLight(Vec2(22, 52));
-
+	
 	// Create BOXES
 	InitializeMap("res/crate.png",Vec2(1,1) , Vec2(10,66));
 	InitializeMap("res/crate.png", Vec2(1, 1), Vec2(16, 52));
@@ -341,24 +311,20 @@ void GameScene::HandlePacketPlayerFire(const PacketPlayerFire *packet)
 	hit.GetLine(p1, p2);
 	_rayDraw->SetRay(p1, p2);
 
-	Player *p = NULL;
 	for (int i=0; i<_remotePlayers.size(); i++) {
 		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {
-			p = _remotePlayers[i];
+			_remotePlayers[i]->DisplayMuzzleFlash();
 		}
 	}
-
-	if (p) {
-		Vec2 pos = p->Position();
-		printf("BULLET OFFSET: %g %g\n", pos.x - ToVec2(p1).x, pos.y - ToVec2(p1).y);
-		printf("PACKET OFFSET: %g %g\n", pos.x - packet->posX, pos.y - packet->posY);
-	}
-
 }
 
 void GameScene::HandlePacketPlayerHit(const PacketPlayerHit *packet)
 {
-	_bullethit = true;
+	for (int i=0; i<_remotePlayers.size(); i++) {
+		if (_remotePlayers[i]->GetPlayerID() == packet->playerID) {
+			_remotePlayers[i]->DisplayBloodSplat();
+		}
+	}
 }
 
 
