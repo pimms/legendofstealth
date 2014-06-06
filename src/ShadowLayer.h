@@ -42,4 +42,6 @@ private:
 
 	void DrawFillShadow();
 	void DrawRenderTexture();
+
+	bool ShouldDrawLight(LightSource *source);
 };
