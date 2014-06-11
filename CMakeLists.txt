@@ -1,6 +1,9 @@
+cmake_minimum_required(VERSION 2.8)
+
 project(los)
 
-add_executable(los GameLayer.cpp MapLayer.cpp Map.cpp MapParser.cpp main.cpp GameScene.cpp)
+file(GLOB game_src "src/*.h" "src/*.cpp")
+add_executable(los ${game_src})
 
 install(TARGETS los RUNTIME DESTINATION bin)
 
