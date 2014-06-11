@@ -29,6 +29,7 @@ install_manifest.txt
 # Various stuff
 game
 serv
+.kdev4
 .*.swp
 .*.swo
 build/
