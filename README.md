@@ -22,6 +22,9 @@ LoS has a couple of dependencies
 -   OpenGL
 -   GLU
 -   GLEW
+-	SDL2
+-	SDL2_image
+-	SDL2_net
 -   TinyXML
 -   ZLib
 -   Box2D 2.3.x
