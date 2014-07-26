@@ -13,6 +13,9 @@ public:
 	
 	void Update(const DeltaTime &dt);
 	void Render(Renderer *renderer);
+
+
+	ShadowLayer* GetShadowLayer();
 	
 private:
 	Map *_map;

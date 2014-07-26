@@ -3,8 +3,8 @@
 #include <trutle/Trutle.h>
 #include <TmxParser/Tmx.h>
 #include "LightSource.h"
+#include "Map.h"
 
-class Map;
 class MapLayer;
 
 /* MapParser
@@ -14,14 +14,23 @@ class MapLayer;
  */
 class MapParser {
 public:
-	MapParser(string mapFile);
+	MapParser(string mapFile, Map *map);
 	~MapParser();
 	
-	Map* ParseMap();
+	bool ParseMap();
 
 private:
+	enum ObjectsetTileID {
+		ID_TERM_A 		= 0,
+		ID_TERM_B 		= 1,
+		ID_TERM_C 		= 2,
+		ID_WALL 		= 5,
+		ID_VENT 		= 6,
+	};
+
 	string _mapFile;
-	Tmx::Map _map;
+	Map *_map;
+	Tmx::Map _tmxMap;
 	Tmx::Tileset *_mapset;
 	Tmx::Tileset *_objset;
 	
@@ -30,6 +39,6 @@ private:
 	Rect GetTextureClip(Tmx::Tileset *set, int gid);
 	Rect GetWorldClip(Tmx::Tileset *set, int x, int y);
 
-	// Parse the light layer
-	vector<LightSource::Properties> ParseLightLayer(Tmx::Layer *layer);
+	// Parse the walls-layer
+	void ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tileTemplate);
 };

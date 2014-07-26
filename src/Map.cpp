@@ -7,9 +7,10 @@
 Map Public
 ================
 */
-Map::Map()
+Map::Map(GameLayer *gameLayer)
 	:	_bgLayer(NULL),
-		_fgLayer(NULL)
+		_fgLayer(NULL),
+		_gameLayer(gameLayer)
 {
 
 }
@@ -30,6 +31,17 @@ void Map::SetForegroundLayer(MapLayer* layer)
 {
 	_fgLayer = layer;
 	AddChild(_fgLayer);
+}
+
+
+void Map::SetTileTemplate(Map::TileTemplate tt) 
+{
+	_tileTemplate = tt;
+}
+
+Map::TileTemplate Map::GetTileTemplate() const
+{
+	return _tileTemplate;
 }
 
 
@@ -56,3 +68,52 @@ void Map::RenderForegroundLayer(Renderer* renderer)
 Map Private
 ================
 */
+
+
+
+
+
+
+
+
+
+
+/*
+================
+Map::TileTemplate 
+================
+*/
+Map::TileTemplate::TileTemplate() 
+{ 
+	_w = 0;
+	_h = 0;
+}
+
+Map::TileTemplate::TileTemplate(int mapWidth, int mapHeight) 
+{
+	_w = mapWidth;
+	_h = mapHeight;
+
+	_tiles.resize(mapWidth * mapHeight, 0);
+}
+
+void Map::TileTemplate::AddFlag(int x, int y, unsigned flag) 
+{
+	_tiles[y * _w + x] |= flag;
+}
+
+
+int Map::TileTemplate::GetWidth() const
+{
+	return _w;
+}
+
+int Map::TileTemplate::GetHeight() const
+{
+	return _h;
+}
+
+unsigned Map::TileTemplate::GetFlags(int x, int y) const
+{
+	return _tiles[y * _w + x];
+}

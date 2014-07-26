@@ -143,6 +143,7 @@ vector<Vec2> ShadowLayer::GetShadowVertices(LightSource *source)
 			continue;
 
 		vector<Vec2> shape = caster->GetShadowShape();
+		Vec2 casterPos = caster->GetGameObject()->WorldPosition();
 		Vec2 p = source->GetGameObject()->WorldPosition();
 		
 		// Push P1, P2, P2', P1' to create a quad
@@ -152,12 +153,12 @@ vector<Vec2> ShadowLayer::GetShadowVertices(LightSource *source)
 			for (int k=0; k<2; k++) {
 				int idx = (k + j) % shape.size();
 				Vec2 d;
-				d.x = shape[idx].x - p.x;
-				d.y = shape[idx].y - p.y;
+				d.x += shape[idx].x - p.x;
+				d.y += shape[idx].y - p.y;
 
 				d.x *= 1000.f;
 				d.y *= 1000.f;
-
+				
 				// Push the shape vertex and the delta
 				quad[k] = shape[idx];
 				quad[3-k] = d;
@@ -247,7 +248,7 @@ bool ShadowLayer::WillLightHitCaster(LightSource *source, ShadowCaster *caster)
 {
 	Vec2 lp = source->Position();
 	float rad = source->GetLightRadius();
-	Rect l(	lp.x - rad, lp.y - rad, rad, rad);
+	Rect l(	lp.x - rad, lp.y - rad, rad*2, rad*2);
 
 	Rect c = caster->GetAABB();
 

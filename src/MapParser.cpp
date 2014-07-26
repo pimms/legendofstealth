@@ -1,5 +1,4 @@
 #include "MapParser.h"
-#include "Map.h"
 #include "MapLayer.h"
 
 
@@ -8,22 +7,23 @@
 MapParser Public
 ================
 */
-MapParser::MapParser(string mapFile)
+MapParser::MapParser(string mapFile, Map *map)
 	:	_mapFile(mapFile),
 		_mapset(NULL),
-		_objset(NULL)
+		_objset(NULL),
+		_map(map)
 {
 	// Locate mapset and objectset
-	_map.ParseFile(mapFile);
+	_tmxMap.ParseFile(mapFile);
 	
-	if (_map.HasError()) {
+	if (_tmxMap.HasError()) {
 		string msg = "Failed to parse map: ";
-		msg += _map.GetErrorText();
+		msg += _tmxMap.GetErrorText();
 		Log::Error(msg);
 		throw std::runtime_error(msg);
 	}
 	
-	vector<Tmx::Tileset*> tsets = _map.GetTilesets();
+	vector<Tmx::Tileset*> tsets = _tmxMap.GetTilesets();
 	for (int i=0; i<tsets.size(); i++) {
 		Tmx::Tileset *tset = tsets[i];
 		if (tset->GetName() == "mapset") {
@@ -46,30 +46,34 @@ MapParser::~MapParser()
 }
 
 
-Map* MapParser::ParseMap()
+bool MapParser::ParseMap()
 {
-	Map *gameMap = new Map();
-	
-	const vector<Tmx::Layer*> layers = _map.GetLayers();
+	Map::TileTemplate tileTemplate(_tmxMap.GetWidth(), _tmxMap.GetHeight());
+
+	const vector<Tmx::Layer*> layers = _tmxMap.GetLayers();
 	for (int i=0; i<layers.size(); i++) {
 		Tmx::Layer *layer = layers[i];
 		
 		if (layer->GetName() == "background") {
 			MapLayer *ml = ParseDrawableLayer(layer);
-			gameMap->SetBackgroundLayer(ml);
+			_map->SetBackgroundLayer(ml);
 			Log::Debug("Parsed background layer");
 		} else if (layer->GetName() == "foreground") {
 			MapLayer *ml = ParseDrawableLayer(layer);
-			gameMap->SetForegroundLayer(ml);
+			_map->SetForegroundLayer(ml);
 			Log::Debug("Parsed foreground layer");
+		} else if (layer->GetName() == "walls") {
+			ParseWallLayer(layer, tileTemplate);
 		} else {
 			Log::Debug((string) 
 				"Unable to parse: " + layer->GetName()
 			);
 		}
 	}
+
+	_map->SetTileTemplate(tileTemplate);
 	
-	return gameMap;
+	return true;
 }
 
 
@@ -85,11 +89,9 @@ MapLayer* MapParser::ParseDrawableLayer(Tmx::Layer *layer)
 	//imgFile = "../res/helloworld.png";
 	MapLayer *mapLayer = new MapLayer(imgFile);
 	
-	for (int x=0; x<_map.GetWidth(); x++) {
-		for (int y=0; y<_map.GetHeight(); y++) {
+	for (int x=0; x<_tmxMap.GetWidth(); x++) {
+		for (int y=0; y<_tmxMap.GetHeight(); y++) {
 			int gid = layer->GetTileGid(x, y);
-			
-			printf("%i", gid);
 			if (gid == 0) 
 				continue;
 			
@@ -138,7 +140,7 @@ Rect MapParser::GetTextureClip(Tmx::Tileset* set, int gid)
 
 Rect MapParser::GetWorldClip(Tmx::Tileset* set, int x, int y)
 {
-	int ycount = _map.GetHeight();
+	int ycount = _tmxMap.GetHeight();
 	
 	float xpos = x * set->GetTileWidth();
 	float ypos = (ycount - y - 1) * set->GetTileHeight();
@@ -150,4 +152,20 @@ Rect MapParser::GetWorldClip(Tmx::Tileset* set, int x, int y)
 	wClip.h = set->GetTileHeight();
 	
 	return wClip;
+}
+
+
+void MapParser::ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tt) 
+{
+	for (int x=0; x<_tmxMap.GetWidth(); x++) {
+		for (int y=0; y<_tmxMap.GetHeight(); y++) {
+			Tmx::MapTile tile = layer->GetTile(x, y);
+			if (tile.gid == 0)
+				continue;
+
+			if (tile.id == ObjectsetTileID::ID_WALL) {
+				tt.AddFlag(x, y, Map::TILE_SHADOW | Map::TILE_WALL);	
+			}
+		}
+	}
 }

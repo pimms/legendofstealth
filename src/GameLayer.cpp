@@ -3,6 +3,7 @@
 #include "MapParser.h"
 #include "Player.h"
 #include "ShadowLayer.h"
+#include "MapLoader.h"
 
 
 /*
@@ -15,8 +16,6 @@ GameLayer::GameLayer()
 		_shadowLayer(NULL),
 		_uiLayer(NULL)
 {
-	MapParser parser("res/testmap.tmx");
-	_map = parser.ParseMap();
 	
 	// Don't add child layers as children, manage them
 	// manually until Z-ordering is added to Trutle.
@@ -26,6 +25,18 @@ GameLayer::GameLayer()
 	_player = new Player();
 	_shadowLayer->AddLightSource(GetComponent<LightSource>(_player));
 	AddChild(_player);
+
+
+	// Load the map (this HAS to be done after the ShadowLayer has been
+	// initialized).
+	_map = new Map(this);
+	MapParser parser("res/testmap.tmx", _map);
+	if (!parser.ParseMap()) {
+		Log::Error("Failed to parse map");
+	} 
+
+	MapLoader loader;
+	loader.LoadMap(_map, this);
 }
 
 GameLayer::~GameLayer() 
@@ -61,3 +72,8 @@ void GameLayer::Render(Renderer* renderer)
 	renderer->PopTransform();
 }
 
+
+ShadowLayer* GameLayer::GetShadowLayer() 
+{
+	return _shadowLayer;
+}

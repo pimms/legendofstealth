@@ -13,13 +13,22 @@
  */
 class ShadowCaster : public Component {
 public:
-	const vector<Vec2>& GetShadowShape();
-	Rect GetAABB() const;
+	ShadowCaster();
 
-	
+	void SetShadowRectangle(Rect srect);
+
+	const vector<Vec2>& GetShadowShape();
+	Rect GetAABB();
+
 private:
-	vector<Vec2> _shadowVerts;
+	vector<Vec2> _localVerts;
+	vector<Vec2> _globalVerts;
+	Vec2 _calcPos;	
+
+	void CalculateGlobalVertices();
 	
 	virtual void CreateShadowVertices();
 	virtual Rect GetShadowRect();
+
+	bool IsPositionDirty();
 };
