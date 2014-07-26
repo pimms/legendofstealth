@@ -2,6 +2,7 @@
 
 #include <trutle/Trutle.h>
 #include <TmxParser/Tmx.h>
+#include "LightSource.h"
 
 class Map;
 class MapLayer;
@@ -25,7 +26,10 @@ private:
 	Tmx::Tileset *_objset;
 	
 	// Parse the Background or Foreground layer
-	MapLayer* ParseMapLayer(Tmx::Layer *layer);
+	MapLayer* ParseDrawableLayer(Tmx::Layer *layer);
 	Rect GetTextureClip(Tmx::Tileset *set, int gid);
 	Rect GetWorldClip(Tmx::Tileset *set, int x, int y);
+
+	// Parse the light layer
+	vector<LightSource::Properties> ParseLightLayer(Tmx::Layer *layer);
 };

@@ -27,6 +27,7 @@ cmake_install.cmake
 install_manifest.txt
 
 # Various stuff
+los
 game
 serv
 .kdev4

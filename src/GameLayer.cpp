@@ -1,6 +1,8 @@
 #include "GameLayer.h"
 #include "Map.h"
 #include "MapParser.h"
+#include "Player.h"
+#include "ShadowLayer.h"
 
 
 /*
@@ -13,13 +15,17 @@ GameLayer::GameLayer()
 		_shadowLayer(NULL),
 		_uiLayer(NULL)
 {
-	MapParser parser("../res/testmap.tmx");
+	MapParser parser("res/testmap.tmx");
 	_map = parser.ParseMap();
 	
 	// Don't add child layers as children, manage them
-	// manually. Until Z-ordering is added to Trutle.
-	_shadowLayer = new Layer();
+	// manually until Z-ordering is added to Trutle.
+	_shadowLayer = new ShadowLayer(this);
 	_uiLayer = new Layer();
+
+	_player = new Player();
+	_shadowLayer->AddLightSource(GetComponent<LightSource>(_player));
+	AddChild(_player);
 }
 
 GameLayer::~GameLayer() 
@@ -36,16 +42,6 @@ GameLayer::~GameLayer()
 void GameLayer::Update(const DeltaTime& dt)
 {
 	Layer::Update(dt);
-	
-	const InputState *in = GetInputState();
-	if (in->IsKeyDown(SDLK_a))
-		Position().x += 250.f * dt.dt;
-	if (in->IsKeyDown(SDLK_d))
-		Position().x -= 250.f * dt.dt;
-	if (in->IsKeyDown(SDLK_s))
-		Position().y += 250.f * dt.dt;
-	if (in->IsKeyDown(SDLK_w))
-		Position().y -= 250.f * dt.dt;
 }
 
 void GameLayer::Render(Renderer* renderer)

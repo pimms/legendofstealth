@@ -55,11 +55,11 @@ Map* MapParser::ParseMap()
 		Tmx::Layer *layer = layers[i];
 		
 		if (layer->GetName() == "background") {
-			MapLayer *ml = ParseMapLayer(layer);
+			MapLayer *ml = ParseDrawableLayer(layer);
 			gameMap->SetBackgroundLayer(ml);
 			Log::Debug("Parsed background layer");
 		} else if (layer->GetName() == "foreground") {
-			MapLayer *ml = ParseMapLayer(layer);
+			MapLayer *ml = ParseDrawableLayer(layer);
 			gameMap->SetForegroundLayer(ml);
 			Log::Debug("Parsed foreground layer");
 		} else {
@@ -78,10 +78,10 @@ Map* MapParser::ParseMap()
 MapParser Private
 ================
 */
-MapLayer* MapParser::ParseMapLayer(Tmx::Layer *layer)
+MapLayer* MapParser::ParseDrawableLayer(Tmx::Layer *layer)
 {
 	string imgFile = _mapset->GetImage()->GetSource();
-	imgFile = "../res/" + imgFile; 
+	imgFile = "res/" + imgFile; 
 	//imgFile = "../res/helloworld.png";
 	MapLayer *mapLayer = new MapLayer(imgFile);
 	

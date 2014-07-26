@@ -3,6 +3,8 @@
 #include <trutle/Trutle.h>
 
 class Map;
+class Player;
+class ShadowLayer;
 
 class GameLayer : public Layer {
 public:
@@ -14,6 +16,8 @@ public:
 	
 private:
 	Map *_map;
-	Layer *_shadowLayer;
+	ShadowLayer *_shadowLayer;
 	Layer *_uiLayer;
+
+	Player *_player;
 };

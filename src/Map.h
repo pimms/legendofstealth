@@ -4,6 +4,8 @@
 
 class MapLayer;
 
+/* Map
+ */
 class Map : public GameObject {
 public:
 	Map();
