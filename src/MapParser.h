@@ -41,4 +41,8 @@ private:
 
 	// Parse the walls-layer
 	void ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tileTemplate);
+
+	// TMX maps use a top-left origo while we use a bottom-left.
+	// Inverse a Y-coordinate based on the height of the map.
+	int FlipY(int mapY);
 };

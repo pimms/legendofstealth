@@ -39,7 +39,10 @@ private:
  * The light is defined by two properties; the color
  * and the radius of the light. The radius is in 
  * pixels. A custom texture can be used as well for
- * more advanced lightings (flashlight, etc).
+ * more advanced lightings (flashlight, etc). 
+ *
+ * The custom light textures are translated to have their
+ * origin at the middle of the left edge (coordinate [0, 0.5]).
  */
 class LightSource : public Component {
 public:

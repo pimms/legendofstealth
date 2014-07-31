@@ -120,7 +120,7 @@ Rect MapParser::GetTextureClip(Tmx::Tileset* set, int gid)
 	//  4  5  6
 	int tilex = id % xcount;
 	int tiley = id / ycount;
-	tiley = ycount - tiley - 1;
+	tiley = ycount - tiley;
 	
 	Rect texClip;
 	texClip.x = tilex * set->GetTileWidth();
@@ -140,10 +140,8 @@ Rect MapParser::GetTextureClip(Tmx::Tileset* set, int gid)
 
 Rect MapParser::GetWorldClip(Tmx::Tileset* set, int x, int y)
 {
-	int ycount = _tmxMap.GetHeight();
-	
 	float xpos = x * set->GetTileWidth();
-	float ypos = (ycount - y - 1) * set->GetTileHeight();
+	float ypos = FlipY(y) * set->GetTileHeight();
 	
 	Rect wClip;
 	wClip.x = xpos;
@@ -158,10 +156,12 @@ Rect MapParser::GetWorldClip(Tmx::Tileset* set, int x, int y)
 void MapParser::ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tt) 
 {
 	for (int x=0; x<_tmxMap.GetWidth(); x++) {
-		for (int y=0; y<_tmxMap.GetHeight(); y++) {
-			Tmx::MapTile tile = layer->GetTile(x, y);
+		for (int mapy=0; mapy<_tmxMap.GetHeight(); mapy++) {
+			Tmx::MapTile tile = layer->GetTile(x, mapy);
 			if (tile.gid == 0)
 				continue;
+
+			int y = FlipY(mapy);
 
 			if (tile.id == ObjectsetTileID::ID_WALL) {
 				tt.AddFlag(x, y, Map::TILE_SHADOW | Map::TILE_WALL);	
@@ -170,4 +170,11 @@ void MapParser::ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tt)
 			}
 		}
 	}
+}
+
+
+int MapParser::FlipY(int mapY) 
+{
+	int ycount = _tmxMap.GetHeight();
+	return (ycount - mapY - 1);
 }

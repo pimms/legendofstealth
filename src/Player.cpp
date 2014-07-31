@@ -2,6 +2,9 @@
 #include "LightSource.h"
 #include "Map.h"
 
+#include <trutle/res/Resource.h>
+#include <trutle/res/ResourceManager.h>
+
 
 /*
 ================
@@ -75,6 +78,8 @@ Player::Player(Map *map, GameLayer *gameLayer)
 	AddComponent<LightSource>(this);
 	LightSource *ls = GetComponent<LightSource>(this);
 	ls->SetLightProperties(300.f, Color(1.f, 1.f, 1.f, 0.5f));
+	ls->SetTexture((Texture*)ResourceManager::GetResource("res/flashlight.png", 
+															Resource::TEXTURE));
 
 	CreatePhysics(map->GetB2World());
 	GetComponent<MoveComponent>(this)->SetBody(_body);

@@ -146,6 +146,10 @@ LightSource::LightSource()
 LightSource::~LightSource()
 {
 	ReleaseSharedTexture();
+
+	if (_texture != NULL) {
+		_texture->Release();
+	}
 }
 
 
@@ -161,9 +165,11 @@ void LightSource::SetTexture(Texture* texture)
 	ReleaseSharedTexture();
 
 	_texture = texture;
+	_texture->Retain();
 	
-	// Invalidate the properties
+	// Invalidate the properties (the radius is still used however)
 	_properties.initialized = false;
+	_properties.radius = _texture->GetDimensions().x;
 }
 
 
@@ -200,9 +206,13 @@ Rect LightSource::GetAABB() const
 void LightSource::RenderLight(Renderer *renderer)
 {
 	GLuint tex = 0;
+	bool shared = false;
+
 	if (IsUsingSharedTexture()) {
+		shared = true;
 		tex = _sharedTexture->GetTex();
 	} else if (_texture) {
+		shared = false;
 		tex = _texture->GetTextureID();
 	} else { 
 		return;
@@ -220,12 +230,24 @@ void LightSource::RenderLight(Renderer *renderer)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	float v[] = {
-		-_properties.radius, -_properties.radius,
-		 _properties.radius, -_properties.radius,
-		 _properties.radius,  _properties.radius,
-		-_properties.radius,  _properties.radius,
-	};
+	float *v = NULL; 
+	
+	if (shared) {
+		v = new float[8] {
+			-_properties.radius, -_properties.radius,
+			 _properties.radius, -_properties.radius,
+			 _properties.radius,  _properties.radius,
+			-_properties.radius,  _properties.radius,
+		};
+	} else {
+		Vec2 d = _texture->GetDimensions();
+		v = new float[8] {
+			0.f, -d.y / 2.f,
+			d.x, -d.y / 2.f,
+			d.x,  d.y / 2.f,
+			0.f,  d.y / 2.f,
+		};
+	}
 
 	float t[] = {
 		0.f, 0.f,
@@ -246,6 +268,8 @@ void LightSource::RenderLight(Renderer *renderer)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
+
+	delete[] v;
 }
 
 
