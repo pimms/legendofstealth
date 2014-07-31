@@ -10,14 +10,21 @@ Map Public
 Map::Map(GameLayer *gameLayer)
 	:	_bgLayer(NULL),
 		_fgLayer(NULL),
-		_gameLayer(gameLayer)
+		_gameLayer(gameLayer),
+		_b2World(new b2World(b2Vec2_zero))
 {
-
+	_b2World->SetDebugDraw(&_debugDraw);
+	_debugDraw.AppendFlags(b2Draw::e_shapeBit);
 }
 
 Map::~Map()
 {
-	
+	for (int i=0; i<_globalBodies.size(); i++) {
+		_b2World->DestroyBody(_globalBodies[i]);
+	}
+
+	_globalBodies.clear();
+	delete _b2World;
 }
 
 
@@ -45,6 +52,20 @@ Map::TileTemplate Map::GetTileTemplate() const
 }
 
 
+b2World* Map::GetB2World() const
+{
+	return _b2World;
+}
+
+
+void Map::Update(const DeltaTime &dt)
+{
+	GameObject::Update(dt);
+
+	_b2World->Step(1.f / 60.f, 10, 10);
+}
+
+
 void Map::Render(Renderer* renderer)
 {
 	// Do nothing
@@ -60,6 +81,8 @@ void Map::RenderForegroundLayer(Renderer* renderer)
 {
 	if (_fgLayer)
 		_fgLayer->Render(renderer);
+
+	_b2World->DrawDebugData();
 }
 
 
@@ -68,12 +91,10 @@ void Map::RenderForegroundLayer(Renderer* renderer)
 Map Private
 ================
 */
-
-
-
-
-
-
+void Map::AddGlobalBody(b2Body *body) 
+{
+	_globalBodies.push_back(body);
+}
 
 
 

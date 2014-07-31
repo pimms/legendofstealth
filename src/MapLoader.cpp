@@ -32,6 +32,11 @@ void MapLoader::LoadMap(Map *map, GameLayer *gameLayer)
 			
 			if (flags & Map::TILE_SHADOW) 
 				LoadShadowCaster(x, y);
+
+			if (flags & Map::TILE_WALL) {
+				bool vent = (flags & Map::TILE_VENT);
+				LoadWall(x, y, vent);
+			}
 		}
 	}
 }
@@ -57,3 +62,36 @@ void MapLoader::LoadShadowCaster(int x, int y)
 
 	sc->SetShadowRectangle(Rect(0.f, 0.f, MAP_TILE_SIZE, MAP_TILE_SIZE));
 }
+
+void MapLoader::LoadWall(int x, int y, bool isVentilation) 
+{
+	b2World *world = _map->GetB2World();
+
+	float metersWide = (float)B2METER_PER_TILE / 2.f;
+	unsigned category = (isVentilation) 
+		? ColliderGroups::WALL 
+		: ColliderGroups::VENTILATION;
+
+
+	b2PolygonShape shape;
+	shape.SetAsBox(metersWide, metersWide);
+
+	b2FixtureDef fd;
+	fd.shape = &shape;
+	fd.filter.categoryBits = category;
+	fd.filter.maskBits = ColliderGroups::PLAYER;
+	
+	b2BodyDef bd;
+	bd.type = b2_staticBody;
+	bd.fixedRotation = true;
+	bd.position = b2Vec2(
+		(MAP_TILE_SIZE * ((float)x + 0.5f)) / B2_PTM, 
+		(MAP_TILE_SIZE * ((float)y + 0.5f)) / B2_PTM
+	);
+	
+	b2Body *body = world->CreateBody(&bd);
+	body->CreateFixture(&fd);
+
+	_map->AddGlobalBody(body);
+}
+

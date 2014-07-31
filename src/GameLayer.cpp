@@ -22,9 +22,6 @@ GameLayer::GameLayer()
 	_shadowLayer = new ShadowLayer(this);
 	_uiLayer = new Layer();
 
-	_player = new Player();
-	_shadowLayer->AddLightSource(GetComponent<LightSource>(_player));
-	AddChild(_player);
 
 
 	// Load the map (this HAS to be done after the ShadowLayer has been
@@ -37,6 +34,12 @@ GameLayer::GameLayer()
 
 	MapLoader loader;
 	loader.LoadMap(_map, this);
+
+	
+	// Load the player
+	_player = new Player(_map, this);
+	_shadowLayer->AddLightSource(GetComponent<LightSource>(_player));
+	AddChild(_player);
 }
 
 GameLayer::~GameLayer() 
@@ -53,6 +56,9 @@ GameLayer::~GameLayer()
 void GameLayer::Update(const DeltaTime& dt)
 {
 	Layer::Update(dt);
+
+	_map->Update(dt);
+	_player->MoveToB2Body();
 }
 
 void GameLayer::Render(Renderer* renderer)

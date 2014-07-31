@@ -1,12 +1,12 @@
 #pragma once
 
 #include <trutle/Trutle.h>
+#include <Box2D/Box2D.h>
+#include "Physics.h"
+#include "PhysicsDebugDrawer.h"
 
 class MapLayer;
 class GameLayer;
-
-
-#define MAP_TILE_SIZE 64
 
 
 /* Map
@@ -51,8 +51,12 @@ public:
 
 	void SetTileTemplate(TileTemplate tileTemplate);
 	TileTemplate GetTileTemplate() const;
+
+	b2World* GetB2World() const;
 	
 	
+	void Update(const DeltaTime &dt);
+
 	// The layers must be drawn individually, the default
 	// Render-method does nothing
 	void Render(Renderer *renderer);
@@ -60,10 +64,18 @@ public:
 	void RenderForegroundLayer(Renderer *renderer);
 
 private:	
+	friend class MapLoader;
+
 	MapLayer *_bgLayer;
 	MapLayer *_fgLayer;
 	GameLayer *_gameLayer;
 	TileTemplate _tileTemplate;
+
+	b2World *_b2World;
+	PhysicsDebugDrawer _debugDraw;
+	vector<b2Body*> _globalBodies;
+
+	void AddGlobalBody(b2Body *body);
 };
 
 

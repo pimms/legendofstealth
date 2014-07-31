@@ -165,6 +165,8 @@ void MapParser::ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tt)
 
 			if (tile.id == ObjectsetTileID::ID_WALL) {
 				tt.AddFlag(x, y, Map::TILE_SHADOW | Map::TILE_WALL);	
+			} else if (tile.id == ObjectsetTileID::ID_VENT) {
+				tt.AddFlag(x, y, Map::TILE_VENT);
 			}
 		}
 	}

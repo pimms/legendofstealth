@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "LightSource.h"
+#include "Map.h"
 
 
 /*
@@ -33,13 +34,27 @@ void MoveComponent::Update(const DeltaTime &dt)
 		vel.y /= len;
 	}
 
-	Vec2 pos = Position();
-	pos.x += vel.x * _speed * dt.dt;
-	pos.y += vel.y * _speed * dt.dt;
-	Position() = pos;
+
+	if (_body) {
+		b2Vec2 b2vel(vel.x, vel.y);
+		b2vel *= _speed * dt.dt;
+		_body->SetLinearVelocity(b2vel);
+	} else {
+		// Manual movement
+		Vec2 pos = Position();
+		pos.x += vel.x * _speed * B2_PTM * dt.dt;
+		pos.y += vel.y * _speed * B2_PTM * dt.dt;
+		Position() = pos;
+	}
+
+	printf("%g %g\n", Position().x, Position().y);
 }
 
 
+void MoveComponent::SetBody(b2Body *body)
+{
+	_body = body;
+}
 
 
 
@@ -48,7 +63,8 @@ void MoveComponent::Update(const DeltaTime &dt)
 Player Public
 ================
 */
-Player::Player() 
+Player::Player(Map *map, GameLayer *gameLayer) 
+	:	_body(NULL)
 {
 	LoadTexture("res/player.png");
 
@@ -59,12 +75,52 @@ Player::Player()
 	AddComponent<LightSource>(this);
 	LightSource *ls = GetComponent<LightSource>(this);
 	ls->SetLightProperties(300.f, Color(1.f, 1.f, 1.f, 0.5f));
+
+	CreatePhysics(map->GetB2World());
+	GetComponent<MoveComponent>(this)->SetBody(_body);
 }
 
 Player::~Player()
 {
-	
+	if (_body) {
+		_body->GetWorld()->DestroyBody(_body);
+		_body = NULL;
+	}
 }
 
 
+void Player::MoveToB2Body()
+{
+	Position() = ToVec2(_body->GetPosition());
+}
+
+
+/*
+================
+Player Private 
+================
+*/
+void Player::CreatePhysics(b2World *world)
+{
+	b2BodyDef bd;
+	bd.type = b2_dynamicBody;
+	bd.allowSleep = false;
+	bd.userData = this;
+
+	b2CircleShape shape;
+	shape.m_radius = MAP_TILE_SIZE / B2_PTM / 2.f * 0.8f; 
+	
+	b2FixtureDef fd;
+	fd.filter.categoryBits = ColliderGroups::PLAYER;
+	fd.filter.maskBits = 	ColliderGroups::WALL
+						|	ColliderGroups::VENTILATION
+						|	ColliderGroups::PLAYER;
+	fd.density = 1.5f;
+	fd.friction = 1.f;
+	fd.userData = this;
+	fd.shape = &shape;
+
+	_body = world->CreateBody(&bd);
+	_body->CreateFixture(&fd);
+}
 

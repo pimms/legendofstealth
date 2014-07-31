@@ -16,4 +16,6 @@ private:
 	GameLayer *_gameLayer;
 
 	void LoadShadowCaster(int x, int y);
+	
+	void LoadWall(int x, int y, bool isVentilation);
 };
