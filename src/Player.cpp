@@ -63,6 +63,24 @@ void MoveComponent::SetBody(b2Body *body)
 
 /*
 ================
+AimComponent 
+================
+*/
+AimComponent::AimComponent()
+{
+	
+}
+
+void AimComponent::Update(const DeltaTime &dt)
+{
+	// TODO
+	Rotation() += 90.f * dt.dt;
+}
+
+
+
+/*
+================
 Player Public
 ================
 */
@@ -74,6 +92,7 @@ Player::Player(Map *map, GameLayer *gameLayer)
 	Scale() = Vec2(0.25f, 0.25f);
 
 	AddComponent<MoveComponent>(this);
+	AddComponent<AimComponent>(this);
 
 	AddComponent<LightSource>(this);
 	LightSource *ls = GetComponent<LightSource>(this);

@@ -12,6 +12,9 @@ class Map;
 class GameLayer;
 
 
+/* MoveComponent
+ * Component responsible for moving the player around
+ */
 class MoveComponent : public Component {
 public:
 	MoveComponent();
@@ -25,6 +28,19 @@ private:
 };
 
 
+/* AimComponent
+ * Component responsible for rotating the player towards the mouse
+ */
+class AimComponent : public Component {
+public:
+	AimComponent();
+	void Update(const DeltaTime &dt);
+};
+
+
+/* Player
+ * A hollow shell dragged around by a handful of dedicated components.
+ */
 class Player : public GameObject {
 public:
 	Player(Map *map, GameLayer *gameLayer);
