@@ -8,6 +8,28 @@
 
 /*
 ================
+CameraComponent Public
+================
+*/
+void CameraComponent::SetPlayer(Player *player) 
+{
+	_player = player;
+}
+
+void CameraComponent::Update(const DeltaTime &dt)
+{
+	if (!_player)
+		return;
+
+	Vec2 resolution = GetGameObject()->GetApp()->GetWindow()->GetResolution();
+	Vec2 offset = Vec2(resolution.x / 2.f, resolution.y / 2.f);
+	Position() = Vec2(offset.x - _player->Position().x, offset.y - _player->Position().y);
+}
+
+
+
+/*
+================
 GameLayer Public
 ================
 */
@@ -40,6 +62,10 @@ GameLayer::GameLayer()
 	_player = new Player(_map, this);
 	_shadowLayer->AddLightSource(GetComponent<LightSource>(_player));
 	AddChild(_player);
+
+	// Add the camera component
+	AddComponent<CameraComponent>(this);
+	GetComponent<CameraComponent>(this)->SetPlayer(_player);
 }
 
 GameLayer::~GameLayer() 

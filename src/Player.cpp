@@ -12,8 +12,7 @@ MoveComponent
 ================
 */
 MoveComponent::MoveComponent() 
-	:	_speed(PLAYER_DEFAULT_SPEED)
-{
+	:	_speed(PLAYER_DEFAULT_SPEED) {
 
 }
 
@@ -22,13 +21,13 @@ void MoveComponent::Update(const DeltaTime &dt)
 	const InputState *input = GetGameObject()->GetInputState();
 	Vec2 vel(0.f, 0.f);
 	
-	if (input->IsKeyDown(SDLK_h)) 
+	if (input->IsKeyDown(SDLK_a)) 
 		vel.x = -1.f;
-	if (input->IsKeyDown(SDLK_l))
+	if (input->IsKeyDown(SDLK_d))
 		vel.x = 1.f;
-	if (input->IsKeyDown(SDLK_j))
+	if (input->IsKeyDown(SDLK_s))
 		vel.y = -1.f;
-	if (input->IsKeyDown(SDLK_k))
+	if (input->IsKeyDown(SDLK_w))
 		vel.y = 1.f;
 
 	float len = vel.Length();
@@ -39,18 +38,17 @@ void MoveComponent::Update(const DeltaTime &dt)
 
 
 	if (_body) {
+		// Box2D movement
 		b2Vec2 b2vel(vel.x, vel.y);
 		b2vel *= _speed * dt.dt;
 		_body->SetLinearVelocity(b2vel);
 	} else {
-		// Manual movement
+		// Manual movement 
 		Vec2 pos = Position();
 		pos.x += vel.x * _speed * B2_PTM * dt.dt;
 		pos.y += vel.y * _speed * B2_PTM * dt.dt;
 		Position() = pos;
 	}
-
-	printf("%g %g\n", Position().x, Position().y);
 }
 
 
@@ -73,8 +71,29 @@ AimComponent::AimComponent()
 
 void AimComponent::Update(const DeltaTime &dt)
 {
-	// TODO
-	Rotation() += 90.f * dt.dt;
+	const InputState *input = GetGameObject()->GetInputState();
+
+	// Calculate the position of the mouse in the screen-space coordinate system
+	Vec2 size = GetGameObject()->GetApp()->GetWindow()->GetWindowSize();
+	Vec2 mouse = input->GetMousePosition();
+	Vec2 res = GetGameObject()->GetApp()->GetWindow()->GetResolution();
+	mouse.x /= size.x;
+	mouse.y /= size.y;
+	mouse.y = 1.f - mouse.y;
+	mouse.x *= res.x;
+	mouse.y *= res.y;
+
+	// Find the position of the player 
+	// TODO: Take into account the parent layer positioning
+	Vec2 pos = Position();
+	Vec2 layerPos = GetGameObject()->GetParentLayer()->Position();
+	pos.x += layerPos.x;
+	pos.y += layerPos.y;
+		
+	float x = mouse.x - pos.x;
+	float y = mouse.y - pos.y;
+
+	Rotation() = atan2f(y, x) * (180.f / M_PI);
 }
 
 
