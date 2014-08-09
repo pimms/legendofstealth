@@ -1,6 +1,7 @@
 #pragma once
 
 #include <trutle/Trutle.h>
+#include "LightSource.h"
 
 class Map;
 class Player;
@@ -33,6 +34,7 @@ public:
 	void Update(const DeltaTime &dt);
 	void Render(Renderer *renderer);
 
+	void AddLight(LightSource::Properties lightProps, Vec2 pos, string type);
 
 	ShadowLayer* GetShadowLayer();
 	

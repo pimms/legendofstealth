@@ -1,5 +1,6 @@
 #include "MapParser.h"
 #include "MapLayer.h"
+#include "GameLayer.h"
 
 
 /*
@@ -66,7 +67,19 @@ bool MapParser::ParseMap()
 			ParseWallLayer(layer, tileTemplate);
 		} else {
 			Log::Debug((string) 
-				"Unable to parse: " + layer->GetName()
+				"Unable to parse Layer: " + layer->GetName()
+			);
+		}
+	}
+
+	for (int i=0; i<_tmxMap.GetNumObjectGroups(); i++) {
+		const Tmx::ObjectGroup *objGroup = _tmxMap.GetObjectGroup(i);
+
+		if (objGroup->GetName() == "lights") {
+			ParseLightLayer(objGroup);
+		} else {
+			Log::Debug((string)
+				"Unable to parse ObjectGroup: " + objGroup->GetName()
 			);
 		}
 	}
@@ -169,6 +182,57 @@ void MapParser::ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tt)
 				tt.AddFlag(x, y, Map::TILE_VENT);
 			}
 		}
+	}
+}
+
+
+void MapParser::ParseLightLayer(const Tmx::ObjectGroup *group)
+{
+	for (int i=0; i<group->GetNumObjects(); i++) {
+		const Tmx::Object *obj = group->GetObject(i);
+		string type = obj->GetType();
+
+		/* Handle all lights the same way - read from the Ellipse */
+		const Tmx::Ellipse *ellipse = obj->GetEllipse();
+		if (ellipse == NULL) {
+			string msg = "Non-elliptic object in Layer 'lights' (name: " 
+				+ obj->GetName() + ", type: " + type + ")";
+			Log::Warning(msg);
+			continue;
+		}
+
+		// The light shape must be a perfect circle
+		float rx = ellipse->GetRadiusX();
+		float ry = ellipse->GetRadiusY();
+		if (abs(rx - ry) > 0.01) {
+			string msg = "Non-perfect circle light in Layer 'lights' (name: " 
+				+ obj->GetName() + ", type: " + type + ")";
+			Log::Warning(msg);
+			continue;
+		}
+
+		// Read the color
+		Color color;
+		const Tmx::PropertySet &set = obj->GetProperties();
+		
+		if (set.HasProperty("r") && set.HasProperty("g") &&
+			set.HasProperty("b") && set.HasProperty("a")) {
+			color.r = set.GetFloatProperty("r");
+			color.g = set.GetFloatProperty("g");
+			color.b = set.GetFloatProperty("b");
+			color.a = set.GetFloatProperty("a");
+		} else {
+			Log::Warning("No color defined in light with name: '" + obj->GetName() + "'");
+			color = Color(1.f, 1.f, 1.f, 0.5f);
+		}
+
+		
+		Vec2 pos(ellipse->GetCenterX(), ellipse->GetCenterY());
+		LightSource::Properties props;
+		props.radius = rx;
+		props.color = color;
+		
+		_map->GetGameLayer()->AddLight(props, pos, type);
 	}
 }
 

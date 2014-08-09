@@ -53,6 +53,7 @@ public:
 	TileTemplate GetTileTemplate() const;
 
 	b2World* GetB2World() const;
+	GameLayer* GetGameLayer() const;
 	
 	
 	void Update(const DeltaTime &dt);

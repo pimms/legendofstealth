@@ -527,7 +527,7 @@
   </data>
  </layer>
  <objectgroup name="lights" width="10" height="10">
-  <object x="19" y="417" width="212" height="212">
+  <object type="static" x="179" y="312" width="212" height="212">
    <properties>
     <property name="color" value="1.0 0.0 0.4 1.0"/>
    </properties>

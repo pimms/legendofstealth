@@ -57,6 +57,11 @@ b2World* Map::GetB2World() const
 	return _b2World;
 }
 
+GameLayer* Map::GetGameLayer() const
+{
+	return _gameLayer;
+}
+
 
 void Map::Update(const DeltaTime &dt)
 {

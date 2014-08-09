@@ -42,6 +42,9 @@ private:
 	// Parse the walls-layer
 	void ParseWallLayer(Tmx::Layer *layer, Map::TileTemplate &tileTemplate);
 
+	// Parse the light-layer
+	void ParseLightLayer(const Tmx::ObjectGroup *objGroup);
+
 	// TMX maps use a top-left origo while we use a bottom-left.
 	// Inverse a Y-coordinate based on the height of the map.
 	int FlipY(int mapY);

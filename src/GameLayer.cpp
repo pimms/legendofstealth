@@ -38,13 +38,10 @@ GameLayer::GameLayer()
 		_shadowLayer(NULL),
 		_uiLayer(NULL)
 {
-	
 	// Don't add child layers as children, manage them
 	// manually until Z-ordering is added to Trutle.
 	_shadowLayer = new ShadowLayer(this);
 	_uiLayer = new Layer();
-
-
 
 	// Load the map (this HAS to be done after the ShadowLayer has been
 	// initialized).
@@ -105,7 +102,21 @@ void GameLayer::Render(Renderer* renderer)
 }
 
 
+void GameLayer::AddLight(LightSource::Properties lightProps, Vec2 pos, string type)
+{
+	GameObject *gob = new GameObject();
+	AddComponent<LightSource>(gob);
+	LightSource *light = GetComponent<LightSource>(gob);
+	light->SetLightProperties(lightProps.radius, lightProps.color);
+	gob->Position() = pos;
+
+	_shadowLayer->AddLightSource(light);
+	AddChild(gob);
+}
+
+
 ShadowLayer* GameLayer::GetShadowLayer() 
 {
 	return _shadowLayer;
 }
+
