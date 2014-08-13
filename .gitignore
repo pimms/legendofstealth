@@ -30,7 +30,9 @@ install_manifest.txt
 los
 game
 serv
+srv
 .kdev4
 .*.swp
 .*.swo
 build/
+.ycm*
