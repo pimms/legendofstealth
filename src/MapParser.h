@@ -48,4 +48,5 @@ private:
 	// TMX maps use a top-left origo while we use a bottom-left.
 	// Inverse a Y-coordinate based on the height of the map.
 	int FlipY(int mapY);
+	int FlipPixelY(int mapY);
 };

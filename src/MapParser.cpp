@@ -227,7 +227,7 @@ void MapParser::ParseLightLayer(const Tmx::ObjectGroup *group)
 		}
 
 		
-		Vec2 pos(ellipse->GetCenterX(), ellipse->GetCenterY());
+		Vec2 pos(ellipse->GetCenterX(), FlipPixelY(ellipse->GetCenterY()));
 		LightSource::Properties props;
 		props.radius = rx;
 		props.color = color;
@@ -241,4 +241,10 @@ int MapParser::FlipY(int mapY)
 {
 	int ycount = _tmxMap.GetHeight();
 	return (ycount - mapY - 1);
+}
+
+int MapParser::FlipPixelY(int mapY) 
+{
+	int height = _tmxMap.GetHeight() * _tmxMap.GetTileHeight();
+	return (height - mapY);
 }

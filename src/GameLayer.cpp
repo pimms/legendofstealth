@@ -104,6 +104,13 @@ void GameLayer::Render(Renderer* renderer)
 
 void GameLayer::AddLight(LightSource::Properties lightProps, Vec2 pos, string type)
 {
+	char str[256];
+	sprintf(str, "(GameLayer::AddLight) "
+				 "Adding light (r=%g R=%g G=%g B=%g A=%g) at (x=%g y=%g) (type=%s)",
+				 lightProps.radius, lightProps.color.r, lightProps.color.g, 
+				 lightProps.color.b, lightProps.color.a, pos.x, pos.y, type.c_str());
+	Log::Verbose(str);
+
 	GameObject *gob = new GameObject();
 	AddComponent<LightSource>(gob);
 	LightSource *light = GetComponent<LightSource>(gob);

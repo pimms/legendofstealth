@@ -527,9 +527,19 @@
   </data>
  </layer>
  <objectgroup name="lights" width="10" height="10">
-  <object type="static" x="179" y="312" width="212" height="212">
+  <object name="light0" type="static" x="-56" y="479" width="212" height="212">
    <properties>
     <property name="color" value="1.0 0.0 0.4 1.0"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="light1" type="static" x="-53" y="-85" width="512" height="512">
+   <properties>
+    <property name="a" value="0.5"/>
+    <property name="b" value="1.0"/>
+    <property name="color" value="1.0 0.0 0.4 1.0"/>
+    <property name="g" value="0.05"/>
+    <property name="r" value="0.1"/>
    </properties>
    <ellipse/>
   </object>
