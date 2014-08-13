@@ -19,6 +19,10 @@
 *.exe
 *.out
 *.app
+los
+game
+serv
+srv
 
 CMakeCache.txt
 CMakeFiles
@@ -27,12 +31,11 @@ cmake_install.cmake
 install_manifest.txt
 
 # Various stuff
-los
-game
-serv
-srv
 .kdev4
 .*.swp
 .*.swo
 build/
 .ycm*
+
+# GTest build files
+gtest/build
