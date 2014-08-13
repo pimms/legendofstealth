@@ -23,6 +23,7 @@ los
 game
 serv
 srv
+utest
 
 CMakeCache.txt
 CMakeFiles

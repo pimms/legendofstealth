@@ -15,6 +15,7 @@
 #	undef main
 #endif
 
+#ifndef TEST
 int main(int argc, char *argv[]) 
 {
 	SDLNet_Init();
@@ -25,3 +26,4 @@ int main(int argc, char *argv[])
 	SDLNet_Quit();
 	return 0;
 }
+#endif

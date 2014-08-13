@@ -20,7 +20,7 @@ file(GLOB test_src "test/*.h" "test/*.cpp")
 
 set(game_lib z tinyxml SDL2 SDL2_image SDL2_net trutle GL GLEW GLU tmxparser Box2D)
 set(serv_lib trutle SDL2 SDL2_net)
-set(test_lib ${game_lib} ${gtest_a} ${game_lib} ${serv_lib})
+set(test_lib ${game_lib} ${gtest_a} ${game_lib} ${serv_lib} pthread)
 
  
 add_executable(los ${game_src} ${shared_src})
@@ -38,7 +38,12 @@ install(TARGETS srv RUNTIME DESTINATION .)
 install(TARGETS utest RUNTIME DESTINATION .)
 
 
+# Definitions used for all files
 add_definitions(-std=c++11)
 add_definitions(-I${CMAKE_CURRENT_SOURCE_DIR}/shared)
 add_definitions(-I${CMAKE_CURRENT_SOURCE_DIR}/client)
 add_definitions(-I${CMAKE_CURRENT_SOURCE_DIR}/server)
+
+# Definitions used specifically for testing
+set_target_properties(utest PROPERTIES COMPILE_FLAGS "-I${CMAKE_CURRENT_SOURCE_DIR}/gtest/include -DTEST")
+

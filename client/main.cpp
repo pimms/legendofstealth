@@ -2,6 +2,8 @@
 #include <trutle/Trutle.h>
 #include "GameScene.h"
 
+
+#ifndef TEST
 int main(int argc, char **argv) 
 {
 	App app;
@@ -15,3 +17,4 @@ int main(int argc, char **argv)
 	
     return app.MainLoop();
 }
+#endif
