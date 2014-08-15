@@ -14,7 +14,6 @@ static void TcpLoop(bool *abort, ConnectionListener *listener,
 {
 	IPaddress ip;
 	TCPsocket server_socket = 0;
-	TCPsocket new_socket = 0;
 
 	if (SDLNet_ResolveHost(&ip, NULL, TCP_SERVER_PORT) == -1) {
 		string msg = (string)"SDLNet_ResolveHost() failed : " + SDLNet_GetError();
@@ -30,16 +29,12 @@ static void TcpLoop(bool *abort, ConnectionListener *listener,
 	}
 
 	while (!(*abort)) {
-		if (new_socket) {
-			bool accept = (*listener.*cb)(new_socket);
-			if (accept)
-				new_socket = 0;
-		} else {
-			new_socket = SDLNet_TCP_Accept(server_socket);
-			if (new_socket)
-				Log::Debug("New TCP connection!");
-		}
+		TCPsocket new_socket = SDLNet_TCP_Accept(server_socket);
 
+		if (new_socket) {
+			Log::Debug("New TCP connection!");
+			(*listener.*cb)(new_socket);
+		}
 		
 		// Sleep for 100 milliseconds
 		std::this_thread::sleep_for(std::chrono::microseconds(100000));
@@ -53,11 +48,10 @@ ConnectionListener Public
 ================
 */
 ConnectionListener::ConnectionListener()
-	:	 _tcpsock(0),
-		_abortThreads(false)
+	:	 _abortThreads(false)
 {
 	_thread = new std::thread(TcpLoop, &_abortThreads, 
-			this, &ConnectionListener::SetSocket);
+			this, &ConnectionListener::AddNewSocket);
 }
 
 ConnectionListener::~ConnectionListener()
@@ -67,43 +61,42 @@ ConnectionListener::~ConnectionListener()
 	delete _thread;
 }
 
+
+void ConnectionListener::AddNewSocket(TCPsocket socket)
+{
+	if (socket > 0) {
+		_mutex.lock();
+		_newConnections.push_back(socket);
+		_mutex.unlock();
+	}
+}
+
 bool ConnectionListener::HasNewConnection() 
 {
 	_mutex.lock();
-
-	bool result = false;
-	result = (bool)_tcpsock;
-
+	int count = _newConnections.size();
 	_mutex.unlock();
 
-	return result;
+	return (count > 0);
 }
 
-
-Socket* ConnectionListener::GetSocket()
+Socket* ConnectionListener::GetNewSocket()
 {
-	_mutex.lock();
-
-	TCPsocket sock = _tcpsock;
-	_tcpsock = 0;
-
-	_mutex.unlock();
-
-	return new Socket(sock);
-}
-
-bool ConnectionListener::SetSocket(TCPsocket socket)
-{
-	bool success = false;
+	TCPsocket socket = 0;
 
 	_mutex.lock();
 
-	if (!_tcpsock) {
-		_tcpsock = (TCPsocket)socket;
-		success = true;
+	if (_newConnections.size() > 0) {
+		socket = _newConnections[0];
+		_newConnections.erase(_newConnections.begin());
 	}
 
 	_mutex.unlock();
 
-	return success;
+	if (socket == 0) {
+		return NULL;
+	}
+
+	return new Socket(socket);
 }
+

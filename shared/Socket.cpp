@@ -1,4 +1,3 @@
-
 #include "Socket.h"
 #include <cstdlib>
 #include <stdlib.h>
@@ -7,10 +6,10 @@
 
 /*
 ================
-Socket Public 
+Socket Public
 ================
 */
-Socket::Socket(Protocol protocol, string hostname, int port, unsigned udpListenPort) 
+Socket::Socket(TLProtocol protocol, string hostname, int port, unsigned udpListenPort)
 	:	_set(NULL),
 		_udp(0),
 		_tcp(0),
@@ -26,9 +25,9 @@ Socket::Socket(Protocol protocol, string hostname, int port, unsigned udpListenP
 	}
 
 	Init();
-}	
+}
 
-Socket::Socket(Protocol protocol, IPaddress ipaddr, unsigned udpListenPort)
+Socket::Socket(TLProtocol protocol, IPaddress ipaddr, unsigned udpListenPort)
 	:	_set(0),
 		_udp(0),
 		_tcp(0),
@@ -113,15 +112,16 @@ Packet* Socket::GetPacket()
 		return NULL;
 	}
 
+	PacketFactory pktFactory;
 	int numRecv = 0;
 	int read = 0;
 
 	while (len > 0) {
 		int plen = 0;
-		Packet *packet = Packet::ReadPacket(buf+read, len, plen);
-		
+		Packet *packet = pktFactory.ReadPacket(buf+read, len, plen);
+
 		if (packet) {
-			packet->udpPacket = udpPacket;
+			packet->SetUdpPacket(udpPacket);
 			len -= plen;
 			read += plen;
 			_pqueue.push_back(packet);
@@ -129,7 +129,7 @@ Packet* Socket::GetPacket()
 			numRecv++;
 		} else {
 			// Unable to parse packet - none of the retrieved data can be trusted
-			if (udpPacket) 
+			if (udpPacket)
 				SDLNet_FreePacket(udpPacket);
 			Log::Verbose("Received non-trustworthy data");
 			break;
@@ -137,9 +137,8 @@ Packet* Socket::GetPacket()
 	}
 
 	for (int i=0; i<numRecv; i++) {
-		PacketType t = _pqueue[_pqueue.size()-1-i]->type;
-		if (t != PACKET_PLAYER_UPDATE)
-			Log::Verbose("Received packet: " + PacketTypeStr(t));
+		PacketType t = _pqueue[_pqueue.size()-1-i]->GetPacketType();
+		Log::Verbose("Received packet: " + PacketTypeStr(t));
 	}
 
 	if (_pqueue.size())
@@ -149,16 +148,17 @@ Packet* Socket::GetPacket()
 }
 
 
+
 bool Socket::SendPacket(Packet *packet)
 {
 	int len = 0;
 	int sent = 0;
 	byte *buf = NULL;
 
-	buf = packet->GetSendablePacket(len);
+	buf = packet->Serialize(len);
 	if (!buf)
 		return false;
-	
+
 	if (_protocol == TCP) {
 		sent = SDLNet_TCP_Send(_tcp, buf, len);
 	} else if (_protocol == UDP) {
@@ -180,9 +180,8 @@ bool Socket::SendPacket(Packet *packet)
 		Log::Error(msg);
 		return false;
 	} else {
-		PacketType t = packet->type;
-		if (t != PACKET_PLAYER_UPDATE)
-			Log::Verbose("Received packet: " + PacketTypeStr(t));
+		PacketType t = packet->GetPacketType();
+		Log::Verbose("Received packet: " + PacketTypeStr(t));
 	}
 
 	return true;
@@ -201,7 +200,7 @@ string Socket::GetOctalIP(Uint32 ip)
 }
 
 
-string Socket::GetRemoteHostname() const 
+string Socket::GetRemoteHostname() const
 {
 	if (_protocol == UDP) {
 		Log::Debug("Hostname not available for UDP connections");
@@ -216,7 +215,7 @@ unsigned Socket::GetListenPortUDP() const
 	return _udpListenPort;
 }
 
-Protocol Socket::GetProtocol() const
+TLProtocol Socket::GetTransportLayerProtocol() const
 {
 	return _protocol;
 }
@@ -273,7 +272,7 @@ byte* Socket::GetData(int &len, UDPpacket*& udpPacket)
 			memcpy(buf, packet->data, packet->len);
 			len = packet->len;
 		}
-		
+
 		udpPacket = packet;
 	} else if (_protocol == TCP) {
 		int maxlen = 128;
@@ -281,7 +280,7 @@ byte* Socket::GetData(int &len, UDPpacket*& udpPacket)
 		buf = new byte[maxlen];
 		num = SDLNet_TCP_Recv(_tcp, buf, maxlen);
 		totread = num;
-		
+
 		while (num == maxlen) {
 			totread += num;
 			maxlen *= 2;
@@ -320,7 +319,7 @@ void Socket::CreateUDP()
 	// In case _udpListenPort is 0, retrieve the port used by the socket
 	IPaddress *sockip = SDLNet_UDP_GetPeerAddress(_udp, -1);
 	_udpListenPort = sockip->port;
-	
+
 	std::stringstream ss;
 	ss << "Bound UDP socket on port " << _udpListenPort;
 	Log::Debug(ss.str());

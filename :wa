@@ -1,0 +1,128 @@
+#pragma once
+
+#ifdef _WIN32
+	#include <Trutle.h>
+	#include <SDL_net.h>
+#else
+	#include <trutle/Trutle.h>
+	#include <SDL2/SDL_net.h>
+#endif
+
+#define TCP_SERVER_PORT			43720
+#define UDP_SERVER_PORT			43720
+
+
+enum TLProtocol {
+	UDP,
+	TCP,
+};
+
+enum Team {
+	TEAM_SPY,
+	TEAM_MERC,
+};
+
+enum ProtocolPhase {
+	PROTO_NONE,
+	PROTO_NEGOT,
+	PROTO_LOBBY,
+	PROTO_GAME,
+};
+
+typedef unsigned char byte;
+
+
+enum PacketType {
+	PACKET_UNDEFINED,
+	
+	// Initial message from client to server
+	PACKET_JOIN_REQUEST,
+
+	// Response to joining client from server
+	PACKET_JOIN_RESPONSE,
+
+	// Broadcasted to all players upon player join
+	PACKET_PLAYER_DID_JOIN,
+
+	// Broadcasted to all players upon player depart
+	PACKET_PLAYER_DID_LEAVE,
+
+	// Sent from client to update it's position
+	PACKET_PLAYER_UPDATE,
+
+	// Sent from client upon firing
+	PACKET_PLAYER_FIRE,
+
+	// Sent from a client upon being hit by a bullet
+	PACKET_PLAYER_HIT,
+
+	// Sent from client upon beginning or ending a hack
+	PACKET_PLAYER_HACK,
+
+	// Sent from a client upon completing a hack
+	PACKET_HACK_COMPLETE,
+};
+
+string PacketTypeStr(PacketType type);
+
+
+struct Packet;
+
+class PacketFactory {
+public:
+	static Packet* ReadPacket(byte *buffer, int bufferlen, int &packetlen);
+
+	static int ReadInt(byte *buf);
+	static unsigned ReadUInt(byte *buf);
+	static float ReadFloat(byte *buf);
+};
+
+
+
+struct Packet {
+public:
+	Packet();
+	virtual byte* serialize(int &pktlen) const = 0;
+	virtual int deserialize(byte *buf, int buflen) = 0;
+
+	PacketType type;
+
+	/* Used ONLY when the Packet was RECEIVED over UDP
+	 * TODO:
+	 * Figure out what it does.
+	 */
+	UDPpacket *udpPacket;
+};
+
+
+// PACKET_JOIN_REQUEST
+struct JoinRequestPacket : public Packet {
+	JoinRequestPacket();
+	byte* serialize(int &pktlen) const;
+	int deserialize(byte *buf, int buflen);
+
+	unsigned port;
+};
+
+
+// PACKET_JOIN_RESPONSE
+struct JoinResponsePacket : public Packet {
+	JoinResponsePacket();
+	byte* serialize(int &pktlen) const;
+	int deserialize(byte *buf, int buflen);
+
+	bool response;
+	unsigned playerID;
+	unsigned team;
+};
+
+
+// PACKET_PLAYER_DID_JOIN
+struct PlayerDidJoinPacket : public Packet {
+	PlayerDidJoinPacket();
+	byte* serialize(int &pktlen) const;
+	int deserialize(byte *buf, int buflen);
+
+	unsigned playerID;
+	unsigned team;
+};

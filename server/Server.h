@@ -3,7 +3,7 @@
 #include <SDL2/SDL_net.h>
 #include <trutle/Trutle.h>
 #include "ConnectionListener.h"
-#include "RemotePlayer.h"
+#include "Protocol.h"
 
 
 class Server {
@@ -16,20 +16,9 @@ public:
 private:
 	ConnectionListener _connectionListener;
 	Socket *_udpSocket;
-	vector<RemotePlayer*> _remotePlayers;
 
-	unsigned _nextID;
+	ProtocolPhase _protoPhase;
 
 
-	void HandleNewConnection();
-	Team DecideTeamForNewPlayer();
-	void GetTeamDistribution(int &spies, int &mercs);
-	
-	void HandleDisconnections();
-
-	void HandleIncomingUDP();
-	void HandlePacket(Packet *packet);
-	void AddPacketToPlayerQueue(Packet *packet, unsigned playerID);
-
-	void BroadcastToPlayers();
+	void HandleNewTCPConnections();
 };

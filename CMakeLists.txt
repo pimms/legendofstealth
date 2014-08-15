@@ -7,7 +7,6 @@ exec_program("bash gtestbuild.sh")
 
 # Assert that the library exists
 set(gtest_a ${CMAKE_CURRENT_LIST_DIR}/gtest/build/libgtest.a)
-message(${gtest_a})
 if (NOT EXISTS ${gtest_a})
 	message(FATAL_ERROR "Google Test library does not exist.")
 endif()

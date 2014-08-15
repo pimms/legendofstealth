@@ -8,7 +8,7 @@
 	#include <SDL2/SDL_net.h>
 #endif
 
-#include "Packet.h"
+#include "Protocol.h"
 
 
 /* Socket
@@ -25,8 +25,8 @@ class Socket {
 public:
 	/* Connect to the remote host
 	 */
-	Socket(Protocol protocol, string hostname, int port, unsigned udpListenPort=0);
-	Socket(Protocol protocol, IPaddress ipaddress, unsigned udpListenPort=0);
+	Socket(TLProtocol protocol, string hostname, int port, unsigned udpListenPort=0);
+	Socket(TLProtocol protocol, IPaddress ipaddress, unsigned udpListenPort=0);
 
 	/* Connection has already been set up
 	 */
@@ -42,7 +42,7 @@ public:
 	// Returns an empty string on UDP Sockets
 	string GetRemoteHostname() const;
 	unsigned GetListenPortUDP() const;
-	Protocol GetProtocol() const;
+	TLProtocol GetTransportLayerProtocol() const;
 	IPaddress GetIPaddress();
 
 	static string GetOctalIP(Uint32 ip);
@@ -52,7 +52,7 @@ public:
 
 private:
 	SDLNet_SocketSet _set;	
-	Protocol _protocol;
+	TLProtocol _protocol;
 	vector<Packet*> _pqueue;
 	unsigned _udpListenPort;
 

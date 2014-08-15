@@ -5,9 +5,6 @@
 
 #include <SDL2/SDL_net.h>
 
-#include "ConnectionListener.h"
-#include "Socket.h"
-#include "RemotePlayer.h"
 #include "Server.h"
 
 
