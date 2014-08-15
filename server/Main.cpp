@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 {
 	SDLNet_Init();
 
-	Server server;
+	server::Server server;
 	server.ServerLoop();
 
 	SDLNet_Quit();

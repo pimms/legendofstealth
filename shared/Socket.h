@@ -38,6 +38,7 @@ public:
 	Packet* GetPacket();
 
 	bool SendPacket(Packet *packet);
+	bool SendPacket(byte *buf, int len);
 
 	// Returns an empty string on UDP Sockets
 	string GetRemoteHostname() const;

@@ -152,12 +152,18 @@ Packet* Socket::GetPacket()
 bool Socket::SendPacket(Packet *packet)
 {
 	int len = 0;
-	int sent = 0;
 	byte *buf = NULL;
 
 	buf = packet->Serialize(len);
 	if (!buf)
 		return false;
+	
+	return SendPacket(buf, len);
+}
+
+bool Socket::SendPacket(byte *buf, int len)
+{
+	int sent = 0;
 
 	if (_protocol == TCP) {
 		sent = SDLNet_TCP_Send(_tcp, buf, len);
@@ -179,10 +185,7 @@ bool Socket::SendPacket(Packet *packet)
 		msg += (string)" packet. Error: " + SDLNet_GetError();
 		Log::Error(msg);
 		return false;
-	} else {
-		PacketType t = packet->GetPacketType();
-		Log::Verbose("Received packet: " + PacketTypeStr(t));
-	}
+	} 
 
 	return true;
 }

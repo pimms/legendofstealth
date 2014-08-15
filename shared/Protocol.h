@@ -39,6 +39,12 @@ enum PacketType {
 
 	// Broadcasted to all players upon player join
 	PACKET_PLAYER_DID_JOIN,
+
+	// Broadcasted to all remaining players upon a player's departure
+	PACKET_PLAYER_DID_LEAVE,
+
+	// Broadcasted to all connected players upon server shutdown
+	PACKET_SERVER_SHUTDOWN,
 };
 
 string PacketTypeStr(PacketType type);
@@ -127,4 +133,19 @@ public:
 
 	unsigned playerID;
 	unsigned team;
+};
+
+
+// PACKET_PLAYER_DID_LEAVE
+class PlayerDidLeavePacket : public Packet {
+public:
+	PlayerDidLeavePacket();
+
+	unsigned playerID;
+};
+
+class ServerShutdownPacket : public Packet {
+public:
+	ServerShutdownPacket();
+
 };

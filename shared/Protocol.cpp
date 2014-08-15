@@ -15,6 +15,8 @@ string PacketTypeStr(PacketType type)
 			return "PACKET_JOIN_RESPONSE";
 		case PACKET_PLAYER_DID_JOIN:
 			return "PACKET_PLAYER_DID_JOIN";
+		case PACKET_PLAYER_DID_LEAVE:
+			return "PACKET_PLAYER_DID_LEAVE";
 	}
 }
 
@@ -85,10 +87,8 @@ Packet* PacketFactory::ReadPacket(byte *buffer, int bufferlen, int &packetlen)
 	byte type = buffer[0];
 
 	if (_map.count(type) == 0) {
-		 char msg[256];
-		 sprintf(msg, "Unable to parse packet of type: %i\n", type);
-		 Log::Error(msg);
-		 return NULL;
+		Log::Error("Unable to parse packet of type: %i\n", type);
+		return NULL;
 	}
 
 	Packet* (*newfunc)() = _map[type];
@@ -254,4 +254,20 @@ PlayerDidJoinPacket::PlayerDidJoinPacket()
 
 	AddField(UINT32, &playerID);
 	AddField(UINT32, &team);
+}
+
+
+PlayerDidLeavePacket::PlayerDidLeavePacket()
+	:	Packet(PACKET_PLAYER_DID_LEAVE)
+{
+	playerID = 0;
+
+	AddField(UINT32, &playerID);
+}
+
+
+ServerShutdownPacket::ServerShutdownPacket()
+	:	Packet(PACKET_SERVER_SHUTDOWN)
+{
+
 }
