@@ -3,7 +3,7 @@
 #include "GameScene.h"
 
 
-#ifndef TEST
+#ifndef IS_TESTING 
 int main(int argc, char **argv) 
 {
 	App app;

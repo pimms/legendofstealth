@@ -106,7 +106,6 @@ private:
 };
 
 
-// PACKET_JOIN_REQUEST
 class JoinRequestPacket : public Packet {
 public:
 	JoinRequestPacket();
@@ -115,7 +114,6 @@ public:
 };
 
 
-// PACKET_JOIN_RESPONSE
 class JoinResponsePacket : public Packet {
 public:
 	JoinResponsePacket();
@@ -126,7 +124,6 @@ public:
 };
 
 
-// PACKET_PLAYER_DID_JOIN
 class PlayerDidJoinPacket : public Packet {
 public:
 	PlayerDidJoinPacket();
@@ -136,13 +133,13 @@ public:
 };
 
 
-// PACKET_PLAYER_DID_LEAVE
 class PlayerDidLeavePacket : public Packet {
 public:
 	PlayerDidLeavePacket();
 
 	unsigned playerID;
 };
+
 
 class ServerShutdownPacket : public Packet {
 public:

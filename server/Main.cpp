@@ -12,7 +12,7 @@
 #	undef main
 #endif
 
-#ifndef TEST
+#ifndef IS_TESTING
 int main(int argc, char *argv[]) 
 {
 	SDLNet_Init();

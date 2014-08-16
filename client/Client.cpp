@@ -17,6 +17,7 @@ ServerConnector::ServerConnector(string host, unsigned tcpPort, unsigned udpPort
 		_udpSocket(NULL),
 		_tcpGet(false),
 		_udpGet(false),
+		_isConnected(false),
 		_playerID(0),
 		_team(TEAM_MERC)
 {
@@ -104,33 +105,38 @@ bool ServerConnector::ConnectToServer()
 	return false;
 }
 
+bool ServerConnector::IsConnectedToServer() const
+{
+	return _isConnected;
+}
 
-Socket* ServerConnector::GetTCPSocket()
+
+Socket* ServerConnector::GetTCPSocket() const
 {
 	AssertIsConnected(__PRETTY_FUNCTION__);
 	return _tcpSocket;
 }
 
-Socket* ServerConnector::GetUDPSocket()
+Socket* ServerConnector::GetUDPSocket() const
 {
 	AssertIsConnected(__PRETTY_FUNCTION__);
 	return _udpSocket;
 }
 
-unsigned ServerConnector::GetPlayerID()
+unsigned ServerConnector::GetPlayerID() const
 {
 	AssertIsConnected(__PRETTY_FUNCTION__);
 	return _playerID;
 }
 
-Team ServerConnector::GetTeam()
+Team ServerConnector::GetTeam() const
 {
 	AssertIsConnected(__PRETTY_FUNCTION__);
 	return _team;
 }
 
 
-void ServerConnector::AssertIsConnected(string context) 
+void ServerConnector::AssertIsConnected(string context)  const
 {
 	if (!_isConnected) {
 		throw std::runtime_error(

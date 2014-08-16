@@ -17,6 +17,8 @@ string PacketTypeStr(PacketType type)
 			return "PACKET_PLAYER_DID_JOIN";
 		case PACKET_PLAYER_DID_LEAVE:
 			return "PACKET_PLAYER_DID_LEAVE";
+		case PACKET_SERVER_SHUTDOWN:
+			return "PACKET_SERVER_SHUTDOWN";
 	}
 }
 
@@ -271,3 +273,5 @@ ServerShutdownPacket::ServerShutdownPacket()
 {
 
 }
+
+

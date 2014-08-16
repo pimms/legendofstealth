@@ -358,3 +358,22 @@ void Socket::Init()
 		}
 	}
 }
+
+
+
+/*
+================
+SocketTCP
+================
+*/
+SocketTCP::SocketTCP(string host, unsigned port)
+	: 	Socket(TCP, host, port, 0)
+{
+
+}
+
+SocketTCP::SocketTCP(IPaddress addr)
+	:	Socket(TCP, addr, 0)
+{
+
+}

@@ -24,7 +24,7 @@ void Server::ServerLoop()
 			Log::Error("Internal server error. Shutting down...");
 			
 			ServerShutdownPacket pkt;
-			Broadcast(&pkt);
+			Broadcast(TCP, &pkt);
 			break;
 		}
 	

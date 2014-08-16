@@ -21,15 +21,18 @@ namespace client {
  */
 class ServerConnector {
 public:
-	ServerConnector(string host, unsigned tcpPort, unsigned udpPort);
+	ServerConnector(string host, 
+					unsigned tcpPort=TCP_SERVER_PORT, 
+					unsigned udpPort=UDP_SERVER_PORT);
 	~ServerConnector();
 
 	bool ConnectToServer();
+	bool IsConnectedToServer() const;
 
-	Socket* GetTCPSocket();
-	Socket* GetUDPSocket();
-	unsigned GetPlayerID();
-	Team GetTeam();
+	Socket* GetTCPSocket() const;
+	Socket* GetUDPSocket() const;
+	unsigned GetPlayerID() const;
+	Team GetTeam() const;
 
 private:
 	string _host;
@@ -46,7 +49,7 @@ private:
 	unsigned _playerID;
 	Team _team;
 
-	void AssertIsConnected(string context);
+	void AssertIsConnected(string context) const;
 	void CleanUpSockets();
 };
 

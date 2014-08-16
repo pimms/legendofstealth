@@ -83,7 +83,7 @@ private:
 class SocketTCP: public Socket {
 public:
 	SocketTCP(string hostname, unsigned port);
-	SocketTCP(IPaddress *ipaddr);
+	SocketTCP(IPaddress ipaddr);
 
 private:
 	string _hostname;
